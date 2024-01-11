@@ -1,0 +1,82 @@
+package com.c_project.auto_occasion.model;
+
+import java.sql.Date;
+
+public class Annonce {
+    int idAnnonce;
+    int idUser;
+    int idCar;
+    Date date_annonce;
+    int statut;
+    String lieu;
+    String description;
+
+    public Annonce() {
+    }
+
+    public int getIdAnnonce() {
+        return idAnnonce;
+    }
+
+    public void setIdAnnonce(int idAnnonce) {
+        this.idAnnonce = idAnnonce;
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
+
+    public int getIdCar() {
+        return idCar;
+    }
+
+    public void setIdCar(int idCar) {
+        this.idCar = idCar;
+    }
+
+    public Date getDate_annonce() {
+        return date_annonce;
+    }
+
+    public void setDate_annonce(Date date_annonce) {
+        this.date_annonce = date_annonce;
+    }
+
+    public int getStatut() {
+        return statut;
+    }
+
+    public void setStatut(int statut) {
+        this.statut = statut;
+    }
+
+    public String getLieu() {
+        return lieu;
+    }
+
+    public void setLieu(String lieu) {
+        this.lieu = lieu;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Annonce(int idAnnonce, int idUser, int idCar, Date date_annonce, int statut, String lieu, String description) {
+        this.idAnnonce = idAnnonce;
+        this.idUser = idUser;
+        this.idCar = idCar;
+        this.date_annonce = date_annonce;
+        this.statut = statut;
+        this.lieu = lieu;
+        this.description = description;
+    }
+}
