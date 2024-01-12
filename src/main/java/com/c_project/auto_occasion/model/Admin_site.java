@@ -6,7 +6,7 @@ public class Admin_site {
     String nom;
     String prenom;
     String mdp;
-    int contact;
+    String contact;
 
     public Admin_site() {
     }
@@ -46,15 +46,15 @@ public class Admin_site {
         this.mdp = mdp;
     }
 
-    public int getContact() {
+    public String getContact() {
         return contact;
     }
 
-    public void setContact(int contact) {
+    public void setContact(String contact) {
         this.contact = contact;
     }
 
-    public Admin_site(int idadmin, String email, String nom, String prenom, String mdp, int contact) {
+    public Admin_site(int idadmin, String email, String nom, String prenom, String mdp, String contact) {
         this.idadmin = idadmin;
         this.email = email;
         this.nom = nom;

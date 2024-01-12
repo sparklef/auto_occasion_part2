@@ -4,4 +4,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AnnonceService {
+    public AnnonceService() {
+    }
+    // CRUD
+    // CRUD
 }
