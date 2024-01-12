@@ -38,8 +38,8 @@ public class MarqueController {
         }
     }
     // Create
-    @PostMapping("/create")
-    public ResponseEntity<String> createMarque(@RequestBody String marque) {
+    @PostMapping("/create/{marque}")
+    public ResponseEntity<String> createMarque(@PathVariable String marque) {
         try {
             marqueService.create(marque);
             return new ResponseEntity<>("Marque created successfully", HttpStatus.CREATED);
