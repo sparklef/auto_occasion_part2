@@ -49,15 +49,15 @@ public class MarqueController {
         }
     }
     // Update
-    /*@PutMapping("/update/{id}")
-    public void updateMarque(@PathVariable int id, @RequestBody Marque marque) {
+    @PutMapping("/update/{id}")
+    public void updateMarque(@PathVariable int id, @RequestBody String marque) {
         try {
-            marqueService.update(marque.getMarque(), id);
+            marqueService.update(marque, id);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }*/
-    @PutMapping("/update/{id}/{marque}")
+    }
+   /*  @PutMapping("/update/{id}/{marque}")
     public ResponseEntity<String> updateMarque(@PathVariable int id, @PathVariable String marque) {
         try {
             marqueService.update(marque, id);
@@ -66,7 +66,7 @@ public class MarqueController {
             e.printStackTrace();
             return new ResponseEntity<>("Error updating marque", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
     // Delete
     /*@DeleteMapping("/delete/{id}")
     public void deleteMarque(@PathVariable int id) {
