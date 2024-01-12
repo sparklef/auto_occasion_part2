@@ -57,10 +57,10 @@ public class MarqueController {
             e.printStackTrace();
         }
     }*/
-    @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateMarque(@PathVariable int id, @RequestBody Marque marque) {
+    @PutMapping("/update/{id}/{marque}")
+    public ResponseEntity<String> updateMarque(@PathVariable int id, @PathVariable String marque) {
         try {
-            marqueService.update(marque.getMarque(), id);
+            marqueService.update(marque, id);
             return new ResponseEntity<>("Marque updated successfully", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
