@@ -49,13 +49,10 @@ public class CategorieService {
             stat=c.createStatement();
             String query=String.format("INSERT INTO categorie VALUES(DEFAULT,'%s')", nomCategorie);
             int row=stat.executeUpdate(query);
-            c.commit();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new Exception(e.getMessage());
         }finally{
-            
-
             if (stat != null) stat.close();
             if (c != null) c.close();
         }
@@ -69,13 +66,10 @@ public class CategorieService {
             stat=c.createStatement();
             String query=String.format("DELETE FROM categorie WHERE idCategorie=%d", id);
             int row=stat.executeUpdate(query);
-            c.commit();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new Exception(e.getMessage());
         }finally{
-            
-
             if (stat != null) stat.close();
             if (c != null) c.close();
         }
@@ -87,15 +81,12 @@ public class CategorieService {
         try {
             c=co.getConnection();
             stat=c.createStatement();
-            String query=String.format("UPDATE categorie SET categorie='%s' WHERE idCategorie=%d",nom ,id);
+            String query=String.format("UPDATE categorie SET categorie='%s' WHERE idCategorie =%d",nom ,id);
             int row=stat.executeUpdate(query);
-            c.commit();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new Exception(e.getMessage());
         }finally{
-            
-
             if (stat != null) stat.close();
             if (c != null) c.close();
         }

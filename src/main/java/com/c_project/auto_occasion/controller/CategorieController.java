@@ -46,26 +46,26 @@ public class CategorieController {
             return new ResponseEntity<>("Categorie created successfully", HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PutMapping("/update/{id}/{categorie}")
+    @PutMapping("/update/{idcategorie}/{categorie}")
     public ResponseEntity<String> update(@PathVariable int idcategorie, @PathVariable String categorie) {
         try {
             categorieService.updateCategorie(idcategorie, categorie);
-            return new ResponseEntity<>("Categorie updated successfully", HttpStatus.CREATED);
+            return new ResponseEntity<>("Categorie updated successfully", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{idcategorie}")
     public ResponseEntity<String> delete(@PathVariable int idcategorie) {
         try {
             categorieService.deleteCategorie(idcategorie);
-            return new ResponseEntity<>("Categorie deleted successfully", HttpStatus.CREATED);
+            return new ResponseEntity<>("Categorie deleted successfully", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
