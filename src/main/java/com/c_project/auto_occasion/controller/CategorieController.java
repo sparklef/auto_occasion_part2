@@ -39,6 +39,21 @@ public class CategorieController {
         }
     }
 
+    @GetMapping("/categorieId/{idcategorie}")
+    public ResponseEntity<Categorie> getCategorieId(@PathVariable int idcategorie){
+        try {
+            Categorie categorie=categorieService.getCategorieSpecifique(idcategorie);
+            if (categorie != null) {
+                return new ResponseEntity<>(categorie, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/insert/{categorie}")
     public ResponseEntity<String> insertion(@PathVariable String categorie) {
         try {

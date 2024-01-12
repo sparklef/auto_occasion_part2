@@ -40,6 +40,32 @@ public class CategorieService {
         }
         return liste;
     }
+
+    public Categorie getCategorieSpecifique(int id) throws Exception{
+        Categorie categorie=null;
+        Connexion co=new Connexion();
+        Connection c=null;
+        Statement stat=null;
+        ResultSet req=null;
+        try {
+            c=co.getConnection();
+            stat=c.createStatement();
+            String query=String.format("SELECT * FROM categorie WHERE idCategorie=%d", id);
+            req=stat.executeQuery(query);
+            while (req.next()) {
+                categorie=new Categorie(req.getInt(1),req.getString(2));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+           throw new Exception(e.getMessage());
+        }finally{
+            if (req != null) req.close();
+            if (stat != null) stat.close();
+            if (c != null) c.close();
+        }
+        return categorie;
+    }
+
     public void insertionCategorie(String nomCategorie) throws Exception{
         Connexion co=new Connexion();
         Connection c=null;
