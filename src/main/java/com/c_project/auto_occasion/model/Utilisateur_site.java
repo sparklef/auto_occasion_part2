@@ -6,7 +6,7 @@ public class Utilisateur_site {
     String nom;
     String prenom;
     String mdp;
-    int contact;
+    String contact;
 
     public Utilisateur_site() {
     }
@@ -51,15 +51,15 @@ public class Utilisateur_site {
         this.mdp = mdp;
     }
 
-    public int getContact() {
+    public String getContact() {
         return contact;
     }
 
-    public void setContact(int contact) {
+    public void setContact(String contact) {
         this.contact = contact;
     }
 
-    public Utilisateur_site(int idUser, String email, String nom, String prenom, String mdp, int contact) {
+    public Utilisateur_site(int idUser, String email, String nom, String prenom, String mdp, String contact) {
         this.idUser = idUser;
         this.email = email;
         this.nom = nom;

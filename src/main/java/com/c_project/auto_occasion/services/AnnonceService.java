@@ -10,6 +10,8 @@ import com.c_project.auto_occasion.connexion.Connexion;
 @Service
 public class AnnonceService {
 
+    public AnnonceService() {
+    }
     //update status=1 in annonce
     public void updateStatut(Connection con,int idAnnonce) throws SQLException {
         PreparedStatement stmt=null;
@@ -47,5 +49,6 @@ public class AnnonceService {
         }
     }
 
-    
+   
+
 }
