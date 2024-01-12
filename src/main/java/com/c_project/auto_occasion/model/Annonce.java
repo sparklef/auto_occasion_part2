@@ -3,12 +3,14 @@ package com.c_project.auto_occasion.model;
 import java.sql.Date;
 
 public class Annonce {
+   
     int idAnnonce;
     int idUser;
     int idCar;
     Date date_annonce;
     int statut;
     String lieu;
+    String image_car;
     String description;
 
     public Annonce() {
@@ -62,6 +64,14 @@ public class Annonce {
         this.lieu = lieu;
     }
 
+    public String getImage_car() {
+        return image_car;
+    }
+
+    public void setImage_car(String image_car) {
+        this.image_car = image_car;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -70,13 +80,14 @@ public class Annonce {
         this.description = description;
     }
 
-    public Annonce(int idAnnonce, int idUser, int idCar, Date date_annonce, int statut, String lieu, String description) {
+    public Annonce(int idAnnonce, int idUser, int idCar, Date date_annonce, int statut, String lieu, String image_car, String description) {
         this.idAnnonce = idAnnonce;
         this.idUser = idUser;
         this.idCar = idCar;
         this.date_annonce = date_annonce;
         this.statut = statut;
         this.lieu = lieu;
+        this.image_car = image_car;
         this.description = description;
     }
 }
