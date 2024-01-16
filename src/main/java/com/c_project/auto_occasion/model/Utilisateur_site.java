@@ -1,5 +1,8 @@
 package com.c_project.auto_occasion.model;
 
+import javax.crypto.SecretKey;
+import java.sql.Date;
+
 public class Utilisateur_site {
     int idUser;
     String email;
