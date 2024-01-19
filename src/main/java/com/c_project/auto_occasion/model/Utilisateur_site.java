@@ -74,22 +74,4 @@ public class Utilisateur_site {
         this.mdp = mdp;
     }
 
-    public String generateBearerToken() {
-        // Clé secrète utilisée pour signer le token (à remplacer par une clé plus
-        // sécurisée)
-        SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-
-        // Date d'expiration du token (par exemple, 1 heure)
-        Date expirationDate = new Date(System.currentTimeMillis() + 3600000); // 1 heure en millisecondes
-
-        // Génération du token JWT au format Bearer Token
-        String token = Jwts.builder()
-                .setSubject(this.getNom())
-                .claim("userId", this.getIduser())
-                .setExpiration(expirationDate)
-                .signWith(SignatureAlgorithm.HS256, secretKey)
-                .compact();
-
-        return token;
-    }
 }

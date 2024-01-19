@@ -33,13 +33,11 @@ public class Utilisateur_siteController {
 
       //verification
       @GetMapping("/verif/{email}/{mdp}")
-      public ResponseEntity<String> verifUser(@PathVariable  String email,@PathVariable String mdp,HttpSession session) {
-        Utilisateur_site user = new Utilisateur_site(nom, mdp);
-     
+      public ResponseEntity<String> verifUser(@PathVariable  String email,@PathVariable String mdp) {
         try {
             utilisateur_siteService.verificationUser(email,mdp);
-            session.setAttribute("User", user);
-              return new ResponseEntity<>(user.generateBearerToken(),"User verification successfully", HttpStatus.OK);
+          
+              return new ResponseEntity<>("User verification successfully", HttpStatus.OK);
           } catch (Exception e) {
               e.printStackTrace();
               return new ResponseEntity<>("Error verification user", HttpStatus.INTERNAL_SERVER_ERROR);

@@ -50,26 +50,33 @@ public class Utilisateur_siteService {
         }
     }
 
-    public void verificationUser(Connection con, String email, String password) throws SQLException, Exception {
-        PreparedStatement stmt = null;
+
+     public void verificationUser(Connection con, String email, String password) throws SQLException, Exception {
+        Statement stmt = null;
         try {
-            String sql = "SELECT * FROM utilisateur_site WHERE email = ? AND mdp = ?";
-            stmt = con.prepareStatement(sql);
-            stmt.setString(1, email);
-            stmt.setString(2, password);
-            ResultSet rs = stmt.executeQuery();
+            String sql = "SELECT * FROM utilisateur_site WHERE email = '" + email + "' AND mdp = '" + password + "'";
+
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            System.out.println(sql);
             if (!rs.next()) {
-                throw new Exception("User does not exist");
+                throw new Exception("User does not exist" + email + password);
+            } else {
+                if (rs.getString("email") == email && rs.getString("mdp") == password) {
+                    System.out.println("Email and password are correct" + email + "password" + password);   
+                }
             }
         } catch (SQLException e) {
-            System.out.println("Error while verifying "+ email +", "+ password +" in utilisateur_site");
+            System.out.println("Error while verifying " + email + ", " + password + " in utilisateur_site");
             throw e;
         } finally {
             if(stmt != null) {
                 stmt.close();
             }
         }
-      }
+     }
+     
+     
       
      
     
@@ -83,7 +90,7 @@ public class Utilisateur_siteService {
                 verificationUser(con, email,password);
                 System.out.println("User verified successfully.");
             } catch (Exception e) {
-                System.out.println("User does not exist.");
+                System.out.println("Diso oooot.");
                 throw e;
             }
             con.commit();
