@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.c_project.auto_occasion.model.Utilisateur_site;
 import com.c_project.auto_occasion.services.Utilisateur_siteService;
 
+import jakarta.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/api/user")
 public class Utilisateur_siteController {
@@ -31,17 +33,27 @@ public class Utilisateur_siteController {
           }
       }
 
+      
       //verification
       @GetMapping("/verif/{email}/{mdp}")
       public ResponseEntity<String> verifUser(@PathVariable  String email,@PathVariable String mdp) {
+        Utilisateur_site user = new Utilisateur_site(email, mdp);
+     
         try {
             utilisateur_siteService.verificationUser(email,mdp);
-          
+           
               return new ResponseEntity<>("User verification successfully", HttpStatus.OK);
           } catch (Exception e) {
               e.printStackTrace();
               return new ResponseEntity<>("Error verification user", HttpStatus.INTERNAL_SERVER_ERROR);
           }         
       }
+
+
+
+
+
+
+      
 
 }
