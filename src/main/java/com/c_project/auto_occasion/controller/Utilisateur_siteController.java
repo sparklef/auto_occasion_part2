@@ -33,21 +33,32 @@ public class Utilisateur_siteController {
           }
       }
 
-      
-      //verification
-      @GetMapping("/verif/{email}/{mdp}")
-      public ResponseEntity<String> verifUser(@PathVariable  String email,@PathVariable String mdp) {
+    /*  
+    //verification
+    @GetMapping("/verif/{email}/{mdp}")
+    public ResponseEntity<String> verifUser(@PathVariable  String email,@PathVariable String mdp) {
         Utilisateur_site user = new Utilisateur_site(email, mdp);
      
         try {
-            utilisateur_siteService.verificationUser(email,mdp);
-           
-              return new ResponseEntity<>("User verification successfully", HttpStatus.OK);
-          } catch (Exception e) {
-              e.printStackTrace();
-              return new ResponseEntity<>("Error verification user", HttpStatus.INTERNAL_SERVER_ERROR);
-          }         
-      }
+            utilisateur_siteService.verificationUser(email,mdp);           
+            return new ResponseEntity<>("User verification successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error verification user", HttpStatus.INTERNAL_SERVER_ERROR);
+        }         
+    }
+    */
+
+    @PostMapping("/verif")
+    public ResponseEntity<String> verifUser(@RequestBody Utilisateur_site user) {
+        try {
+            utilisateur_siteService.verificationUser(user.getEmail(), user.getMdp());
+            return new ResponseEntity<>("User verification successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error verification user", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
 

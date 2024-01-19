@@ -129,7 +129,7 @@ public class Admin_siteService {
         }
         return admin;
     }
-
+    /*
     public Connexion login_admin(Connexion co, String email, String mdp) throws Exception {
         boolean arePasswordsEqual = true;
         // Call the findByEmail function
@@ -157,4 +157,5 @@ public class Admin_siteService {
         }
         return co;
     }
+    */
 }
