@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 
 @Service
 public class Admin_siteService {
@@ -158,4 +159,33 @@ public class Admin_siteService {
         return co;
     }
     */
+    public boolean verifyAdmin(Connection con, String email, String password) throws Exception {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            String sql = "SELECT COUNT(*) FROM admin_site WHERE email = ? AND mdp = ?";
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, email);
+            stmt.setString(2, password);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                System.out.println("Admin with the email " + email + " found");
+                return count > 0;
+            } else {
+                System.out.println("Admin with the email : " + email + " not found");
+            }
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if (con != null && rs != null) {
+                con.close();
+                rs.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
+        return false;
+    }
 }
