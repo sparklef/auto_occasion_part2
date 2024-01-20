@@ -7,6 +7,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.c_project.auto_occasion.dao.CategorieDAO;
+import com.c_project.auto_occasion.model.Marque;
 import org.springframework.stereotype.Service;
 
 import com.c_project.auto_occasion.connexion.Connexion;
@@ -14,107 +16,90 @@ import com.c_project.auto_occasion.model.Categorie;
 
 @Service
 public class CategorieService {
+    private CategorieDAO categorieDAO;
+    private Connexion con;
+    public CategorieService() {
+        categorieDAO = new CategorieDAO();
+        con = new Connexion();
+    }
 
-    /*CRUD*/
-    public List<Categorie> getAllCategorie()throws Exception{
-        List<Categorie> liste=new ArrayList<>();
-        Connexion co=new Connexion();
-        Connection c=null;
-        Statement stat=null;
-        ResultSet req=null;
+    public void create(Categorie nomCategorie) throws Exception {
+        Connection connection = null;
         try {
-            c=co.getConnection();
-            stat=c.createStatement();
-            req=stat.executeQuery("SELECT * FROM categorie");
-            while (req.next()) {
-                Categorie categorie=new Categorie(req.getInt(1),req.getString(2));
-                liste.add(categorie);
+            connection = con.getConnection();
+            categorieDAO.insertionCategorie(nomCategorie);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(connection != null) {
+                connection.close();
+            }
+        }
+    }
+
+    public void update(int id ,String nomCategorie) throws Exception {
+        Connection connection = null;
+        try {
+            Categorie existingCate = categorieDAO.getCategorieSpecifique(id);
+            if (existingCate != null) {
+                existingCate.setCategorie(nomCategorie);
+                categorieDAO.updateCategorie(id, existingCate);
+            } else {
+                System.out.println("No marque found with id: " + id);
             }
         } catch (SQLException e) {
-           e.printStackTrace();
-           throw new Exception(e.getMessage());
-        }finally{
-            if (req != null) req.close();
-            if (stat != null) stat.close();
-            if (c != null) c.close();
-        }
-        return liste;
-    }
-
-    public Categorie getCategorieSpecifique(int id) throws Exception{
-        Categorie categorie=null;
-        Connexion co=new Connexion();
-        Connection c=null;
-        Statement stat=null;
-        ResultSet req=null;
-        try {
-            c=co.getConnection();
-            stat=c.createStatement();
-            String query=String.format("SELECT * FROM categorie WHERE idCategorie=%d", id);
-            req=stat.executeQuery(query);
-            while (req.next()) {
-                categorie=new Categorie(req.getInt(1),req.getString(2));
+            throw e;
+        } finally {
+            if (connection != null) {
+                connection.close();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-           throw new Exception(e.getMessage());
-        }finally{
-            if (req != null) req.close();
-            if (stat != null) stat.close();
-            if (c != null) c.close();
         }
-        return categorie;
     }
 
-    public void insertionCategorie(String nomCategorie) throws Exception{
-        Connexion co=new Connexion();
-        Connection c=null;
-        Statement stat=null;
+    public void delete(int id) throws Exception {
+        Connection connection = null;
         try {
-            c=co.getConnection();
-            stat=c.createStatement();
-            String query=String.format("INSERT INTO categorie VALUES(DEFAULT,'%s')", nomCategorie);
-            int row=stat.executeUpdate(query);
+            connection = con.getConnection();
+            categorieDAO.deleteCategorie(id);
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new Exception(e.getMessage());
-        }finally{
-            if (stat != null) stat.close();
-            if (c != null) c.close();
+            throw e;
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
         }
     }
-    public void deleteCategorie(int id) throws Exception{
-        Connexion co=new Connexion();
-        Connection c=null;
-        Statement stat=null;
+
+    public Categorie findOne(int id_categorie) throws Exception {
+        Connection connection = null;
+        Categorie one_categorie = new Categorie();
         try {
-            c=co.getConnection();
-            stat=c.createStatement();
-            String query=String.format("DELETE FROM categorie WHERE idCategorie=%d", id);
-            int row=stat.executeUpdate(query);
+            connection = con.getConnection();
+            one_categorie = categorieDAO.getCategorieSpecifique(id_categorie);
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new Exception(e.getMessage());
-        }finally{
-            if (stat != null) stat.close();
-            if (c != null) c.close();
+            throw e;
+        } finally {
+            if(connection != null) {
+                connection.close();
+            }
         }
+        return one_categorie;
     }
-    public void updateCategorie(int id,String nom) throws Exception{
-        Connexion co=new Connexion();
-        Connection c=null;
-        Statement stat=null;
+
+    public List<Categorie> findAll() throws Exception {
+        Connection connection = null;
+        List<Categorie> categories = new ArrayList<>();
         try {
-            c=co.getConnection();
-            stat=c.createStatement();
-            String query=String.format("UPDATE categorie SET categorie='%s' WHERE idCategorie =%d",nom ,id);
-            int row=stat.executeUpdate(query);
+            connection = con.getConnection();
+            categories = categorieDAO.getAllCategorie();
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new Exception(e.getMessage());
-        }finally{
-            if (stat != null) stat.close();
-            if (c != null) c.close();
+            throw e;
+        } finally {
+            if(connection != null) {
+                connection.close();
+            }
         }
+        return categories;
     }
+
 }

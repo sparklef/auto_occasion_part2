@@ -1,6 +1,7 @@
 package com.c_project.auto_occasion.controller;
 
 import com.c_project.auto_occasion.model.Categorie;
+import com.c_project.auto_occasion.model.Marque;
 import com.c_project.auto_occasion.services.CategorieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ public class CategorieController {
     @GetMapping("/allCategorie")
     public ResponseEntity<List<Categorie>> getAllCategories() {
         try {
-            List<Categorie> liste = categorieService.getAllCategorie();
+            List<Categorie> liste = categorieService.findAll();
             if (liste.size() != 0) {
                 return new ResponseEntity<>(liste, HttpStatus.OK);
             } else {
@@ -33,7 +34,7 @@ public class CategorieController {
     @GetMapping("/categorieId/{idcategorie}")
     public ResponseEntity<Categorie> getCategorieId(@PathVariable int idcategorie){
         try {
-            Categorie categorie=categorieService.getCategorieSpecifique(idcategorie);
+            Categorie categorie=categorieService.findOne(idcategorie);
             if (categorie != null) {
                 return new ResponseEntity<>(categorie, HttpStatus.OK);
             } else {
@@ -45,10 +46,10 @@ public class CategorieController {
         }
     }
 
-    @PostMapping("/insert/{categorie}")
-    public ResponseEntity<String> insertion(@PathVariable String categorie) {
+    @PostMapping("/insert")
+    public ResponseEntity<String> insertion(@RequestBody Categorie categorie) {
         try {
-            categorieService.insertionCategorie(categorie);
+            categorieService.create(categorie);
             return new ResponseEntity<>("Categorie created successfully", HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
@@ -56,21 +57,26 @@ public class CategorieController {
         }
     }
 
-    @PutMapping("/update/{idcategorie}/{categorie}")
-    public ResponseEntity<String> update(@PathVariable int idcategorie, @PathVariable String categorie) {
+    @PutMapping("/update/{idcategorie}")
+    public ResponseEntity<String> update(@PathVariable int idcategorie, @RequestBody Categorie updated_categorie) {
         try {
-            categorieService.updateCategorie(idcategorie, categorie);
-            return new ResponseEntity<>("Categorie updated successfully", HttpStatus.OK);
+            Categorie existingMarque = categorieService.findOne(idcategorie);
+            if (existingMarque != null) {
+                categorieService.update(idcategorie, updated_categorie.getCategorie());
+                return new ResponseEntity<>("Categorie name updated successfully", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Categorie not found", HttpStatus.NOT_FOUND);
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error updating Categorie name", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping("/delete/{idcategorie}")
     public ResponseEntity<String> delete(@PathVariable int idcategorie) {
         try {
-            categorieService.deleteCategorie(idcategorie);
+            categorieService.delete(idcategorie);
             return new ResponseEntity<>("Categorie deleted successfully", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

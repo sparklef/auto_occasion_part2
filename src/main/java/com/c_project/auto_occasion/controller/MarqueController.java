@@ -61,7 +61,7 @@ public class MarqueController {
     public ResponseEntity<Void> deleteMarque(@PathVariable int id) {
         try {
             marqueService.delete(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

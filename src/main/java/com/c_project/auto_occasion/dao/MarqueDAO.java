@@ -14,7 +14,7 @@ public class MarqueDAO {
         try {
             String query = "INSERT INTO marque(marque) VALUES(?)";
             pstmt = con.prepareStatement(query);
-            pstmt.setString(1, marque.getMarque()); // Assuming 'getName()' returns the marque value
+            pstmt.setString(1, marque.getMarque());
             System.out.println("Saving " + marque.getMarque() + " in the table marque");
             System.out.println(query);
 
@@ -52,10 +52,8 @@ public class MarqueDAO {
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, marque.getMarque());
             pstmt.setInt(2, id_marque);
-
             System.out.println("Updating id: " + id_marque + " in the table marque to " + marque.getMarque());
             System.out.println(query);
-
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error while updating " + id_marque + " in marque to " + marque.getMarque());
