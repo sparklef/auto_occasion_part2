@@ -59,12 +59,4 @@ public class Utilisateur_siteController {
             return new ResponseEntity<>("Error verification user", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-
-
-
-
-      
-
 }
