@@ -1,7 +1,6 @@
 package com.c_project.auto_occasion.controller;
 
 import com.c_project.auto_occasion.model.Categorie;
-import com.c_project.auto_occasion.model.Marque;
 import com.c_project.auto_occasion.services.CategorieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
