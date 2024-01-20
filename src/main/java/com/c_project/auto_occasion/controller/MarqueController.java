@@ -14,15 +14,7 @@ import java.util.List;
 public class MarqueController {
     @Autowired
     private MarqueService marqueService;
-    /*@GetMapping("/all")
-    public List<Marque> getAllMarques() {
-        try {
-            return marqueService.findAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }*/
+
     @GetMapping("/all")
     public ResponseEntity<List<Marque>> getAllMarques() {
         try {
@@ -37,9 +29,9 @@ public class MarqueController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    // Create
-    @PostMapping("/create/{marque}")
-    public ResponseEntity<String> createMarque(@PathVariable String marque) {
+
+    @PostMapping("/create")
+    public ResponseEntity<String> createMarque(@RequestBody Marque marque) {
         try {
             marqueService.create(marque);
             return new ResponseEntity<>("Marque created successfully", HttpStatus.CREATED);
@@ -48,34 +40,23 @@ public class MarqueController {
             return new ResponseEntity<>("Error creating marque", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    // Update
+
     @PutMapping("/update/{id}")
-    public void updateMarque(@PathVariable int id, @RequestBody String marque) {
+    public ResponseEntity<String> updateMarqueName(@PathVariable int id, @RequestBody Marque updateRequest) {
         try {
-            marqueService.update(marque, id);
+            Marque existingMarque = marqueService.findOne(id);
+            if (existingMarque != null) {
+                marqueService.update(updateRequest.getMarque(), id);
+                return new ResponseEntity<>("Marque name updated successfully", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Marque not found", HttpStatus.NOT_FOUND);
+            }
         } catch (Exception e) {
             e.printStackTrace();
+            return new ResponseEntity<>("Error updating marque name", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-   /*  @PutMapping("/update/{id}/{marque}")
-    public ResponseEntity<String> updateMarque(@PathVariable int id, @PathVariable String marque) {
-        try {
-            marqueService.update(marque, id);
-            return new ResponseEntity<>("Marque updated successfully", HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("Error updating marque", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }*/
-    // Delete
-    /*@DeleteMapping("/delete/{id}")
-    public void deleteMarque(@PathVariable int id) {
-        try {
-            marqueService.delete(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteMarque(@PathVariable int id) {
         try {
@@ -86,16 +67,7 @@ public class MarqueController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    // Find One
-    /*@GetMapping("/findOne/{id}")
-    public Marque getMarqueById(@PathVariable int id) {
-        try {
-            return marqueService.findOne(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }*/
+
     @GetMapping("/findOne/{id}")
     public ResponseEntity<Marque> getMarqueById(@PathVariable int id) {
         try {
@@ -111,4 +83,3 @@ public class MarqueController {
         }
     }
 }
-
