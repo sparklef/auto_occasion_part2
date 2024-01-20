@@ -1,18 +1,14 @@
 package com.c_project.auto_occasion.services;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.c_project.auto_occasion.connexion.Connexion;
 import com.c_project.auto_occasion.dao.CategorieDAO;
-import com.c_project.auto_occasion.model.Marque;
+import com.c_project.auto_occasion.model.Categorie;
 import org.springframework.stereotype.Service;
 
-import com.c_project.auto_occasion.connexion.Connexion;
-import com.c_project.auto_occasion.model.Categorie;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CategorieService {

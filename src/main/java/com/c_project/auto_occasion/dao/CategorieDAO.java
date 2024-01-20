@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategorieDAO {
+
+    public CategorieDAO() {
+    }
+
     /*CRUD*/
     public List<Categorie> getAllCategorie()throws Exception{
         List<Categorie> liste=new ArrayList<>();

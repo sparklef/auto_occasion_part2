@@ -75,11 +75,6 @@ public class Utilisateur_siteService {
             }
         }
      }
-     
-     
-      
-     
-    
       public void verificationUser(String email, String password) throws Exception {
         Connexion c = new Connexion();
         Connection con = null;

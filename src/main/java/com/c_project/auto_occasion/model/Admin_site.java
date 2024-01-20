@@ -62,4 +62,12 @@ public class Admin_site {
         this.mdp = mdp;
         this.contact = contact;
     }
+
+    public Admin_site(String email, String nom, String prenom, String mdp, String contact) {
+        this.email = email;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.mdp = mdp;
+        this.contact = contact;
+    }
 }

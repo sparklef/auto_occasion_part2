@@ -14,19 +14,5 @@ import java.sql.Connection;
 public class Admin_siteController {
     @Autowired
     private Admin_siteService adminSiteService_siteService;
-
-    @PostMapping("/create")
-    public ResponseEntity<String> createAdmin(@RequestBody Admin_site adminRequest) {
-        try {
-            adminSiteService_siteService.create(adminRequest.getEmail(),
-                    adminRequest.getNom(),
-                    adminRequest.getPrenom(),
-                    adminRequest.getMdp(),
-                    adminRequest.getContact());
-            return new ResponseEntity<>("Admin created successfully", HttpStatus.CREATED);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("Error creating Admin", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+    
 }
