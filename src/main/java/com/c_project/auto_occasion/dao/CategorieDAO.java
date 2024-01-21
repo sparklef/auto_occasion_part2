@@ -62,7 +62,6 @@ public class CategorieDAO {
         }
         return categorie;
     }
-
     public void insertionCategorie(Categorie nomCategorie) throws Exception {
         try (Connection c = new Connexion().getConnection();
              PreparedStatement pstmt = c.prepareStatement("INSERT INTO categorie VALUES (DEFAULT, ?)")) {

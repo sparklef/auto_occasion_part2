@@ -21,13 +21,13 @@ public class AnnonceController {
 
       // Update status 
       @PutMapping("/update/{id}")
-      public ResponseEntity<String> updateStatut(@PathVariable int id) {
+      public ResponseEntity<String> updateStatut(@RequestBody int newState ,@PathVariable int id) {
           try {
-             annonceService.updateStatut(id);
-             return new ResponseEntity<>("Marque updated successfully", HttpStatus.OK);
+             annonceService.updateStatut(newState, id);
+             return new ResponseEntity<>("Annonce's state updated successfully", HttpStatus.OK);
           } catch (Exception e) {
               e.printStackTrace();
-              return new ResponseEntity<>("Error updating marque", HttpStatus.INTERNAL_SERVER_ERROR);
+              return new ResponseEntity<>("Error updating Annonce's state", HttpStatus.INTERNAL_SERVER_ERROR);
           }
       }
 
@@ -48,25 +48,6 @@ public class AnnonceController {
       }
 
 
-      //liste favoris
-      /**
-     * @param idUser
-     * @return
-     */
-    @GetMapping("/listefavoris/{idUser}")
-      public ResponseEntity<List<Annonce>> getFavorisId(@PathVariable int idUser){
-          try {
-            List<Annonce> liste = annonceService.getFavorisForUser(idUser);
-            if (liste.size() != 0) {
-                return new ResponseEntity<>(liste, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-      }
   
 
 
