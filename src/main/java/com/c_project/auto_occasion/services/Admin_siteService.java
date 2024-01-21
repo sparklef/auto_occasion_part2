@@ -89,4 +89,17 @@ public class Admin_siteService {
         }
         return return_value;
     }
+    public void validerAnnonce(int id_annonce) throws Exception {
+        Connection connection = null;
+        try {
+            connection = con.getConnection();
+            adminSiteDAO.validerAnnonce(id_annonce);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(connection != null) {
+                connection.close();
+            }
+        }
+    }
 }

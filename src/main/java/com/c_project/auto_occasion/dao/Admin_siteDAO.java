@@ -223,4 +223,36 @@ public class Admin_siteDAO {
         }
         return admin;
     }
+    /// Validation d'une annonce
+    public void validerAnnonce(Connection con, int id_annonce) throws Exception {
+        PreparedStatement stmt=null;
+        try {
+            String sql = "UPDATE annonce SET validation_annonce = true WHERE idAnnonce = ?";
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, id_annonce);
+            stmt.executeUpdate();
+            System.out.println("Updating validation_annonce for the annonce :"+id_annonce);
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erreur lors de la mise à jour de la validation_annonce.", ex);
+        }
+        finally {
+            if(stmt != null) {
+                stmt.close();
+            }
+        }
+    }
+    public void validerAnnonce(int id_annonce) throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        try{
+            con = c.getConnection();
+            validerAnnonce(con, id_annonce);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+    }
 }

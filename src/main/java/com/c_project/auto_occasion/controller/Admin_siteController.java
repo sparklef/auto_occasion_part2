@@ -73,4 +73,14 @@ public class Admin_siteController {
             return new ResponseEntity<>("Error verification user", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PutMapping("/validate_annonce/{id_annonce}")
+    public ResponseEntity<String> validerAnnonce(@PathVariable int id_annonce) {
+        try {
+            adminSiteService.validerAnnonce(id_annonce);
+            return new ResponseEntity<>("Annonce validée", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Erreur lors de la validation", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
