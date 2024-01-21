@@ -3,7 +3,6 @@ package com.c_project.auto_occasion.services;
 import com.c_project.auto_occasion.connexion.Connexion;
 import com.c_project.auto_occasion.dao.Admin_siteDAO;
 import com.c_project.auto_occasion.model.Admin_site;
-import com.c_project.auto_occasion.model.Marque;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
