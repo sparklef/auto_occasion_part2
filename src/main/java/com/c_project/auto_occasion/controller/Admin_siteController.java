@@ -53,8 +53,8 @@ public class Admin_siteController {
             return new ResponseEntity<>("Error creating admin", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteMarque(@PathVariable int id_admin) {
+    @DeleteMapping("/delete/{id_admin}")
+    public ResponseEntity<Void> deleteAdmin(@PathVariable int id_admin) {
         try {
             adminSiteService.delete(id_admin);
             return new ResponseEntity<>(HttpStatus.OK);
