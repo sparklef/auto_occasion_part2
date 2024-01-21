@@ -1,5 +1,6 @@
 package com.c_project.auto_occasion.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
