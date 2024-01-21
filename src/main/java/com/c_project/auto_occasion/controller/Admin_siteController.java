@@ -11,6 +11,7 @@ import java.sql.Connection;
 
 @RestController
 @RequestMapping("/api/admin")
+@CrossOrigin(origins = "*")
 public class Admin_siteController {
     @Autowired
     private Admin_siteService adminSiteService_siteService;

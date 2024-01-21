@@ -18,6 +18,7 @@ import com.c_project.auto_occasion.services.AnnonceService;
 
 @RestController
 @RequestMapping("/api/annonce")
+@CrossOrigin(origins = "*")
 public class AnnonceController {
     @Autowired
     private AnnonceService annonceService;
