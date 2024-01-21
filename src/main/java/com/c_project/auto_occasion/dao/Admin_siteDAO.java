@@ -135,7 +135,7 @@ public class Admin_siteDAO {
         return verif_admin;
     }
     /// trouver un admin par son identifiant
-    public Admin_site findByEmail(Connection con, int id_admin) throws Exception {
+    public Admin_site findById(Connection con, int id_admin) throws Exception {
         Admin_site admin = new Admin_site();
         Statement stmt = null;
         ResultSet res=null;
@@ -159,13 +159,13 @@ public class Admin_siteDAO {
         }
         return admin;
     }
-    public Admin_site findByEmail(int id_admin) throws Exception {
+    public Admin_site findById(int id_admin) throws Exception {
         Connexion c = new Connexion();
         Connection con = null;
         Admin_site admin = new Admin_site();
         try{
             con = c.getConnection();
-            admin = findByEmail(con, id_admin);
+            admin = findById(con, id_admin);
         } catch (SQLException e) {
             throw e;
         } finally {
