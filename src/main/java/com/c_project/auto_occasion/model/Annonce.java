@@ -7,8 +7,8 @@ public class Annonce {
     int idAnnonce;
     int idUser;
     int idCar;
-    Date date_annonce;
     int statut;
+    Date date_annonce;
     String lieu;
     String image_car;
     String description;
@@ -88,12 +88,12 @@ public class Annonce {
         this.validation_annonce = validation_annonce;
     }
 
-    public Annonce(int idAnnonce, int idUser, int idCar, Date date_annonce, int statut, String lieu, String image_car, String description, boolean validation_annonce) {
+    public Annonce(int idAnnonce, int idUser, int idCar, int statut, Date date_annonce, String lieu, String image_car, String description, boolean validation_annonce) {
         this.idAnnonce = idAnnonce;
         this.idUser = idUser;
         this.idCar = idCar;
-        this.date_annonce = date_annonce;
         this.statut = statut;
+        this.date_annonce = date_annonce;
         this.lieu = lieu;
         this.image_car = image_car;
         this.description = description;

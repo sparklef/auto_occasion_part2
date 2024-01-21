@@ -26,14 +26,14 @@ public class FavorisDAO {
                 int idannonce=rs.getInt("idAnnonce");
                 int iduser = rs.getInt("idUser");
                 int idCar = rs.getInt("idCar");
-                Date date_annonce = rs.getDate("date_annonce");
                 int status=rs.getInt("statut");
+                Date date_annonce = rs.getDate("date_annonce");
                 String lieu=rs.getString("lieu");
                 String img_car=rs.getString("image_car");
                 String description=rs.getString("description_annonce");
                 boolean validation=rs.getBoolean("validation_annonce");
                 //   results.add(a);
-                results.add(new Annonce(idannonce,iduser, idCar, date_annonce,status,lieu,img_car, description,validation) );
+                results.add(new Annonce(idannonce,iduser, idCar, status,date_annonce,lieu,img_car, description,validation) );
             }
             return results;
         } catch (SQLException e) {
