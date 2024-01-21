@@ -50,20 +50,32 @@ public class AnnonceService {
         return annonces;
     }
     public List<Annonce> findAllUser_s_Annonces(int id_user) throws Exception {
+        Connection connection = null;
         List<Annonce> user_s_annonces = new ArrayList<>();
         try {
+            connection = con.getConnection();
             user_s_annonces = annonceDAO.findAllUserSAnnonce(id_user);
         } catch (SQLException e) {
             throw e;
+        } finally {
+            if(connection != null) {
+                connection.close();
+            }
         }
         return user_s_annonces;
     }
     public Annonce findOneAnnonceOfAnUser(int id_user, int id_annonce) throws Exception {
+        Connection connection = null;
         Annonce an_annonce_of_an_user = new Annonce();
         try {
+            connection = con.getConnection();
             an_annonce_of_an_user = annonceDAO.findOneAnnonceOfAnUser(id_user, id_annonce);
         } catch (SQLException e) {
             throw e;
+        } finally {
+            if(connection != null) {
+                connection.close();
+            }
         }
         return an_annonce_of_an_user;
     }

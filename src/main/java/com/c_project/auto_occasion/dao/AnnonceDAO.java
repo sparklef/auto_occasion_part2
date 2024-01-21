@@ -277,18 +277,16 @@ public class AnnonceDAO {
         return sList;
     }
     /// maka annonces nataon'ny utilisateur ray
-    public List<Annonce> findAllUserSAnnonce(Connection con, int id_user) throws Exception {
-        Statement stmt = null;
+    public List<Annonce> findAllUserSAnnonce(Connection con, int id_user) throws SQLException {
+        String query = "SELECT * FROM annonce WHERE iduser=?";
         List<Annonce> user_s_annonces = new ArrayList<>();
-        try {
-            String query = "SELECT * FROM annonce WHERE iduser="+ id_user;
-            stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            System.out.println("Afficher les annonces de l'utilisateur="+id_user);
-            if(!rs.isBeforeFirst()) {
-                return null;
-            } else {
-                while(rs.next()) {
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setInt(1, id_user);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                System.out.println("Afficher les annonces de l'utilisateur=" + id_user);
+
+                while (rs.next()) {
                     int id = rs.getInt("idannonce");
                     int iduser = rs.getInt("iduser");
                     int id_car = rs.getInt("idcar");
@@ -298,19 +296,19 @@ public class AnnonceDAO {
                     String imagevoiture = rs.getString("image_car");
                     String description = rs.getString("description_annonce");
                     boolean validation = rs.getBoolean("validation_annonce");
-                    user_s_annonces.add( new Annonce(id, iduser, id_car, statut, date_annonce, lieu, imagevoiture, description, validation) );
+
+                    user_s_annonces.add(new Annonce(id, iduser, id_car, statut, date_annonce, lieu, imagevoiture, description, validation));
                 }
-                return user_s_annonces;
             }
         } catch (SQLException e) {
-            System.out.println("Error while getting all annonce of the user : "+id_user);
+            System.out.println("Error while getting all annonce of the user: " + id_user);
+            e.printStackTrace(); // Print the stack trace for debugging
             throw e;
-        } finally {
-            if(stmt != null) {
-                stmt.close();
-            }
         }
+        return user_s_annonces.isEmpty() ? null : user_s_annonces;
     }
+
+
     /// maka annonces nataon'ny utilisateur ray
     public List<Annonce> findAllUserSAnnonce(int id_user) throws Exception {
         Connexion c = new Connexion();
@@ -331,29 +329,26 @@ public class AnnonceDAO {
     /// maka annonce ray an'ny utilisateur ray
 
     public Annonce findOneAnnonceOfAnUser(Connection con, int id_user, int id_annonce) throws Exception {
-        Statement stmt = null;
-        Annonce one_annonceOfanUser = new Annonce();
+        PreparedStatement stmt = null;
+        Annonce one_annonceOfanUser = null;
         try {
-            String query = "SELECT * FROM annonce WHERE iduser="+ id_user+" AND idannonce="+id_annonce;
-            stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            System.out.println("Afficher les annonces de l'utilisateur="+id_user);
-            if(!rs.isBeforeFirst()) {
-                return null;
-            } else {
-                while(rs.next()) {
-                    int id = rs.getInt("idannonce");
-                    int iduser = rs.getInt("iduser");
-                    int id_car = rs.getInt("idcar");
-                    int statut = rs.getInt("statut");
-                    Date date_annonce = rs.getDate("date_annonce");
-                    String lieu = rs.getString("lieu");
-                    String imagevoiture = rs.getString("image_car");
-                    String description = rs.getString("description_annonce");
-                    boolean validation = rs.getBoolean("validation_annonce");
-                    one_annonceOfanUser = new Annonce(id, iduser, id_car, statut, date_annonce, lieu, imagevoiture, description, validation) ;
-                }
-                return one_annonceOfanUser;
+            String query = "SELECT * FROM annonce WHERE iduser=? AND idannonce=?";
+            stmt = con.prepareStatement(query);
+            stmt.setInt(1, id_user);
+            stmt.setInt(2, id_annonce);
+            ResultSet rs = stmt.executeQuery();
+            System.out.println("Afficher l'annonce de l'utilisateur="+id_user+" avec l'idannonce="+id_annonce);
+            if(rs.next()) {
+                int id = rs.getInt("idannonce");
+                int iduser = rs.getInt("iduser");
+                int id_car = rs.getInt("idcar");
+                int statut = rs.getInt("statut");
+                Date date_annonce = rs.getDate("date_annonce");
+                String lieu = rs.getString("lieu");
+                String imagevoiture = rs.getString("image_car");
+                String description = rs.getString("description_annonce");
+                boolean validation = rs.getBoolean("validation_annonce");
+                one_annonceOfanUser = new Annonce(id, iduser, id_car, statut, date_annonce, lieu, imagevoiture, description, validation) ;
             }
         } catch (SQLException e) {
             System.out.println("Error while getting all annonce of the user : "+id_user);
@@ -363,6 +358,7 @@ public class AnnonceDAO {
                 stmt.close();
             }
         }
+        return one_annonceOfanUser;
     }
     /// maka annonce ray an'ny utilisateur ray
     public Annonce findOneAnnonceOfAnUser(int id_user, int id_annonce) throws Exception {

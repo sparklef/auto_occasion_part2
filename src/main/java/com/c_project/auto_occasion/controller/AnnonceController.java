@@ -94,5 +94,32 @@ public class AnnonceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @GetMapping("/annonces_of_user/{id_user}")
+    public ResponseEntity<List<Annonce>> allAnnoncesOfAnUser(@PathVariable int id_user) {
+        try {
+            List<Annonce> annonces = annonceService.findAllUser_s_Annonces(id_user);
+            if (annonces != null) {
+                return new ResponseEntity<>(annonces, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("one_annonce/{id_user}/{id_annonce}")
+    public ResponseEntity<Annonce> oneUserAnnonce(@PathVariable int id_user, @PathVariable int id_annonce) {
+        try {
+            Annonce annonce = annonceService.findOneAnnonceOfAnUser(id_user, id_annonce);
+            if (annonce != null) {
+                return new ResponseEntity<>(annonce, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
