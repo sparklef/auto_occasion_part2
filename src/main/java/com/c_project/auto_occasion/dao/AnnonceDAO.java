@@ -278,34 +278,27 @@ public class AnnonceDAO {
     }
     /// maka annonces nataon'ny utilisateur ray
     public List<Annonce> findAllUserSAnnonce(Connection con, int id_user) throws SQLException {
-        String query = "SELECT * FROM annonce WHERE iduser=?";
-        List<Annonce> user_s_annonces = new ArrayList<>();
+        List<Annonce> annonces = new ArrayList<>();
+        String query = "SELECT * FROM annonce WHERE idUser = ?";
         try (PreparedStatement pstmt = con.prepareStatement(query)) {
             pstmt.setInt(1, id_user);
-
             try (ResultSet rs = pstmt.executeQuery()) {
-                System.out.println("Afficher les annonces de l'utilisateur=" + id_user);
-
                 while (rs.next()) {
-                    int id = rs.getInt("idannonce");
-                    int iduser = rs.getInt("iduser");
-                    int id_car = rs.getInt("idcar");
-                    int statut = rs.getInt("statut");
-                    Date date_annonce = rs.getDate("date_annonce");
-                    String lieu = rs.getString("lieu");
-                    String imagevoiture = rs.getString("image_car");
-                    String description = rs.getString("description_annonce");
-                    boolean validation = rs.getBoolean("validation_annonce");
-
-                    user_s_annonces.add(new Annonce(id, iduser, id_car, statut, date_annonce, lieu, imagevoiture, description, validation));
+                    Annonce annonce = new Annonce();
+                    annonce.setIdAnnonce(rs.getInt("idAnnonce"));
+                    annonce.setIdUser(rs.getInt("idUser"));
+                    annonce.setIdCar(rs.getInt("idCar"));
+                    annonce.setStatut(rs.getInt("statut"));
+                    annonce.setDate_annonce(rs.getDate("date_annonce"));
+                    annonce.setLieu(rs.getString("lieu"));
+                    annonce.setImage_car(rs.getString("image_car"));
+                    annonce.setDescription(rs.getString("description_annonce"));
+                    annonce.setValidation_annonce(rs.getBoolean("validation_annonce"));
+                    annonces.add(annonce);
                 }
             }
-        } catch (SQLException e) {
-            System.out.println("Error while getting all annonce of the user: " + id_user);
-            e.printStackTrace(); // Print the stack trace for debugging
-            throw e;
         }
-        return user_s_annonces.isEmpty() ? null : user_s_annonces;
+        return annonces;
     }
 
 
@@ -316,7 +309,7 @@ public class AnnonceDAO {
         List<Annonce> user_s_annonces = new ArrayList<>();
         try {
             con = c.getConnection();
-            user_s_annonces = findAllUserSAnnonce(id_user);
+            user_s_annonces = findAllUserSAnnonce(con ,id_user);
         } catch (SQLException e) {
             throw e;
         } finally {
