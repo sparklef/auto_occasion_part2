@@ -144,7 +144,7 @@ public class Admin_siteDAO {
             stmt = con.createStatement();
             res=stmt.executeQuery(query);
             while (res.next()) {
-                admin=new Admin_site(res.getString(1),res.getString(2),res.getString(3),res.getString(4),res.getString(5));
+                admin=new Admin_site(res.getInt(1),res.getString(2),res.getString(3),res.getString(4),res.getString(5),res.getString(6));
             }
         } catch (SQLException e) {
             System.out.println("Error while finding the user with the id " + id_admin + " in admin_site");
@@ -188,12 +188,13 @@ public class Admin_siteDAO {
                 return null;
             } else {
                 while(rs.next()) {
+                    int id = rs.getInt("idadmin");
                     String mail = rs.getString("email");
                     String name = rs.getString("nom");
                     String surname = rs.getString("prenom");
                     String password = rs.getString("mdp");
                     String contact = rs.getString("contact");
-                    admin.add( new Admin_site( mail, name, surname, password, contact ) );
+                    admin.add( new Admin_site( id, mail, name, surname, password, contact ) );
                 }
                 return admin;
             }
