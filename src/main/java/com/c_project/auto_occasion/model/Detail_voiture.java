@@ -6,7 +6,6 @@ public class Detail_voiture {
     int nbr_portes;
     String boite_devitesse;
     String source_energie;
-    String type_voiture;
     int annee;
     String modele;
 
@@ -53,14 +52,6 @@ public class Detail_voiture {
         this.source_energie = source_energie;
     }
 
-    public String getType_voiture() {
-        return type_voiture;
-    }
-
-    public void setType_voiture(String type_voiture) {
-        this.type_voiture = type_voiture;
-    }
-
     public int getAnnee() {
         return annee;
     }
@@ -77,13 +68,12 @@ public class Detail_voiture {
         this.modele = modele;
     }
 
-    public Detail_voiture(int idDetail, String couleur, int nbr_portes, String boite_devitesse, String source_energie, String type_voiture, int annee, String modele) {
+    public Detail_voiture(int idDetail, String couleur, int nbr_portes, String boite_devitesse, String source_energie, int annee, String modele) {
         this.idDetail = idDetail;
         this.couleur = couleur;
         this.nbr_portes = nbr_portes;
         this.boite_devitesse = boite_devitesse;
         this.source_energie = source_energie;
-        this.type_voiture = type_voiture;
         this.annee = annee;
         this.modele = modele;
     }
