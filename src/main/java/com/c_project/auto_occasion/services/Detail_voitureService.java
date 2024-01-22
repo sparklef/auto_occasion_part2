@@ -40,6 +40,15 @@ public class Detail_voitureService {
             throw e;
         }
     }
+    public List<Detail_voiture> allDetails() throws Exception {
+        List<Detail_voiture> all_details = new ArrayList<>();
+        try {
+            all_details = detailVoitureDAO.allDetail();
+        } catch (SQLException e) {
+            throw e;
+        }
+        return all_details;
+    }
     public Detail_voiture getOneDetail(int id_detail) throws Exception {
         Detail_voiture one_detail = new Detail_voiture();
         try {

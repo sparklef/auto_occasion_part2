@@ -1,9 +1,12 @@
 package com.c_project.auto_occasion.dao;
 
 import com.c_project.auto_occasion.connexion.Connexion;
+import com.c_project.auto_occasion.model.Annonce;
 import com.c_project.auto_occasion.model.Detail_voiture;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Detail_voitureDAO {
     /// CRUD
@@ -130,6 +133,43 @@ public class Detail_voitureDAO {
     }
 
     /// CRUD
+    /// get all detail_voiture
+    public List<Detail_voiture> allDetail(Connection con) throws Exception {
+        List<Detail_voiture> details = new ArrayList<>();
+        String query = "SELECT * FROM detail_voiture";
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Detail_voiture detail = new Detail_voiture();
+                    detail.setIdDetail(rs.getInt("iddetail"));
+                    detail.setCouleur(rs.getString("couleur"));
+                    detail.setNbr_portes(rs.getInt("nbr_portes"));
+                    detail.setBoite_devitesse(rs.getString("boite_devitesse"));
+                    detail.setSource_energie(rs.getString("source_energie"));
+                    detail.setAnnee(rs.getInt("annee"));
+                    detail.setModele(rs.getString("modele"));
+                    details.add(detail);
+                }
+            }
+        }
+        return details;
+    }
+    public List<Detail_voiture> allDetail() throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        List<Detail_voiture> detailsVoitures = new ArrayList<>();
+        try {
+            con = c.getConnection();
+            detailsVoitures = allDetail(con);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+        return detailsVoitures;
+    }
     /// get one detail_voiture
     public Detail_voiture oneDetail(Connection con, int id_detail) throws Exception {
         Statement stmt = null;
