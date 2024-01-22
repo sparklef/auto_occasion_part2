@@ -229,27 +229,27 @@ public class AnnonceDAO {
             firstCondition = false;
         }
         if (date != null) {
-            if (!firstCondition) sql.append(" AND ");
+            if (!firstCondition) sql.append(" OR ");
             sql.append("annonce.date_annonce = '").append(date).append("'");
             firstCondition = false;
         }
         if (categoryId != null) {
-            if (!firstCondition) sql.append(" AND ");
+            if (!firstCondition) sql.append(" OR ");
             sql.append("voiture.idCategorie = ").append(categoryId);
             firstCondition = false;
         }
         if (price != null) {
-            if (!firstCondition) sql.append(" AND ");
+            if (!firstCondition) sql.append(" OR ");
             sql.append("voiture.prix <= ").append(price);
             firstCondition = false;
         }
         if (brandId != null) {
-            if (!firstCondition) sql.append(" AND ");
+            if (!firstCondition) sql.append(" OR ");
             sql.append("voiture.idMarque = ").append(brandId);
             firstCondition = false;
         }
         if (model != null) {
-            if (!firstCondition) sql.append(" AND ");
+            if (!firstCondition) sql.append(" OR ");
             sql.append("detail_voiture.modele LIKE '%").append(model).append("%'");
         }
         Statement statement = connection.createStatement();
