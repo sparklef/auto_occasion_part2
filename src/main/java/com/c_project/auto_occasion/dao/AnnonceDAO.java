@@ -109,7 +109,7 @@ public class AnnonceDAO {
     public void createAnnonce(Connection con, Annonce newAnnonce) throws Exception {
         PreparedStatement pstmt = null;
         try {
-            String query = "INSERT INTO annonce(iduser, idcar, statut, date_annonce, lieu, image_car, description_annonce, validation_annonce) VALUES(?, ?, ?, ?, ?, ?, ?, false)";
+            String query = "INSERT INTO annonce(iduser, idcar, statut, date_annonce, lieu, image_car, description_annonce, validation_annonce, nom_voiture) VALUES(?, ?, ?, ?, ?, ?, ?, false, ?)";
             pstmt = con.prepareStatement(query);
             pstmt.setInt(1, newAnnonce.getIdUser());
             pstmt.setInt(2, newAnnonce.getIdCar());
@@ -118,6 +118,8 @@ public class AnnonceDAO {
             pstmt.setString(5, newAnnonce.getLieu());
             pstmt.setString(6, newAnnonce.getImage_car());
             pstmt.setString(7, newAnnonce.getDescription());
+            pstmt.setString(8, newAnnonce.getNom_voiture());
+
             System.out.println("Saving the annonce of the user " + newAnnonce.getIdUser() + " in the table annonce");
             System.out.println(query);
             pstmt.executeUpdate();
@@ -295,6 +297,7 @@ public class AnnonceDAO {
                     annonce.setImage_car(rs.getString("image_car"));
                     annonce.setDescription(rs.getString("description_annonce"));
                     annonce.setValidation_annonce(rs.getBoolean("validation_annonce"));
+                    annonce.setNom_voiture(rs.getString("nom_voiture"));
                     annonces.add(annonce);
                 }
             }
