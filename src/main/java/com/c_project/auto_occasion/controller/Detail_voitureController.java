@@ -1,5 +1,6 @@
 package com.c_project.auto_occasion.controller;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,6 @@ import com.c_project.auto_occasion.services.Detail_voitureService;
 public class Detail_voitureController {
     @Autowired
     private Detail_voitureService detail_voitureService;
-
-      //recherche avance
       @GetMapping("/search/{keyword}")
       public ResponseEntity<List<Detail_voiture>> search(@PathVariable String keyword) {
           try {

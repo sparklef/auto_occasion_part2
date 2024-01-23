@@ -345,7 +345,7 @@ public class AnnonceDAO {
                 one_annonceOfanUser = new Annonce(id, iduser, id_car, statut, date_annonce, lieu, imagevoiture, description, validation) ;
             }
         } catch (SQLException e) {
-            System.out.println("Error while getting all annonce of the user : "+id_user);
+            System.out.println("Error while getting the annonce " + id_annonce + " of the user : "+id_user);
             throw e;
         } finally {
             if(stmt != null) {

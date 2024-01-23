@@ -67,11 +67,8 @@ public class Utilisateur_site {
         this.mdp = mdp;
         this.contact = contact;
     }
-    
-    
     public Utilisateur_site(String email, String mdp) {
         this.email = email;
         this.mdp = mdp;
     }
-
 }
