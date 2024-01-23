@@ -3,6 +3,11 @@ import java.sql.*;
 
 import com.c_project.auto_occasion.connexion.Connexion;
 import com.c_project.auto_occasion.model.Utilisateur_site;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+
+import javax.crypto.SecretKey;
 
 public class UtilisateurSiteDAO {
 
@@ -95,5 +100,17 @@ public class UtilisateurSiteDAO {
             }
         }
      }
-     
+     /// generation token
+    public String generateBearerToken() {
+        Utilisateur_site user = new Utilisateur_site();
+        SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.ES256);
+        Date expirationDate = new Date(System.currentTimeMillis() + 1800000);
+        String token = Jwts.builder()
+                .setSubject(user.getNom())
+                .claim("iduser", user.getIdUser())
+                .setExpiration(expirationDate)
+                .signWith(SignatureAlgorithm.ES256, secretKey)
+                .compact();
+        return token;
+    }
 }
