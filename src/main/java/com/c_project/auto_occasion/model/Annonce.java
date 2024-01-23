@@ -13,6 +13,8 @@ public class Annonce {
     String image_car;
     String description;
     boolean validation_annonce;
+
+    String nom_voiture;
     public Annonce() {
     }
 
@@ -88,7 +90,15 @@ public class Annonce {
         this.validation_annonce = validation_annonce;
     }
 
-    public Annonce(int idAnnonce, int idUser, int idCar, int statut, Date date_annonce, String lieu, String image_car, String description, boolean validation_annonce) {
+    public String getNom_voiture() {
+        return nom_voiture;
+    }
+
+    public void setNom_voiture(String nom_voiture) {
+        this.nom_voiture = nom_voiture;
+    }
+
+    public Annonce(int idAnnonce, int idUser, int idCar, int statut, Date date_annonce, String lieu, String image_car, String description, boolean validation_annonce, String nom_voiture) {
         this.idAnnonce = idAnnonce;
         this.idUser = idUser;
         this.idCar = idCar;
@@ -98,5 +108,6 @@ public class Annonce {
         this.image_car = image_car;
         this.description = description;
         this.validation_annonce = validation_annonce;
+        this.nom_voiture = nom_voiture;
     }
 }

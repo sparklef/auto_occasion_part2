@@ -32,8 +32,8 @@ public class FavorisDAO {
                 String img_car=rs.getString("image_car");
                 String description=rs.getString("description_annonce");
                 boolean validation=rs.getBoolean("validation_annonce");
-                //   results.add(a);
-                results.add(new Annonce(idannonce,iduser, idCar, status,date_annonce,lieu,img_car, description,validation) );
+                String nom_voiture = rs.getString("nom_voiture");
+                results.add(new Annonce(idannonce,iduser, idCar, status,date_annonce,lieu,img_car, description,validation, nom_voiture) );
             }
             return results;
         } catch (SQLException e) {

@@ -1,8 +1,14 @@
 package com.c_project.auto_occasion.controller;
 
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.c_project.auto_occasion.connexion.Connexion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,4 +41,35 @@ public class Detail_voitureController {
               return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
           }
       }
+
+    /// CRUD
+    /// get all detail_voiture
+    @GetMapping("/all_detail")
+    public ResponseEntity<List<Detail_voiture>> allDetails() {
+        try {
+            List<Detail_voiture> details = detail_voitureService.allDetails();
+            if (details != null) {
+                return new ResponseEntity<>(details, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/one_detail/{id_detail}")
+    public ResponseEntity<Detail_voiture> oneDetail(@PathVariable int id_detail) {
+        try {
+            Detail_voiture detailVoiture = detail_voitureService.getOneDetail(id_detail);
+            if (detailVoiture != null) {
+                return new ResponseEntity<>(detailVoiture, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

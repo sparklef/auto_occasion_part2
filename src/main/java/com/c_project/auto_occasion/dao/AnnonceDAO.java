@@ -33,7 +33,8 @@ public class AnnonceDAO {
                     String image = rs.getString("image_car");
                     String descri_annonce = rs.getString("description_annonce");
                     boolean etat_validation_annonce = rs.getBoolean("validation_annonce");
-                    annonces.add( new Annonce( id_annonce, id_user, id_car, statut, date_annonce, toerana, image, descri_annonce, etat_validation_annonce ) );
+                    String nom_voiture = rs.getString("nom_voiture");
+                    annonces.add( new Annonce( id_annonce, id_user, id_car, statut, date_annonce, toerana, image, descri_annonce, etat_validation_annonce, nom_voiture ) );
                 }
                 return annonces;
             }
@@ -73,7 +74,7 @@ public class AnnonceDAO {
             stmt = con.createStatement();
             res=stmt.executeQuery(query);
             while (res.next()) {
-                annonce=new Annonce(res.getInt(1),res.getInt(2),res.getInt(3),res.getInt(4),res.getDate(5),res.getString(6),res.getString(7),res.getString(8),res.getBoolean(9));
+                annonce=new Annonce(res.getInt(1),res.getInt(2),res.getInt(3),res.getInt(4),res.getDate(5),res.getString(6),res.getString(7),res.getString(8),res.getBoolean(9),res.getString(10));
             }
         } catch (SQLException e) {
             System.out.println("Error while finding the user with the id " + id_annonce + " in annonce");
@@ -109,7 +110,7 @@ public class AnnonceDAO {
     public void createAnnonce(Connection con, Annonce newAnnonce) throws Exception {
         PreparedStatement pstmt = null;
         try {
-            String query = "INSERT INTO annonce(iduser, idcar, statut, date_annonce, lieu, image_car, description_annonce, validation_annonce) VALUES(?, ?, ?, ?, ?, ?, ?, false)";
+            String query = "INSERT INTO annonce(iduser, idcar, statut, date_annonce, lieu, image_car, description_annonce, validation_annonce, nom_voiture) VALUES(?, ?, ?, ?, ?, ?, ?, false, ?)";
             pstmt = con.prepareStatement(query);
             pstmt.setInt(1, newAnnonce.getIdUser());
             pstmt.setInt(2, newAnnonce.getIdCar());
@@ -118,6 +119,8 @@ public class AnnonceDAO {
             pstmt.setString(5, newAnnonce.getLieu());
             pstmt.setString(6, newAnnonce.getImage_car());
             pstmt.setString(7, newAnnonce.getDescription());
+            pstmt.setString(8, newAnnonce.getNom_voiture());
+
             System.out.println("Saving the annonce of the user " + newAnnonce.getIdUser() + " in the table annonce");
             System.out.println(query);
             pstmt.executeUpdate();
@@ -295,6 +298,7 @@ public class AnnonceDAO {
                     annonce.setImage_car(rs.getString("image_car"));
                     annonce.setDescription(rs.getString("description_annonce"));
                     annonce.setValidation_annonce(rs.getBoolean("validation_annonce"));
+                    annonce.setNom_voiture(rs.getString("nom_voiture"));
                     annonces.add(annonce);
                 }
             }
@@ -342,7 +346,8 @@ public class AnnonceDAO {
                 String imagevoiture = rs.getString("image_car");
                 String description = rs.getString("description_annonce");
                 boolean validation = rs.getBoolean("validation_annonce");
-                one_annonceOfanUser = new Annonce(id, iduser, id_car, statut, date_annonce, lieu, imagevoiture, description, validation) ;
+                String nom_voiture = rs.getString("nom_voiture");
+                one_annonceOfanUser = new Annonce(id, iduser, id_car, statut, date_annonce, lieu, imagevoiture, description, validation, nom_voiture) ;
             }
         } catch (SQLException e) {
             System.out.println("Error while getting the annonce " + id_annonce + " of the user : "+id_user);
