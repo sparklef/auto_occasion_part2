@@ -33,7 +33,6 @@ public class FavorisDAO {
                 String description=rs.getString("description_annonce");
                 boolean validation=rs.getBoolean("validation_annonce");
                 String nom_voiture = rs.getString("nom_voiture");
-                //   results.add(a);
                 results.add(new Annonce(idannonce,iduser, idCar, status,date_annonce,lieu,img_car, description,validation, nom_voiture) );
             }
             return results;
