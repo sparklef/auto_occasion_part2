@@ -89,19 +89,5 @@ public class FavorisService {
         }
         return all_favoris_stored;
     }
-    public Favoris oneFav(int id_favoris) throws Exception {
-        Connection connection = null;
-        Favoris one_fav = new Favoris();
-        try {
-            connection = con.getConnection();
-            one_fav = favorisDAO.findOne(id_favoris);
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            if(connection != null) {
-                connection.close();
-            }
-        }
-        return one_fav;
-    }
+   
 }

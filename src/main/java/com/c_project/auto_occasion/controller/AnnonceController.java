@@ -32,7 +32,7 @@ public class AnnonceController {
 
    
     @PostMapping("/create_annonce")
-    public ResponseEntity<String> createAnnonce(@RequestBody Annonce newAnnonce) {
+    public ResponseEntity<String> createAnnonce(@RequestHeader("Authorization") String authorizationHeader,@RequestBody Annonce newAnnonce) {
         try {
             annonceService.create(newAnnonce);
             return new ResponseEntity<>("Annonce created successfully", HttpStatus.CREATED);
@@ -80,8 +80,8 @@ public class AnnonceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/annonces_of_user/{id_user}")
-    public ResponseEntity<List<Annonce>> allAnnoncesOfAnUser(@PathVariable int id_user) {
+    @GetMapping("/annonces_of_user")
+    public ResponseEntity<List<Annonce>> allAnnoncesOfAnUser(@RequestHeader("Authorization") String authorizationHeader) {
         try {
             List<Annonce> annonces = annonceService.findAllUser_s_Annonces(id_user);
             if (annonces != null) {
@@ -94,10 +94,10 @@ public class AnnonceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("one_annonce/{id_user}/{id_annonce}")
-    public ResponseEntity<Annonce> oneUserAnnonce(@PathVariable int id_user, @PathVariable int id_annonce) {
+    @GetMapping("one_annonce/{id_annonce}")
+    public ResponseEntity<Annonce> oneUserAnnonce(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int id_annonce) {
         try {
-            Annonce annonce = annonceService.findOneAnnonceOfAnUser(id_user, id_annonce);
+            Annonce annonce = annonceService.findOneAnnonceOfAnUser(1, id_annonce);
             if (annonce != null) {
                 return new ResponseEntity<>(annonce, HttpStatus.OK);
             } else {

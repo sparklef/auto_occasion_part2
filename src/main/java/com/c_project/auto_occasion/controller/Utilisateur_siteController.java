@@ -42,4 +42,22 @@ public class Utilisateur_siteController {
             return new ResponseEntity<>("Error verification user", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    //find token
+    
+    @GetMapping("/findToken/{token_user}")
+    public ResponseEntity<Utilisateur_site> getTokenUser(@PathVariable String token_user){
+        try {
+            Utilisateur_site user=utilisateur_siteService.findToken(token_user);
+            if (user != null) {
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
