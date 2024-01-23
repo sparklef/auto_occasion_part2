@@ -1,7 +1,10 @@
 package com.c_project.auto_occasion.controller;
 
 import com.c_project.auto_occasion.model.Annonce;
+import com.c_project.auto_occasion.model.Utilisateur_site;
 import com.c_project.auto_occasion.services.AnnonceService;
+import com.c_project.auto_occasion.services.Utilisateur_siteService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,7 @@ import java.util.List;
 public class AnnonceController {
     @Autowired
     private AnnonceService annonceService;
+    private Utilisateur_siteService utilisateur_siteService;
 
       // Update status 
       @PutMapping("/update/{id}")
@@ -34,6 +38,8 @@ public class AnnonceController {
     @PostMapping("/create_annonce")
     public ResponseEntity<String> createAnnonce(@RequestHeader("Authorization") String authorizationHeader,@RequestBody Annonce newAnnonce) {
         try {
+            Utilisateur_site user=utilisateur_siteService.findToken(authorizationHeader);
+           newAnnonce.setIdUser(user.getIdUser());
             annonceService.create(newAnnonce);
             return new ResponseEntity<>("Annonce created successfully", HttpStatus.CREATED);
         } catch (Exception e) {
@@ -84,6 +90,9 @@ public class AnnonceController {
     @GetMapping("/annonces_of_user")
     public ResponseEntity<List<Annonce>> allAnnoncesOfAnUser(@RequestHeader("Authorization") String authorizationHeader) {
         try {
+
+            Utilisateur_site user=utilisateur_siteService.findToken(authorizationHeader);
+            int id_user = user.getIdUser();
             List<Annonce> annonces = annonceService.findAllUser_s_Annonces(id_user);
             if (annonces != null) {
                 return new ResponseEntity<>(annonces, HttpStatus.OK);
@@ -96,12 +105,12 @@ public class AnnonceController {
         }
     }
 
-     */
-    /*
-    @GetMapping("one_annonce/{id_annonce}")
+     @GetMapping("one_annonce_user/{id_annonce}")
     public ResponseEntity<Annonce> oneUserAnnonce(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int id_annonce) {
         try {
-            Annonce annonce = annonceService.findOneAnnonceOfAnUser(1, id_annonce);
+            Utilisateur_site user=utilisateur_siteService.findToken(authorizationHeader);
+            int id_user = user.getIdUser();
+            Annonce annonce = annonceService.findOneAnnonceOfAnUser(id_user, id_annonce);
             if (annonce != null) {
                 return new ResponseEntity<>(annonce, HttpStatus.OK);
             } else {
@@ -112,6 +121,5 @@ public class AnnonceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-     */
+    
 }

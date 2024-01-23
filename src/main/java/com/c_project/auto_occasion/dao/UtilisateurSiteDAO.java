@@ -5,8 +5,8 @@ import java.sql.*;
 import java.util.Date;
 
 import com.c_project.auto_occasion.connexion.Connexion;
-import com.c_project.auto_occasion.model.Admin_site;
 import com.c_project.auto_occasion.model.Utilisateur_site;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -102,7 +102,7 @@ public class UtilisateurSiteDAO {
                 if (email.equals(rs.getString("email")) && password.equals(rs.getString("mdp"))) {
                     System.out.println("Email and password are correct" + email + "password" + password);
                     int userId = getIdUser(con, email, password);
-                    token = generateTokenBearer(email, password);
+                    token = generateToken(email, password);
                     saveTokenToDatabase(con, token, userId);
                 }
             }
@@ -268,20 +268,54 @@ public class UtilisateurSiteDAO {
         }
     }
 
-    private static final String SECRET_KEY = "yourSecretKey";
-    private static final long EXPIRATION_TIME = 3600000; // 1 hour in milliseconds
-
-    public String generateTokenBearer(String userEmail, String password) {
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
-        // Include the password in the token claims if needed
-        return Jwts.builder()
-                .setSubject(userEmail)
-                .claim("password", password)
-                .setIssuedAt(now)
-                .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-                .compact();
+    public Utilisateur_site findTokenUser(Connection con, String token_user) throws Exception {
+        PreparedStatement pstmt = null;
+        Utilisateur_site one_user = new Utilisateur_site();
+        try {
+            String query = "SELECT * FROM utilisateur_site us JOIN utilisateur_token ut ON us.idUser = ut.idUser WHERE token_user=?";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, token_user);
+            ResultSet rs = pstmt.executeQuery();
+            System.out.println("Afficher un user avec token="+token_user);
+            if(!rs.isBeforeFirst()) {
+                return null;
+            } else {
+                while(rs.next()) {
+                    int id = rs.getInt("idUser");
+                    String email =rs.getString("email");
+                    String nom=rs.getString("nom");
+                    String prenom=rs.getString("prenom");
+                    String mdp=rs.getString("mdp");
+                    String contact=rs.getString("contact");
+                    one_user = new Utilisateur_site( id,email,nom,prenom,mdp,contact);
+                }
+                return one_user;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error with getting one token...");
+            throw e;
+        } finally {
+            if(pstmt != null) {
+                pstmt.close();
+            }
+        }
     }
-
+    
+    public Utilisateur_site findTokenUser(String token) throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        Utilisateur_site one_favorite = new Utilisateur_site();
+        try{
+            con = c.getConnection();
+            one_favorite = findTokenUser(con, token);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+        return one_favorite;
+    }
+     
 }
