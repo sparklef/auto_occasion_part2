@@ -49,4 +49,20 @@ public class Utilisateur_siteService {
             }
         }
      }
+
+     public Utilisateur_site findToken(String token) throws Exception {
+        Connection connection = null;
+        Utilisateur_site one_fav = new Utilisateur_site();
+        try {
+            connection = con.getConnection();
+            one_fav = utilisateurSiteDAO.findTokenUser(token);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(connection != null) {
+                connection.close();
+            }
+        }
+        return one_fav;
+    }
 }
