@@ -19,29 +19,24 @@ public class Admin_siteService {
         con = new Connexion();
     }
     public void create(Admin_site newAdmin) throws Exception {
-        Connection connection = null;
         try {
-            connection = con.getConnection();
-            adminSiteDAO.create(connection, newAdmin);
+            adminSiteDAO.create(newAdmin);
         } catch (SQLException e) {
             throw e;
-        } finally {
-            if(connection != null) {
-                connection.close();
-            }
+        }
+    }
+    public void update(Admin_site update_adminSite, int id_admin) throws Exception {
+        try {
+            adminSiteDAO.update(update_adminSite, id_admin);
+        } catch (SQLException e) {
+            throw e;
         }
     }
     public void delete(int id_admin) throws Exception {
-        Connection connection = null;
         try {
-            connection = con.getConnection();
             adminSiteDAO.delete(id_admin);
         } catch (SQLException e) {
             throw e;
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
         }
     }
     public List<Admin_site> findAll() throws Exception {

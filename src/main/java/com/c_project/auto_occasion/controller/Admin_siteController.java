@@ -53,6 +53,21 @@ public class Admin_siteController {
             return new ResponseEntity<>("Error creating admin", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PutMapping("/update_admin/{id_admin}")
+    public ResponseEntity<String> updateDetail(@RequestBody Admin_site update, @PathVariable int id_admin) {
+        try {
+            Admin_site existingAdmin = adminSiteService.findOne(id_admin);
+            if (existingAdmin != null) {
+                adminSiteService.update(update, id_admin);
+                return new ResponseEntity<>("Admin updated successfully", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Admin not found", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error updating admin", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @DeleteMapping("/delete/{id_admin}")
     public ResponseEntity<Void> deleteAdmin(@PathVariable int id_admin) {
         try {

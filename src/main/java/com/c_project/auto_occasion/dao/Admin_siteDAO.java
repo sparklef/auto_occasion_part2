@@ -51,6 +51,46 @@ public class Admin_siteDAO {
             }
         }
     }
+    public void update(Connection con, Admin_site update_adminSite, int id_admin) throws Exception {
+        PreparedStatement pstmt = null;
+        try {
+            String query = "UPDATE admin_site SET email = ?, nom = ?, prenom = ?, mdp = ?, contact = ? WHERE idadmin = ?";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, update_adminSite.getEmail());
+            pstmt.setString(2, update_adminSite.getNom());
+            pstmt.setString(3, update_adminSite.getPrenom());
+            pstmt.setString(4, update_adminSite.getMdp());
+            pstmt.setString(5, update_adminSite.getContact());
+            pstmt.setInt(6, id_admin);
+            System.out.println("Updating the admin " + id_admin + " in the table admin_site");
+            System.out.println(query);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error while updating " + id_admin + " in admin_site");
+            throw e;
+        } finally {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+        }
+    }
+    public void update(Admin_site update_adminSite, int id_admin) throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        try{
+            con = c.getConnection();
+            con.setAutoCommit(false);
+            update(con, update_adminSite, id_admin);
+            con.commit();
+        }catch (SQLException e) {
+            System.out.println("Error while updating"+id_admin+" in admin_site");
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+    }
     public void delete(Connection con, int id_admin) throws Exception {
         Statement stmt = null;
         try{
