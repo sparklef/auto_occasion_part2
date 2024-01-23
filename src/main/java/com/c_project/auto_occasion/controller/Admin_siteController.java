@@ -44,7 +44,7 @@ public class Admin_siteController {
         }
     }
     @PostMapping("/create")
-    public ResponseEntity<String> createMarque(@RequestBody Admin_site newAdmin) {
+    public ResponseEntity<String> createAdmin(@RequestBody Admin_site newAdmin) {
         try {
             adminSiteService.create(newAdmin);
             return new ResponseEntity<>("Admin created successfully", HttpStatus.CREATED);
@@ -54,7 +54,7 @@ public class Admin_siteController {
         }
     }
     @PutMapping("/update_admin/{id_admin}")
-    public ResponseEntity<String> updateDetail(@RequestBody Admin_site update, @PathVariable int id_admin) {
+    public ResponseEntity<String> updateAdmin(@RequestBody Admin_site update, @PathVariable int id_admin) {
         try {
             Admin_site existingAdmin = adminSiteService.findOne(id_admin);
             if (existingAdmin != null) {

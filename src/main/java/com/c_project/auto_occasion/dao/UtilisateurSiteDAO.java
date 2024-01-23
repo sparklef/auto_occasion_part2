@@ -2,35 +2,42 @@ package com.c_project.auto_occasion.dao;
 import java.sql.*;
 
 import com.c_project.auto_occasion.connexion.Connexion;
+import com.c_project.auto_occasion.model.Utilisateur_site;
+
 public class UtilisateurSiteDAO {
 
     public UtilisateurSiteDAO() {
     }
        // crud
-       public void create(Connection con, String email,String nom,String prenom,String mdp,String contact) throws Exception {
-        Statement stmt = null;
-        try{
-            String query = "INSERT INTO utilisateur_site(email,nom,prenom,mdp,contact) VALUES('"+ email +"','"+ nom +"','"+ prenom +"','"+ mdp +"','"+ contact +"')";
-            stmt = con.createStatement();
-            System.out.println("Saving "+ email +", "+ nom +","+ prenom +","+ mdp +","+ contact +" in the table utilisateur_site");
+    public void create(Connection con, Utilisateur_site newUser) throws Exception {
+        PreparedStatement pstmt = null;
+        try {
+            String query = "INSERT INTO admin_site(email, nom, prenom, mdp, contact) VALUES(?, ?, ?, ?, ?)";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, newUser.getEmail());
+            pstmt.setString(2, newUser.getNom());
+            pstmt.setString(3, newUser.getPrenom());
+            pstmt.setString(4, newUser.getMdp());
+            pstmt.setString(5, newUser.getContact());
+            System.out.println("Saving " + newUser.getEmail() + " in the table utilisateur_site");
             System.out.println(query);
-            stmt.executeUpdate(query);
-        }catch (SQLException e) {
-            System.out.println("Error while saving "+ email +", "+ nom +","+ prenom +","+ mdp +","+ contact +" in utilisateur_site");
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error while saving " + newUser.getEmail() + " in utilisateur_site");
             throw e;
         } finally {
-            if(stmt != null) {
-                stmt.close();
+            if (pstmt != null) {
+                pstmt.close();
             }
         }
     }
-    public void create(String email,String nom,String prenom,String mdp,String contact) throws Exception {
+    public void create(Utilisateur_site newUser) throws Exception {
         Connexion c = new Connexion();
         Connection con = null;
         try{
             con = c.getConnection();
             con.setAutoCommit(false);
-            create(con, email,nom,prenom,mdp,contact);
+            create(con, newUser);
             con.commit();
         }catch (SQLException e) {
             System.out.println("Error persist with insertion in utilisateur_site");
@@ -41,8 +48,6 @@ public class UtilisateurSiteDAO {
             }
         }
     }
-
-
      public void verificationUser(Connection con, String email, String password) throws SQLException, Exception {
         Statement stmt = null;
         try {

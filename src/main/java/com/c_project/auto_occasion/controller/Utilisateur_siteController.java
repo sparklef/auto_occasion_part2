@@ -1,5 +1,6 @@
 package com.c_project.auto_occasion.controller;
 
+import com.c_project.auto_occasion.model.Admin_site;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,32 +19,16 @@ public class Utilisateur_siteController {
     private Utilisateur_siteService utilisateur_siteService;
 
       // Create
-      @PostMapping("/create/{email}/{nom}/{prenom}/{mdp}/{contact}")
-      public ResponseEntity<String> createUser(@PathVariable  String email,@PathVariable String nom,@PathVariable String prenom,@RequestBody String mdp,@PathVariable String contact) {
+      @PostMapping("/create_user")
+      public ResponseEntity<String> createUser(@RequestBody Utilisateur_site newUser) {
           try {
-            utilisateur_siteService.create(email,nom,prenom,mdp,contact);
+              utilisateur_siteService.create(newUser);
               return new ResponseEntity<>("User created successfully", HttpStatus.CREATED);
           } catch (Exception e) {
               e.printStackTrace();
               return new ResponseEntity<>("Error creating user", HttpStatus.INTERNAL_SERVER_ERROR);
           }
       }
-
-    /*  
-    //verification
-    @GetMapping("/verif/{email}/{mdp}")
-    public ResponseEntity<String> verifUser(@PathVariable  String email,@PathVariable String mdp) {
-        Utilisateur_site user = new Utilisateur_site(email, mdp);
-     
-        try {
-            utilisateur_siteService.verificationUser(email,mdp);           
-            return new ResponseEntity<>("User verification successfully", HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("Error verification user", HttpStatus.INTERNAL_SERVER_ERROR);
-        }         
-    }
-    */
 
     @PostMapping("/verif")
     public ResponseEntity<String> verifUser(@RequestBody Utilisateur_site user) {
