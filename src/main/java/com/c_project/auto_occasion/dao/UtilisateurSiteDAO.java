@@ -2,7 +2,7 @@ package com.c_project.auto_occasion.dao;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
-import java.util.UUID;
+import java.util.Date;
 
 import com.c_project.auto_occasion.connexion.Connexion;
 import com.c_project.auto_occasion.model.Admin_site;
@@ -102,7 +102,7 @@ public class UtilisateurSiteDAO {
                 if (email.equals(rs.getString("email")) && password.equals(rs.getString("mdp"))) {
                     System.out.println("Email and password are correct" + email + "password" + password);
                     int userId = getIdUser(con, email, password);
-                    token = generateToken(email, password);
+                    token = generateTokenBearer(email, password);
                     saveTokenToDatabase(con, token, userId);
                 }
             }
@@ -267,4 +267,21 @@ public class UtilisateurSiteDAO {
             preparedStatement.executeUpdate();
         }
     }
+
+    private static final String SECRET_KEY = "yourSecretKey";
+    private static final long EXPIRATION_TIME = 3600000; // 1 hour in milliseconds
+
+    public String generateTokenBearer(String userEmail, String password) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
+        // Include the password in the token claims if needed
+        return Jwts.builder()
+                .setSubject(userEmail)
+                .claim("password", password)
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
+    }
+
 }
