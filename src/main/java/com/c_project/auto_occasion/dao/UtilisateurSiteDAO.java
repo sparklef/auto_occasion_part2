@@ -2,7 +2,7 @@ package com.c_project.auto_occasion.dao;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
-import java.util.UUID;
+import java.util.Date;
 
 import com.c_project.auto_occasion.connexion.Connexion;
 import com.c_project.auto_occasion.model.Utilisateur_site;
@@ -102,7 +102,7 @@ public class UtilisateurSiteDAO {
                 if (email.equals(rs.getString("email")) && password.equals(rs.getString("mdp"))) {
                     System.out.println("Email and password are correct" + email + "password" + password);
                     int userId = getIdUser(con, email, password);
-                    token = generateToken(email, password);
+                    token = generateTokenBearer(email, password);
                     saveTokenToDatabase(con, token, userId);
                 }
             }
@@ -120,7 +120,7 @@ public class UtilisateurSiteDAO {
         return token;
     }
     /// generation token
-    public String generateBearerToken() {
+    public String generateBearerToken(String email, String password) {
         Utilisateur_site user = new Utilisateur_site();
         SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         Date expirationDate = new Date(System.currentTimeMillis() + 1800000);

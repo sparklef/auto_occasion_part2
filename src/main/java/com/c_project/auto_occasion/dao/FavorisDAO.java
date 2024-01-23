@@ -27,7 +27,7 @@ public class FavorisDAO {
                 int iduser = rs.getInt("idUser");
                 int idCar = rs.getInt("idCar");
                 int status=rs.getInt("statut");
-                Date date_annonce = rs.getDate("date_annonce");
+                Timestamp date_annonce = rs.getTimestamp("date_annonce");
                 String lieu=rs.getString("lieu");
                 String img_car=rs.getString("image_car");
                 String description=rs.getString("description_annonce");
