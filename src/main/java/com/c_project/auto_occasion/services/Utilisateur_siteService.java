@@ -45,7 +45,7 @@ public class Utilisateur_siteService {
         try{
             connex = con.getConnection();
             try {
-               utilisateurSiteDAO.verificationUser(connex, email, password);
+               utilisateurSiteDAO.verificationUser(email, password);
                 System.out.println("User verified successfully.");
             } catch (Exception e) {
                 System.out.println("Diso oooot.");
