@@ -131,5 +131,108 @@ public class VoitureDAO {
         return one_voiture;
     }
 
+    public void create(Connection con,String matricule,double prix,int idmarque,int idcategorie,int iddetail) throws Exception {
+        Statement stmt = null;
+        try{
+            String query = "INSERT INTO voiture(matricule,prix,idmarque,idcategorie,iddetail) VALUES('"+matricule+"'',"+ prix +","+idmarque+","+idcategorie+","+iddetail+")";
+            stmt = con.createStatement();
+            System.out.println("Saving  in the table voiture");
+            System.out.println(query);
+            stmt.executeUpdate(query);
+        }catch (SQLException e) {
+            System.out.println("Error while saving  in voiture");
+            throw e;
+        } finally {
+            if(stmt != null) {
+                stmt.close();
+            }
+        }
+    }
+    public void create(String matricule,double prix,int idmarque,int idcategorie,int iddetail) throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        try{
+            con = c.getConnection();
+            con.setAutoCommit(false);
+            create(con, matricule, prix, idmarque,idcategorie, iddetail);
+            con.commit();
+        }catch (SQLException e) {
+            System.out.println("Error while inserting  in voiture");
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+    }
+  /*   public void update(Connection con, int id_annonce, int id_favoris) throws Exception {
+        Statement stmt = null;
+        try{
+            String query = "UPDATE voiture SET matricule="+ id_annonce +" WHERE idfavoris="+id_favoris+"";
+            stmt = con.createStatement();
+            System.out.println("Updating id :"+ id_favoris + " in the table favoris to "+id_annonce+" (idannonce)");
+            System.out.println(query);
+            stmt.executeUpdate(query);
+        }catch (SQLException e) {
+            System.out.println("Error while updating idannonce of "+ id_favoris + " in favoris to "+id_annonce);
+            throw e;
+        } finally {
+            if(stmt != null) {
+                stmt.close();
+            }
+        }
+    }
+    public void update(int id_annonce, int id_favoris) throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        try{
+            con = c.getConnection();
+            con.setAutoCommit(false);
+            update(con, id_annonce, id_favoris);
+            con.commit();
+        }catch (SQLException e) {
+            System.out.println("Error while updating idannonce to "+ id_annonce + " in the table favoris for "+id_favoris);
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+    }*/
+    public void delete(Connection con,int id_car) throws Exception {
+        Statement stmt = null;
+        try{
+            String query = "DELETE FROM voiture WHERE idcar="+ id_car +"";
+            stmt = con.createStatement();
+            System.out.println("Deleting id :"+ id_car + " in the table voiture");
+            System.out.println(query);
+
+            stmt.executeUpdate(query);
+        }catch (SQLException e) {
+            System.out.println("Error while deleting "+ id_car + " in the table voiture");
+            throw e;
+        } finally {
+            if(stmt != null) {
+                stmt.close();
+            }
+        }
+    }
+    public void delete(int idcar) throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        try{
+            con = c.getConnection();
+            con.setAutoCommit(false);
+            delete(con, idcar);
+            con.commit();
+        }catch (SQLException e) {
+            System.out.println("Error while deleting"+idcar+" in voiture");
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+    }
     
 }

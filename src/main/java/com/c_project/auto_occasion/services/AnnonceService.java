@@ -34,21 +34,7 @@ public class AnnonceService {
             }
         }
     }
-    public List<Annonce> search(String keyword, Date date, Integer categoryId, BigDecimal price, Integer brandId, String model) throws Exception {
-        Connection connection = null;
-        List<Annonce> annonces = new ArrayList<>();
-        try {
-            connection = con.getConnection();
-            annonces = annonceDAO.search( keyword, date, categoryId, price, brandId, model );
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            if(connection != null) {
-                connection.close();
-            }
-        }
-        return annonces;
-    }
+  
     public List<Annonce> findAllUser_s_Annonces(int id_user) throws Exception {
         Connection connection = null;
         List<Annonce> user_s_annonces = new ArrayList<>();

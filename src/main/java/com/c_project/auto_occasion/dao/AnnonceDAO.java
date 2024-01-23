@@ -220,7 +220,8 @@ public class AnnonceDAO {
             }
         }
     }
-    public List<Annonce> advancedSearch(Connection connection, String keyword, Date date, Integer categoryId, BigDecimal price, Integer brandId, String model) throws SQLException {
+    
+    /*public List<Annonce> advancedSearch(Connection connection, String keyword, Date date, Integer categoryId, BigDecimal price, Integer brandId, String model) throws SQLException {
         List<Annonce> results = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM annonce JOIN voiture ON annonce.idCar = voiture.idCar JOIN marque ON voiture.idMarque = marque.idMarque WHERE ");
         boolean firstCondition = true;
@@ -275,7 +276,7 @@ public class AnnonceDAO {
             }
         }
         return sList;
-    }
+    }*/
     /// maka annonces nataon'ny utilisateur ray
     public List<Annonce> findAllUserSAnnonce(Connection con, int id_user) throws SQLException {
         List<Annonce> annonces = new ArrayList<>();

@@ -48,4 +48,43 @@ public class VoitureService {
         }
         return one_voiture;
     }
+    public void create(String matricule,double prix,int idmarque,int idcategorie,int iddetail) throws Exception {
+        Connection connection = null;
+        try {
+            connection = connex.getConnection();
+            voitureDAO.create(matricule,prix,idmarque,idcategorie,iddetail);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(connection != null) {
+                connection.close();
+            }
+        }
+    }
+   /*  public void updateFav(int id_annonce, int id_favoris) throws Exception {
+        Connection connection = null;
+        try {
+            connection = con.getConnection();
+            favorisDAO.update(id_annonce, id_favoris);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(connection != null) {
+                connection.close();
+            }
+        }
+    }*/
+    public void delete(int idcar) throws Exception {
+        Connection connection = null;
+        try {
+            connection = connex.getConnection();
+            voitureDAO.delete(idcar);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(connection != null) {
+                connection.close();
+            }
+        }
+    }
 }
