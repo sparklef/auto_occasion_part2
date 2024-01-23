@@ -102,7 +102,7 @@ public class UtilisateurSiteDAO {
                 if (email.equals(rs.getString("email")) && password.equals(rs.getString("mdp"))) {
                     System.out.println("Email and password are correct" + email + "password" + password);
                     int userId = getIdUser(con, email, password);
-                    token = generateTokenBearer(email, password);
+                    token = generateToken(email, password);
                     saveTokenToDatabase(con, token, userId);
                 }
             }
