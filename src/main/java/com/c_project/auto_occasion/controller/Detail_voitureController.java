@@ -44,40 +44,32 @@ public class Detail_voitureController {
 
     /// CRUD
     /// get all detail_voiture
-    public List<Detail_voiture> allDetail(Connection con) throws Exception {
-        List<Detail_voiture> details = new ArrayList<>();
-        String query = "SELECT * FROM detail_voiture";
-        try (PreparedStatement pstmt = con.prepareStatement(query)) {
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    Detail_voiture detail = new Detail_voiture();
-                    detail.setIdDetail(rs.getInt("iddetail"));
-                    detail.setCouleur(rs.getString("couleur"));
-                    detail.setNbr_portes(rs.getInt("nbr_portes"));
-                    detail.setBoite_devitesse(rs.getString("boite_devitesse"));
-                    detail.setSource_energie(rs.getString("source_energie"));
-                    detail.setAnnee(rs.getInt("annee"));
-                    detail.setModele(rs.getString("modele"));
-                    details.add(detail);
-                }
-            }
-        }
-        return details;
-    }
-    public List<Detail_voiture> allDetail() throws Exception {
-        Connexion c = new Connexion();
-        Connection con = null;
-        List<Detail_voiture> detailsVoitures = new ArrayList<>();
+    @GetMapping("/all_detail")
+    public ResponseEntity<List<Detail_voiture>> allDetails() {
         try {
-            con = c.getConnection();
-            detailsVoitures = allDetail(con);
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            if(con != null) {
-                con.close();
+            List<Detail_voiture> details = detail_voitureService.allDetails();
+            if (details != null) {
+                return new ResponseEntity<>(details, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return detailsVoitures;
+    }
+    @GetMapping("/one_detail/{id_detail}")
+    public ResponseEntity<Detail_voiture> oneDetail(@PathVariable int id_detail) {
+        try {
+            Detail_voiture detailVoiture = detail_voitureService.getOneDetail(id_detail);
+            if (detailVoiture != null) {
+                return new ResponseEntity<>(detailVoiture, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
