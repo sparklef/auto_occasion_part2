@@ -33,7 +33,8 @@ public class AnnonceDAO {
                     String image = rs.getString("image_car");
                     String descri_annonce = rs.getString("description_annonce");
                     boolean etat_validation_annonce = rs.getBoolean("validation_annonce");
-                    annonces.add( new Annonce( id_annonce, id_user, id_car, statut, date_annonce, toerana, image, descri_annonce, etat_validation_annonce ) );
+                    String nom_voiture = rs.getString("nom_voiture");
+                    annonces.add( new Annonce( id_annonce, id_user, id_car, statut, date_annonce, toerana, image, descri_annonce, etat_validation_annonce, nom_voiture ) );
                 }
                 return annonces;
             }
@@ -73,7 +74,7 @@ public class AnnonceDAO {
             stmt = con.createStatement();
             res=stmt.executeQuery(query);
             while (res.next()) {
-                annonce=new Annonce(res.getInt(1),res.getInt(2),res.getInt(3),res.getInt(4),res.getDate(5),res.getString(6),res.getString(7),res.getString(8),res.getBoolean(9));
+                annonce=new Annonce(res.getInt(1),res.getInt(2),res.getInt(3),res.getInt(4),res.getDate(5),res.getString(6),res.getString(7),res.getString(8),res.getBoolean(9),res.getString(10));
             }
         } catch (SQLException e) {
             System.out.println("Error while finding the user with the id " + id_annonce + " in annonce");
@@ -345,7 +346,8 @@ public class AnnonceDAO {
                 String imagevoiture = rs.getString("image_car");
                 String description = rs.getString("description_annonce");
                 boolean validation = rs.getBoolean("validation_annonce");
-                one_annonceOfanUser = new Annonce(id, iduser, id_car, statut, date_annonce, lieu, imagevoiture, description, validation) ;
+                String nom_voiture = rs.getString("nom_voiture");
+                one_annonceOfanUser = new Annonce(id, iduser, id_car, statut, date_annonce, lieu, imagevoiture, description, validation, nom_voiture) ;
             }
         } catch (SQLException e) {
             System.out.println("Error while getting the annonce " + id_annonce + " of the user : "+id_user);
