@@ -120,7 +120,7 @@ public class UtilisateurSiteDAO {
         return token;
     }
     /// generation token
-    public String generateBearerToken() {
+    public String generateBearerToken(String email, String password) {
         Utilisateur_site user = new Utilisateur_site();
         SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         Date expirationDate = new Date(System.currentTimeMillis() + 1800000);

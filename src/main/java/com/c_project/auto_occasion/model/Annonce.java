@@ -1,6 +1,7 @@
 package com.c_project.auto_occasion.model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Annonce {
    
@@ -8,7 +9,7 @@ public class Annonce {
     int idUser;
     int idCar;
     int statut;
-    Date date_annonce;
+    Timestamp date_annonce;
     String lieu;
     String image_car;
     String description;
@@ -42,11 +43,11 @@ public class Annonce {
         this.idCar = idCar;
     }
 
-    public Date getDate_annonce() {
+    public Timestamp getDate_annonce() {
         return date_annonce;
     }
 
-    public void setDate_annonce(Date date_annonce) {
+    public void setDate_annonce(Timestamp date_annonce) {
         this.date_annonce = date_annonce;
     }
 
@@ -98,7 +99,7 @@ public class Annonce {
         this.nom_voiture = nom_voiture;
     }
 
-    public Annonce(int idAnnonce, int idUser, int idCar, int statut, Date date_annonce, String lieu, String image_car, String description, boolean validation_annonce, String nom_voiture) {
+    public Annonce(int idAnnonce, int idUser, int idCar, int statut, Timestamp date_annonce, String lieu, String image_car, String description, boolean validation_annonce, String nom_voiture) {
         this.idAnnonce = idAnnonce;
         this.idUser = idUser;
         this.idCar = idCar;

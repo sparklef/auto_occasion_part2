@@ -28,7 +28,7 @@ public class AnnonceDAO {
                     int id_user = rs.getInt("iduser");
                     int id_car = rs.getInt("idcar");
                     int statut = rs.getInt("statut");
-                    Date date_annonce = rs.getDate("date_annonce");
+                    Timestamp date_annonce = rs.getTimestamp("date_annonce");
                     String toerana = rs.getString("lieu");
                     String image = rs.getString("image_car");
                     String descri_annonce = rs.getString("description_annonce");
@@ -74,7 +74,7 @@ public class AnnonceDAO {
             stmt = con.createStatement();
             res=stmt.executeQuery(query);
             while (res.next()) {
-                annonce=new Annonce(res.getInt(1),res.getInt(2),res.getInt(3),res.getInt(4),res.getDate(5),res.getString(6),res.getString(7),res.getString(8),res.getBoolean(9),res.getString(10));
+                annonce=new Annonce(res.getInt(1),res.getInt(2),res.getInt(3),res.getInt(4),res.getTimestamp(5),res.getString(6),res.getString(7),res.getString(8),res.getBoolean(9),res.getString(10));
             }
         } catch (SQLException e) {
             System.out.println("Error while finding the user with the id " + id_annonce + " in annonce");
@@ -110,16 +110,14 @@ public class AnnonceDAO {
     public void createAnnonce(Connection con, Annonce newAnnonce) throws Exception {
         PreparedStatement pstmt = null;
         try {
-            String query = "INSERT INTO annonce(iduser, idcar, statut, date_annonce, lieu, image_car, description_annonce, validation_annonce, nom_voiture) VALUES(?, ?, ?, ?, ?, ?, ?, false, ?)";
+            String query = "INSERT INTO annonce(iduser, idcar, statut, date_annonce, lieu, image_car, description_annonce, validation_annonce, nom_voiture) VALUES(?, ?, 1, CURRENT_TIMESTAMP, ?, ?, ?, false, ?)";
             pstmt = con.prepareStatement(query);
             pstmt.setInt(1, newAnnonce.getIdUser());
             pstmt.setInt(2, newAnnonce.getIdCar());
-            pstmt.setInt(3, newAnnonce.getStatut());
-            pstmt.setDate(4, newAnnonce.getDate_annonce());
-            pstmt.setString(5, newAnnonce.getLieu());
-            pstmt.setString(6, newAnnonce.getImage_car());
-            pstmt.setString(7, newAnnonce.getDescription());
-            pstmt.setString(8, newAnnonce.getNom_voiture());
+            pstmt.setString(3, newAnnonce.getLieu());
+            pstmt.setString(4, newAnnonce.getImage_car());
+            pstmt.setString(5, newAnnonce.getDescription());
+            pstmt.setString(6, newAnnonce.getNom_voiture());
 
             System.out.println("Saving the annonce of the user " + newAnnonce.getIdUser() + " in the table annonce");
             System.out.println(query);
@@ -293,7 +291,7 @@ public class AnnonceDAO {
                     annonce.setIdUser(rs.getInt("idUser"));
                     annonce.setIdCar(rs.getInt("idCar"));
                     annonce.setStatut(rs.getInt("statut"));
-                    annonce.setDate_annonce(rs.getDate("date_annonce"));
+                    annonce.setDate_annonce(rs.getTimestamp("date_annonce"));
                     annonce.setLieu(rs.getString("lieu"));
                     annonce.setImage_car(rs.getString("image_car"));
                     annonce.setDescription(rs.getString("description_annonce"));
@@ -341,7 +339,7 @@ public class AnnonceDAO {
                 int iduser = rs.getInt("iduser");
                 int id_car = rs.getInt("idcar");
                 int statut = rs.getInt("statut");
-                Date date_annonce = rs.getDate("date_annonce");
+                Timestamp date_annonce = rs.getTimestamp("date_annonce");
                 String lieu = rs.getString("lieu");
                 String imagevoiture = rs.getString("image_car");
                 String description = rs.getString("description_annonce");
