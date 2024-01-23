@@ -44,7 +44,7 @@ public class Utilisateur_siteController {
     }
 
     //find token
-    
+    /*
     @GetMapping("/findToken/{token_user}")
     public ResponseEntity<Utilisateur_site> getTokenUser(@PathVariable String token_user){
         try {
@@ -59,5 +59,5 @@ public class Utilisateur_siteController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+*/
 }

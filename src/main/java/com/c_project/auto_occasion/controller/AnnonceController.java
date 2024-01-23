@@ -80,6 +80,7 @@ public class AnnonceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    /*
     @GetMapping("/annonces_of_user")
     public ResponseEntity<List<Annonce>> allAnnoncesOfAnUser(@RequestHeader("Authorization") String authorizationHeader) {
         try {
@@ -94,6 +95,9 @@ public class AnnonceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+     */
+    /*
     @GetMapping("one_annonce/{id_annonce}")
     public ResponseEntity<Annonce> oneUserAnnonce(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int id_annonce) {
         try {
@@ -108,4 +112,6 @@ public class AnnonceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+     */
 }
