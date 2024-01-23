@@ -55,7 +55,6 @@ public class Utilisateur_siteService {
         Statement stmt = null;
         try {
             String sql = "SELECT * FROM utilisateur_site WHERE email = '" + email + "' AND mdp = '" + password + "'";
-
             stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             System.out.println(sql);
