@@ -28,12 +28,13 @@ public class Utilisateur_siteService {
         }
     }
    
-      public void verificationUser(String email, String password) throws Exception {
+      public String verificationUser(Connection co, String email, String password) throws Exception {
         Connection connex = null;
+        String token = null;
         try{
             connex = con.getConnection();
             try {
-               utilisateurSiteDAO.verificationUser(email, password);
+                token = utilisateurSiteDAO.verificationUser(co, email, password);
                 System.out.println("User verified successfully.");
             } catch (Exception e) {
                 System.out.println("Diso oooot.");
@@ -48,5 +49,21 @@ public class Utilisateur_siteService {
                 connex.close();
             }
         }
+        return token;
+     }
+     public Utilisateur_site findOne(int id_user) throws Exception {
+         Connection connection = null;
+         Utilisateur_site user = new Utilisateur_site();
+         try {
+             connection = con.getConnection();
+             user = utilisateurSiteDAO.findOne(id_user);
+         } catch (SQLException e) {
+             throw e;
+         } finally {
+             if(connection != null) {
+                 connection.close();
+             }
+         }
+         return user;
      }
 }
