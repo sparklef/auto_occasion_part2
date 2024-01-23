@@ -8,6 +8,9 @@ import com.c_project.auto_occasion.model.Categorie;
 import com.c_project.auto_occasion.model.Detail_voiture;
 import com.c_project.auto_occasion.model.Marque;
 import com.c_project.auto_occasion.model.Voiture;
+import com.c_project.auto_occasion.services.CategorieService;
+import com.c_project.auto_occasion.services.Detail_voitureService;
+import com.c_project.auto_occasion.services.MarqueService;
 
 import java.sql.*;
 public class VoitureDAO {
@@ -19,6 +22,9 @@ public class VoitureDAO {
     public List<Voiture> findAll(Connection con) throws Exception {
         Statement stmt = null;
         List<Voiture> voitures = new ArrayList<>();
+        MarqueService m_service = new MarqueService();
+        CategorieService c_service = new CategorieService();
+        Detail_voitureService dv_service = new Detail_voitureService();
         try{
             String query = "SELECT * FROM voiture";
             stmt = con.createStatement();
@@ -36,14 +42,10 @@ public class VoitureDAO {
                     int iddetail = rs.getInt("iddetail");
     
                     // Assuming you have methods to fetch Marque, Categorie, and Detail_voiture objects using their IDs
-                    //Marque marque_voiture =new Marque();
-                    //marque_voiture.setIdMarque(idmarque);
-                    
-                    //Categorie categorie = new Categorie();
-                    //categorie.setIdCategorie(idcategorie);
-                    //Detail_voiture detail =new Detail_voiture();
-                   //detail.setIdDetail(iddetail);
-                   voitures.add(new Voiture(idcar, matricule, prix, idmarque, idcategorie, iddetail));
+                    Marque marque = m_service.findOne(idmarque);
+                    Categorie categorie = c_service.findOne(idcategorie);
+                    Detail_voiture detail_car = dv_service.getOneDetail(iddetail);
+                   voitures.add(new Voiture(idcar, matricule, prix, marque, categorie, detail_car));
                 }
                 return voitures;
             }
@@ -77,6 +79,9 @@ public class VoitureDAO {
     public Voiture findOne(Connection con, int idcar) throws Exception {
         Statement stmt = null;
         Voiture one_voiture = new Voiture();
+        MarqueService m_service = new MarqueService();
+        CategorieService c_service = new CategorieService();
+        Detail_voitureService dv_service = new Detail_voitureService();
         try {
             String query = "SELECT * FROM Voiture WHERE idcar="+idcar;
             stmt = con.createStatement();
@@ -93,17 +98,12 @@ public class VoitureDAO {
                     int iddetail = rs.getInt("iddetail");
     
                     // Assuming you have methods to fetch Marque, Categorie, and Detail_voiture objects using their IDs
-                    /*
-                    Marque marque_voiture =new Marque();
-                    marque_voiture.setIdMarque(idmarque);
-                    
-                    Categorie categorie = new Categorie();
-                    categorie.setIdCategorie(idcategorie);
-                    Detail_voiture detail =new Detail_voiture();
-                   detail.setIdDetail(iddetail);
-                   
-                     */
-                   one_voiture= new Voiture(idcar, matricule, prix, idmarque, idcategorie, iddetail);
+
+                    Marque marque = m_service.findOne(idmarque);
+                    Categorie categorie = c_service.findOne(idcategorie);
+                    Detail_voiture detail_car = dv_service.getOneDetail(iddetail);
+
+                   one_voiture= new Voiture(idcar, matricule, prix, marque, categorie, detail_car);
                 }
                 return one_voiture;
             }

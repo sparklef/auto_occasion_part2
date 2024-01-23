@@ -5,9 +5,9 @@ public class Voiture {
     String matricule;
     double prix;
     //int idMarque;
-    int idmarque;
-    int idcategorie;
-    int id_detail;
+    Marque marque_voiture;
+    Categorie categorie;
+    Detail_voiture detail;
 
     public Voiture() {
     }
@@ -36,36 +36,36 @@ public class Voiture {
         this.prix = prix;
     }
 
-    public int getIdmarque() {
-        return idmarque;
+    public Marque getMarque_voiture() {
+        return marque_voiture;
     }
 
-    public void setIdmarque(int idmarque) {
-        this.idmarque = idmarque;
+    public void setMarque_voiture(Marque marque_voiture) {
+        this.marque_voiture = marque_voiture;
     }
 
-    public int getIdcategorie() {
-        return idcategorie;
+    public Categorie getCategorie() {
+        return categorie;
     }
 
-    public void setIdcategorie(int idcategorie) {
-        this.idcategorie = idcategorie;
+    public void setCategorie(Categorie categorie) {
+        this.categorie = categorie;
     }
 
-    public int getId_detail() {
-        return id_detail;
+    public Detail_voiture getDetail() {
+        return detail;
     }
 
-    public void setId_detail(int id_detail) {
-        this.id_detail = id_detail;
+    public void setDetail(Detail_voiture detail) {
+        this.detail = detail;
     }
 
-    public Voiture(int idCar, String matricule, double prix, int idmarque, int idcategorie, int id_detail) {
+    public Voiture(int idCar, String matricule, double prix, Marque marque_voiture, Categorie categorie, Detail_voiture detail) {
         this.idCar = idCar;
         this.matricule = matricule;
         this.prix = prix;
-        this.idmarque = idmarque;
-        this.idcategorie = idcategorie;
-        this.id_detail = id_detail;
+        this.marque_voiture = marque_voiture;
+        this.categorie = categorie;
+        this.detail = detail;
     }
 }
