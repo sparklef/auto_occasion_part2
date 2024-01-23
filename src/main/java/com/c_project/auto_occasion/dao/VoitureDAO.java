@@ -36,14 +36,14 @@ public class VoitureDAO {
                     int iddetail = rs.getInt("iddetail");
     
                     // Assuming you have methods to fetch Marque, Categorie, and Detail_voiture objects using their IDs
-                    Marque marque_voiture =new Marque();
-                    marque_voiture.setIdMarque(idmarque);
+                    //Marque marque_voiture =new Marque();
+                    //marque_voiture.setIdMarque(idmarque);
                     
-                    Categorie categorie = new Categorie();
-                    categorie.setIdCategorie(idcategorie);
-                    Detail_voiture detail =new Detail_voiture();
-                   detail.setIdDetail(iddetail);
-                   voitures.add(new Voiture(idcar, matricule, prix, marque_voiture, categorie, detail));
+                    //Categorie categorie = new Categorie();
+                    //categorie.setIdCategorie(idcategorie);
+                    //Detail_voiture detail =new Detail_voiture();
+                   //detail.setIdDetail(iddetail);
+                   voitures.add(new Voiture(idcar, matricule, prix, idmarque, idcategorie, iddetail));
                 }
                 return voitures;
             }
@@ -93,6 +93,7 @@ public class VoitureDAO {
                     int iddetail = rs.getInt("iddetail");
     
                     // Assuming you have methods to fetch Marque, Categorie, and Detail_voiture objects using their IDs
+                    /*
                     Marque marque_voiture =new Marque();
                     marque_voiture.setIdMarque(idmarque);
                     
@@ -100,7 +101,9 @@ public class VoitureDAO {
                     categorie.setIdCategorie(idcategorie);
                     Detail_voiture detail =new Detail_voiture();
                    detail.setIdDetail(iddetail);
-                   one_voiture= new Voiture(idcar, matricule, prix, marque_voiture, categorie, detail);
+                   
+                     */
+                   one_voiture= new Voiture(idcar, matricule, prix, idmarque, idcategorie, iddetail);
                 }
                 return one_voiture;
             }
