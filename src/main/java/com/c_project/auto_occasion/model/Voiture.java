@@ -4,7 +4,6 @@ public class Voiture {
     int idCar;
     String matricule;
     double prix;
-    //int idMarque;
     Marque marque_voiture;
     Categorie categorie;
     Detail_voiture detail;
