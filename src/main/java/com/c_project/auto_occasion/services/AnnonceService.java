@@ -88,6 +88,7 @@ public class AnnonceService {
         }
         return annonces;
     }
+
     public Annonce oneAnnonce(int id_annonce) throws Exception {
         Annonce one_annonce = new Annonce();
         try {
@@ -96,5 +97,15 @@ public class AnnonceService {
             throw e;
         }
         return one_annonce;
+    }
+
+    public List<Annonce> findAllAnnonceNonValidee() throws Exception {
+        List<Annonce> annonces_nonvalidees = new ArrayList<>();
+        try {
+            annonces_nonvalidees = annonceDAO.findAllAnnonceNonValidee();
+        } catch (SQLException e) {
+            throw e;
+        }
+        return annonces_nonvalidees;
     }
 }
