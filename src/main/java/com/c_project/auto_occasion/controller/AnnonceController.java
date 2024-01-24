@@ -32,7 +32,7 @@ public class AnnonceController {
 
    
     @PostMapping("/create_annonce")
-    public ResponseEntity<String> createAnnonce(@RequestBody Annonce newAnnonce) {
+    public ResponseEntity<String> createAnnonce(@RequestHeader("Authorization") String authorizationHeader,@RequestBody Annonce newAnnonce) {
         try {
             annonceService.create(newAnnonce);
             return new ResponseEntity<>("Annonce created successfully", HttpStatus.CREATED);
