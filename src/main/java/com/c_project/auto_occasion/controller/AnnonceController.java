@@ -97,7 +97,7 @@ public class AnnonceController {
     @GetMapping("one_annonce/{id_annonce}")
     public ResponseEntity<Annonce> oneUserAnnonce(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int id_annonce) {
         try {
-            Annonce annonce = annonceService.findOneAnnonceOfAnUser(id_user, id_annonce);
+            Annonce annonce = annonceService.findOneAnnonceOfAnUser(1, id_annonce);
             if (annonce != null) {
                 return new ResponseEntity<>(annonce, HttpStatus.OK);
             } else {
