@@ -80,8 +80,8 @@ public class AnnonceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/annonces_of_user/{id_user}")
-    public ResponseEntity<List<Annonce>> allAnnoncesOfAnUser(@PathVariable int id_user) {
+    @GetMapping("/annonces_of_user")
+    public ResponseEntity<List<Annonce>> allAnnoncesOfAnUser(@RequestHeader("Authorization") String authorizationHeader) {
         try {
             List<Annonce> annonces = annonceService.findAllUser_s_Annonces(id_user);
             if (annonces != null) {
