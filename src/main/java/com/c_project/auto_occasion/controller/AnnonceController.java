@@ -94,8 +94,8 @@ public class AnnonceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("one_annonce/{id_user}/{id_annonce}")
-    public ResponseEntity<Annonce> oneUserAnnonce(@PathVariable int id_user, @PathVariable int id_annonce) {
+    @GetMapping("one_annonce/{id_annonce}")
+    public ResponseEntity<Annonce> oneUserAnnonce(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int id_annonce) {
         try {
             Annonce annonce = annonceService.findOneAnnonceOfAnUser(id_user, id_annonce);
             if (annonce != null) {
