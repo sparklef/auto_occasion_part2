@@ -8,7 +8,7 @@ public class Voiture {
     Marque marque_voiture;
     Categorie categorie;
     Detail_voiture detail;
-
+    
     public Voiture() {
     }
 

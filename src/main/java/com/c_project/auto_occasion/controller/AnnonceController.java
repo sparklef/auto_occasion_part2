@@ -86,7 +86,8 @@ public class AnnonceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    /*
+
+    
     @GetMapping("/annonces_of_user")
     public ResponseEntity<List<Annonce>> allAnnoncesOfAnUser(@RequestHeader("Authorization") String authorizationHeader) {
         try {
