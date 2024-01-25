@@ -24,6 +24,7 @@ public class Detail_voitureDAO {
             pstmt.setString(4, detailVoiture.getSource_energie());
             pstmt.setInt(5, detailVoiture.getAnnee());
             pstmt.setString(6, detailVoiture.getModele());
+
             System.out.println("Saving the detail_voiture of the car " + detailVoiture.getIdDetail() + " in the table detail_voiture");
             System.out.println(query);
             pstmt.executeUpdate();
@@ -157,12 +158,8 @@ public class Detail_voitureDAO {
                     String s_c = rs.getString("source_energie");
                     int year = rs.getInt("annee");
                     String modele = rs.getString("modele");
-                    int id_annonce = rs.getInt("annonce");
 
-                    // Assuming you have methods to fetch Marque, Categorie, and Detail_voiture objects using their IDs
-                    Annonce annonce = annonceService.oneAnnonce(id_annonce);
-
-                    details.add(new Detail_voiture(iddetail, couleur, nbrPortes, b_v, s_c, year, modele, annonce));
+                    details.add(new Detail_voiture(iddetail, couleur, nbrPortes, b_v, s_c, year, modele));
                 }
                 return details;
             }
@@ -212,12 +209,8 @@ public class Detail_voitureDAO {
                     String s_c = rs.getString("source_energie");
                     int year = rs.getInt("annee");
                     String modele = rs.getString("modele");
-                    int id_annonce = rs.getInt("annonce");
 
-                    // Assuming you have methods to fetch Marque, Categorie, and Detail_voiture objects using their IDs
-                    Annonce annonce = a_service.oneAnnonce(id_annonce);
-
-                    one_d_voiture= new Detail_voiture(iddetail, couleur, nbrPortes, b_v, s_c, year, modele, annonce);
+                    one_d_voiture= new Detail_voiture(iddetail, couleur, nbrPortes, b_v, s_c, year, modele);
                 }
                 return one_d_voiture;
             }
