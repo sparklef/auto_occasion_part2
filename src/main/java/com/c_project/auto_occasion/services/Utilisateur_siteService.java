@@ -66,7 +66,7 @@ public class Utilisateur_siteService {
          }
          return user;
      }
-
+    
      public Utilisateur_site findToken(String token) throws Exception {
         Connection connection = null;
         Utilisateur_site one_fav = new Utilisateur_site();
@@ -82,5 +82,5 @@ public class Utilisateur_siteService {
         }
         return one_fav;
     }
-
+    
 }

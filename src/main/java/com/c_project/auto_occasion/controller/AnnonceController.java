@@ -86,21 +86,8 @@ public class AnnonceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/annonces_non_validees")
-    public ResponseEntity<List<Annonce>> getAnnoncesValidees() {
-        try {
-            List<Annonce> annonces_nonvalidees = annonceService.findAllAnnonceNonValidee();
-            if (annonces_nonvalidees != null) {
-                return new ResponseEntity<>(annonces_nonvalidees, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    /*
+
+    
     @GetMapping("/annonces_of_user")
     public ResponseEntity<List<Annonce>> allAnnoncesOfAnUser(@RequestHeader("Authorization") String authorizationHeader) {
         try {
@@ -135,5 +122,5 @@ public class AnnonceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    */
+    
 }

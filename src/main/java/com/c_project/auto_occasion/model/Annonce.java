@@ -14,8 +14,8 @@ public class Annonce {
     String image_car;
     String description;
     boolean validation_annonce;
-
     String nom_voiture;
+    
     public Annonce() {
     }
 
