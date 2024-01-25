@@ -50,7 +50,7 @@ public class VoitureDAO {
                 return voitures;
             }
         } catch (SQLException e) {
-            System.out.println("Error with getting all the favorites...");
+            System.out.println("Error with getting all the cars...");
             throw e;
         } finally {
             if(stmt != null) {

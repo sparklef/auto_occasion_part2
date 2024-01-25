@@ -20,7 +20,7 @@ public class Detail_voiture {
     double prix;
     String matricule;
     String marque;
-
+    Annonce annonce_liee;
 
     public Detail_voiture() {
     }
@@ -138,7 +138,13 @@ public class Detail_voiture {
         return matricule;
     }
 
- 
+    public Annonce getAnnonce_liee() {
+        return annonce_liee;
+    }
+
+    public void setAnnonce_liee(Annonce annonce_liee) {
+        this.annonce_liee = annonce_liee;
+    }
 
     public void setMatricule(String matricule) {
         this.matricule = matricule;
@@ -181,5 +187,15 @@ public class Detail_voiture {
           this.matricule = matricule;
           this.marque = marque;
           }
-    
+
+    public Detail_voiture(int idDetail, String couleur, int nbr_portes, String boite_devitesse, String source_energie, int annee, String modele, Annonce annonce_liee) {
+        this.idDetail = idDetail;
+        this.couleur = couleur;
+        this.nbr_portes = nbr_portes;
+        this.boite_devitesse = boite_devitesse;
+        this.source_energie = source_energie;
+        this.annee = annee;
+        this.modele = modele;
+        this.annonce_liee = annonce_liee;
+    }
 }
