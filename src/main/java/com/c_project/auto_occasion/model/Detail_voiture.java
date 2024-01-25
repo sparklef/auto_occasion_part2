@@ -10,7 +10,7 @@ public class Detail_voiture {
     String source_energie;
     int annee;
     String modele;
-
+    Annonce annonce_liee;
     //attribut en plus pour faire la recherche avance
     Date date_annonce;
     String lieu;
@@ -20,7 +20,6 @@ public class Detail_voiture {
     double prix;
     String matricule;
     String marque;
-    Annonce annonce_liee;
 
     public Detail_voiture() {
     }
