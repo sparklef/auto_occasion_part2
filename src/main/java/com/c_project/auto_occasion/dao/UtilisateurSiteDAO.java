@@ -18,6 +18,7 @@ public class UtilisateurSiteDAO {
     public UtilisateurSiteDAO() {
     }
        // crud
+    /*
        public void create(Connection con, Utilisateur_site newUser) throws Exception {
            PreparedStatement pstmt = null;
            ResultSet rs = null;
@@ -45,9 +46,12 @@ public class UtilisateurSiteDAO {
 
                if (rs.next()) {
                    int userId = rs.getInt(1);
+                   System.out.println("Generated user ID: " + userId);
                    token = generateToken(newUser.getEmail(), newUser.getMdp());
                    saveTokenToDatabase(con, token, userId);
-                   System.out.println("Generated user ID: " + userId);
+                   System.out.println("Generated token: " + token);
+               } else {
+                   System.out.println("Error: user not found in utilisateur_site table");
                }
            } catch (SQLException e) {
                System.out.println("Error while saving " + newUser.getEmail() + " in utilisateur_site");
@@ -70,6 +74,40 @@ public class UtilisateurSiteDAO {
                }
            }
        }
+     */
+       public void create(Connection con, Utilisateur_site newUser) throws Exception {
+           try (
+                   PreparedStatement pstmtInsert = con.prepareStatement("INSERT INTO utilisateur_site(email, nom, prenom, mdp, contact) VALUES(?, ?, ?, ?, ?)");
+
+           ) {
+               pstmtInsert.setString(1, newUser.getEmail());
+               pstmtInsert.setString(2, newUser.getNom());
+               pstmtInsert.setString(3, newUser.getPrenom());
+               pstmtInsert.setString(4, newUser.getMdp());
+               pstmtInsert.setString(5, newUser.getContact());
+               System.out.println("Saving " + newUser.getEmail() + " in the table utilisateur_site");
+               System.out.println(pstmtInsert.toString());
+
+               boolean isResultSet = pstmtInsert.execute();
+               if (!isResultSet) {
+                   int updateCount = pstmtInsert.getUpdateCount();
+                   System.out.println("Rows affected: " + updateCount);
+               }
+               Statement pstmtSelect = con.createStatement();
+
+                       int userId = getLastCreatedUser();
+                       System.out.println("Generated user ID: " + userId);
+                       String token = generateToken(newUser.getEmail(), newUser.getMdp());
+                       saveTokenToDatabase(con, token, userId);
+                       System.out.println("Generated token: " + token);
+
+
+           } catch (SQLException e) {
+               System.out.println("Error while saving " + newUser.getEmail() + " in utilisateur_site");
+               throw e;
+           }
+       }
+
     public void create(Utilisateur_site newUser) throws Exception {
         Connexion c = new Connexion();
         Connection con = null;
@@ -87,6 +125,55 @@ public class UtilisateurSiteDAO {
             }
         }
     }
+    public int getLastCreatedUser(Connection con) throws Exception {
+        Statement stmt = null;
+        int id_last_user = 0;
+        ResultSet rs = null;
+        try {
+            String query = "SELECT iduser FROM utilisateur_site ORDER BY iduser DESC LIMIT 1";
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                id_last_user = rs.getInt("iduser");
+            }
+            return id_last_user;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Error closing ResultSet or Statement: " + e.getMessage());
+            }
+        }
+    }
+
+    public int getLastCreatedUser() throws Exception {
+           Connexion c = new Connexion();
+           Connection con = null;
+           int last_created_user = 0;
+           try{
+               con = c.getConnection();
+               con.setAutoCommit(false);
+               last_created_user = getLastCreatedUser(con);
+               con.commit();
+           }catch (SQLException e) {
+               System.out.println("Error persist with insertion in utilisateur_site");
+               throw e;
+           } finally {
+               if(con != null) {
+                   con.close();
+               }
+           }
+           return last_created_user;
+       }
+
+
     private static final long TOKEN_EXPIRATION_TIME = 1800000; // 1 hour in milliseconds
     public String verificationUser(Connection con, String email, String password) throws SQLException, Exception {
         Statement stmt = null;
