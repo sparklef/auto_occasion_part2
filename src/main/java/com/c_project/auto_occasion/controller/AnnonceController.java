@@ -106,7 +106,7 @@ public class AnnonceController {
         }
     }
 
-     @GetMapping("one_annonce_user/{id_annonce}")
+     @GetMapping("/one_annonce_user/{id_annonce}")
     public ResponseEntity<Annonce> oneUserAnnonce(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int id_annonce) {
         try {
             Utilisateur_site user=utilisateur_siteService.findToken(authorizationHeader);
@@ -122,5 +122,32 @@ public class AnnonceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+    @GetMapping("/annonces_non_validees")
+    public ResponseEntity<List<Annonce>> annoncesNonValidees() {
+        try {
+            List<Annonce> annonces = annonceService.findAllAnnonceNonValidee();
+            if (annonces != null) {
+                return new ResponseEntity<>(annonces, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/annonces_validees")
+    public ResponseEntity<List<Annonce>> annoncesValidees() {
+        try {
+            List<Annonce> annonces = annonceService.findAllAnnoncesValidee();
+            if (annonces != null) {
+                return new ResponseEntity<>(annonces, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

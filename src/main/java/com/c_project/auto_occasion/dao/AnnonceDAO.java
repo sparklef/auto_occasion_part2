@@ -374,7 +374,7 @@ public class AnnonceDAO {
         }
         return oneAnnonceOfAnUser;
     }
-
+    // annonces non validées
     public List<Annonce> findAllAnnonceNonValidee(Connection con) throws Exception {
         List<Annonce> annonces_nonvalidees = new ArrayList<>();
         String query = "SELECT * FROM annonce WHERE validation_annonce = false";
@@ -413,5 +413,45 @@ public class AnnonceDAO {
             }
         }
         return annonces_nonvalidees;
+    }
+    // Annonce validée
+    public List<Annonce> findAllAnnonceValidees(Connection con) throws Exception {
+        List<Annonce> annonces_validees = new ArrayList<>();
+        String query = "SELECT * FROM annonce WHERE validation_annonce = true";
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Annonce annonce = new Annonce();
+                    annonce.setIdAnnonce(rs.getInt("idAnnonce"));
+                    annonce.setIdUser(rs.getInt("idUser"));
+                    annonce.setIdCar(rs.getInt("idCar"));
+                    annonce.setStatut(rs.getInt("statut"));
+                    annonce.setDate_annonce(rs.getTimestamp("date_annonce"));
+                    annonce.setLieu(rs.getString("lieu"));
+                    annonce.setImage_car(rs.getString("image_car"));
+                    annonce.setDescription(rs.getString("description_annonce"));
+                    annonce.setValidation_annonce(rs.getBoolean("validation_annonce"));
+                    annonce.setNom_voiture(rs.getString("nom_voiture"));
+                    annonces_validees.add(annonce);
+                }
+            }
+        }
+        return annonces_validees;
+    }
+    public List<Annonce> findAllAnnonceValidees() throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        List<Annonce> annonces_validees = new ArrayList<>();
+        try {
+            con = c.getConnection();
+            annonces_validees = findAllAnnonceValidees(con);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+        return annonces_validees;
     }
 }
