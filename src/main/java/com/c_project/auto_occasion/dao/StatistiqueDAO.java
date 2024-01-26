@@ -16,7 +16,7 @@ public class StatistiqueDAO {
           "(SELECT COUNT(*) FROM utilisateur_site) AS totalUtilisateur,"+
            "(SELECT COUNT(*) FROM annonce WHERE validation_annonce=true) AS nombreAnnonceConfirmer,"+
            "(SELECT COUNT(*) FROM voiture) AS totalVoiture,"+ 
-           "(SELECT SUM(prix * 0.2) FROM voiture) AS chiffreAffaire";
+           "(SELECT SUM(prix * 0.2) FROM annonce) AS chiffreAffaire";
             stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             System.out.println("Afficher un statistique");
