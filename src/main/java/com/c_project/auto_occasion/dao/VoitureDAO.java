@@ -17,7 +17,7 @@ public class VoitureDAO {
 
     public VoitureDAO() {
     }
-    // crud
+       // crud
     // get all voiture
     public List<Voiture> findAll(Connection con) throws Exception {
         Statement stmt = null;
@@ -40,7 +40,7 @@ public class VoitureDAO {
                     int idmarque = rs.getInt("idmarque");
                     int idcategorie = rs.getInt("idcategorie");
                     int iddetail = rs.getInt("iddetail");
-    
+
                     // Assuming you have methods to fetch Marque, Categorie, and Detail_voiture objects using their IDs
                     Marque marque = m_service.findOne(idmarque);
                     Categorie categorie = c_service.findOne(idcategorie);
@@ -58,7 +58,7 @@ public class VoitureDAO {
             }
         }
     }
-    // get all voiture
+
     public List<Voiture> findAll() throws Exception {
         Connexion c = new Connexion();
         Connection con = null;
@@ -75,7 +75,7 @@ public class VoitureDAO {
         }
         return voitures;
     }
-    // get one car
+    // get one favorite
     public Voiture findOne(Connection con, int idcar) throws Exception {
         Statement stmt = null;
         Voiture one_voiture = new Voiture();
@@ -86,7 +86,7 @@ public class VoitureDAO {
             String query = "SELECT * FROM voiture WHERE idcar="+idcar;
             stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
-            System.out.println("Afficher un Voiture avec idcar="+idcar);
+            System.out.println("Afficher un Voiture avec idfavoris="+idcar);
             if(!rs.isBeforeFirst()) {
                 return null;
             } else {
@@ -97,8 +97,9 @@ public class VoitureDAO {
                     int idmarque = rs.getInt("idmarque");
                     int idcategorie = rs.getInt("idcategorie");
                     int iddetail = rs.getInt("iddetail");
-    
+
                     // Assuming you have methods to fetch Marque, Categorie, and Detail_voiture objects using their IDs
+
                     Marque marque = m_service.findOne(idmarque);
                     Categorie categorie = c_service.findOne(idcategorie);
                     Detail_voiture detail_car = dv_service.getOneDetail(iddetail);
@@ -108,7 +109,7 @@ public class VoitureDAO {
                 return one_voiture;
             }
         } catch (SQLException e) {
-            System.out.println("Error with getting one car...");
+            System.out.println("Error with getting one favoris...");
             throw e;
         } finally {
             if(stmt != null) {
@@ -116,7 +117,7 @@ public class VoitureDAO {
             }
         }
     }
-    // get one car
+
     public Voiture findOne(int id_car) throws Exception {
         Connexion c = new Connexion();
         Connection con = null;
@@ -133,11 +134,11 @@ public class VoitureDAO {
         }
         return one_voiture;
     }
-    // creation d'une voiture
+
     public void create(Connection con,String nom_vam, String matricule,int idmarque,int idcategorie,int iddetail) throws Exception {
         Statement stmt = null;
         try{
-            String query = "INSERT INTO voiture(nom_voiture,matricule,idmarque,idcategorie,iddetail) VALUES('"+nom_vam+"'','"+matricule+"',"+idmarque+","+idcategorie+","+iddetail+")";
+            String query = "INSERT INTO voiture(nom_voiture,matricule,idmarque,idcategorie,iddetail) VALUES('"+matricule+"'',"+ prix +","+idmarque+","+idcategorie+","+iddetail+")";
             stmt = con.createStatement();
             System.out.println("Saving  in the table voiture");
             System.out.println(query);
@@ -151,14 +152,13 @@ public class VoitureDAO {
             }
         }
     }
-    // creation d'une voiture
-    public void create(String nom_vam, String matricule,int idmarque,int idcategorie,int iddetail) throws Exception {
+    public void create(String matricule,double prix,int idmarque,int idcategorie,int iddetail) throws Exception {
         Connexion c = new Connexion();
         Connection con = null;
         try{
             con = c.getConnection();
             con.setAutoCommit(false);
-            create(con, nom_vam, matricule, idmarque,idcategorie, iddetail);
+            create(con, matricule, prix, idmarque,idcategorie, iddetail);
             con.commit();
         }catch (SQLException e) {
             System.out.println("Error while inserting  in voiture");
@@ -169,7 +169,40 @@ public class VoitureDAO {
             }
         }
     }
-    // suppression d'une voiture
+  /*   public void update(Connection con, int id_annonce, int id_favoris) throws Exception {
+        Statement stmt = null;
+        try{
+            String query = "UPDATE voiture SET matricule="+ id_annonce +" WHERE idfavoris="+id_favoris+"";
+            stmt = con.createStatement();
+            System.out.println("Updating id :"+ id_favoris + " in the table favoris to "+id_annonce+" (idannonce)");
+            System.out.println(query);
+            stmt.executeUpdate(query);
+        }catch (SQLException e) {
+            System.out.println("Error while updating idannonce of "+ id_favoris + " in favoris to "+id_annonce);
+            throw e;
+        } finally {
+            if(stmt != null) {
+                stmt.close();
+            }
+        }
+    }
+    public void update(int id_annonce, int id_favoris) throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        try{
+            con = c.getConnection();
+            con.setAutoCommit(false);
+            update(con, id_annonce, id_favoris);
+            con.commit();
+        }catch (SQLException e) {
+            System.out.println("Error while updating idannonce to "+ id_annonce + " in the table favoris for "+id_favoris);
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+    }*/
     public void delete(Connection con,int id_car) throws Exception {
         Statement stmt = null;
         try{
@@ -188,7 +221,6 @@ public class VoitureDAO {
             }
         }
     }
-    // suppression d'une voiture
     public void delete(int idcar) throws Exception {
         Connexion c = new Connexion();
         Connection con = null;

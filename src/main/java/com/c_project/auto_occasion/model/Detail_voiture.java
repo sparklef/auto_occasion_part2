@@ -10,15 +10,6 @@ public class Detail_voiture {
     String source_energie;
     int annee;
     String modele;
-    //attribut en plus pour faire la recherche avance
-    Date date_annonce;
-    String lieu;
-    String image_car;
-    String description_annonce;
-    String categorie;
-    double prix;
-    String matricule;
-    String marque;
 
     public Detail_voiture() {
     }
@@ -84,69 +75,7 @@ public class Detail_voiture {
 
     
 
-    public Date getDate_annonce() {
-        return date_annonce;
-    }
-
-    public void setDate_annonce(Date date_annonce) {
-        this.date_annonce = date_annonce;
-    }
-
-    public String getLieu() {
-        return lieu;
-    }
-
-    public void setLieu(String lieu) {
-        this.lieu = lieu;
-    }
-
-    public String getImage_car() {
-        return image_car;
-    }
-
-    public void setImage_car(String image_car) {
-        this.image_car = image_car;
-    }
-
-    public String getDescription_annonce() {
-        return description_annonce;
-    }
-
-    public void setDescription_annonce(String description_annonce) {
-        this.description_annonce = description_annonce;
-    }
-
-    public String getCategorie() {
-        return categorie;
-    }
-
-    public void setCategorie(String categorie) {
-        this.categorie = categorie;
-    }
-
-    public double getPrix() {
-        return prix;
-    }
-
-    public void setPrix(double prix) {
-        this.prix = prix;
-    }
-
-    public String getMatricule() {
-        return matricule;
-    }
-
-    public void setMatricule(String matricule) {
-        this.matricule = matricule;
-    }
-
-    public String getMarque() {
-        return marque;
-    }
-
-    public void setMarque(String marque) {
-        this.marque = marque;
-    }
+    
 
     public Detail_voiture(int idDetail, String couleur, int nbr_portes, String boite_devitesse, String source_energie, int annee, String modele) {
         this.idDetail = idDetail;
@@ -159,23 +88,6 @@ public class Detail_voiture {
     }
 
     
-    public Detail_voiture(String couleur, int nbr_portes, String boite_devitesse, String source_energie, int annee,
-              String modele, Date date_annonce, String lieu, String image_car, String description_annonce,
-              String categorie, double prix, String matricule, String marque) {
-          this.couleur = couleur;
-          this.nbr_portes = nbr_portes;
-          this.boite_devitesse = boite_devitesse;
-          this.source_energie = source_energie;
-          this.annee = annee;
-          this.modele = modele;
-          this.date_annonce = date_annonce;
-          this.lieu = lieu;
-          this.image_car = image_car;
-          this.description_annonce = description_annonce;
-          this.categorie = categorie;
-          this.prix = prix;
-          this.matricule = matricule;
-          this.marque = marque;
-          }
-
+   
+    
 }

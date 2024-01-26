@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.c_project.auto_occasion.connexion.Connexion;
-import com.c_project.auto_occasion.model.Detail_voiture;
+import com.c_project.auto_occasion.model.Detail;
 public class DetailDAO {
 
     public DetailDAO() {
     }
-    public List<Detail_voiture> findAllDetail(Connection con) throws Exception {
+    public List<Detail> findAllDetail(Connection con) throws Exception {
         Statement stmt = null;
-        List<Detail_voiture> annonces = new ArrayList<>();
+        List<Detail> annonces = new ArrayList<>();
         try {
             String query = "select a.date_annonce,a.lieu,a.image_car,a.description_annonce,c.categorie,v.prix,v.matricule,m.marque,d.modele,d.couleur,d.nbr_portes,d.boite_devitesse,d.source_energie,d.annee"+
             "from annonce a"+ 
@@ -44,7 +44,7 @@ public class DetailDAO {
                     double prix=rs.getDouble("prix");
                     String matricule=rs.getString("matricule");
                     String marque=rs.getString("marque");
-                    annonces.add( new Detail_voiture(couleur,nbr_portes,boite_vitesse,source_energie,annee,modele,date_annonce,toerana,image,descri_annonce,categorie,prix,matricule,marque));
+                    annonces.add( new Detail(couleur,nbr_portes,boite_vitesse,source_energie,annee,modele,date_annonce,toerana,image,descri_annonce,categorie,prix,matricule,marque));
                 }
                 return annonces;
             }
@@ -58,9 +58,9 @@ public class DetailDAO {
         }
     }
 
-    public List<Detail_voiture> rechercheAvancer(Connection con, String keyword) throws Exception {
+    public List<Detail> rechercheAvancer(Connection con, String keyword) throws Exception {
         Statement stmt = null;
-        List<Detail_voiture> annonces = new ArrayList<>();
+        List<Detail> annonces = new ArrayList<>();
         try {
             StringBuilder sql = new StringBuilder("select a.date_annonce,a.lieu,a.image_car,a.description_annonce,c.categorie,v.prix,v.matricule,m.marque,d.modele,d.couleur,d.nbr_portes,d.boite_devitesse,d.source_energie,d.annee"+
             " from annonce a "+
@@ -95,7 +95,7 @@ public class DetailDAO {
                     double prix=rs.getDouble("prix");
                     String matricule=rs.getString("matricule");
                     String marque=rs.getString("marque");
-                    annonces.add( new Detail_voiture(couleur,nbr_portes,boite_vitesse,source_energie,annee,modele,date_annonce,toerana,image,descri_annonce,categorie,prix,matricule,marque));
+                    annonces.add( new Detail(couleur,nbr_portes,boite_vitesse,source_energie,annee,modele,date_annonce,toerana,image,descri_annonce,categorie,prix,matricule,marque));
                 }
                 return annonces;
             }
@@ -112,10 +112,10 @@ public class DetailDAO {
     
     
 
-    public List<Detail_voiture> search(String keyword) throws Exception {
+    public List<Detail> search(String keyword) throws Exception {
         Connexion c = new Connexion();
         Connection con = null;
-        List<Detail_voiture> sList = new ArrayList<>();
+        List<Detail> sList = new ArrayList<>();
         try{
             con = c.getConnection();
             sList = rechercheAvancer(con, keyword);
