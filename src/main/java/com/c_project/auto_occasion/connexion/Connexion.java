@@ -9,7 +9,7 @@ public class Connexion {
         String driver = "org.postgresql.Driver";
         String url = "jdbc:postgresql://localhost:5432/vamoccaz";
         Class.forName(driver);
-        Connection connect = DriverManager.getConnection(url, "postgres", "admin");
+        Connection connect = DriverManager.getConnection(url, "postgres", "root");
         return connect;
     }
 }
