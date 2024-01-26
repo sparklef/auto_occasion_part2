@@ -30,10 +30,10 @@ public class FavorisDAO {
                 Timestamp date_annonce = rs.getTimestamp("date_annonce");
                 String lieu=rs.getString("lieu");
                 String img_car=rs.getString("image_car");
+                double prix_vam = rs.getDouble("prix");
                 String description=rs.getString("description_annonce");
                 boolean validation=rs.getBoolean("validation_annonce");
-                String nom_voiture = rs.getString("nom_voiture");
-                results.add(new Annonce(idannonce,iduser, idCar, status,date_annonce,lieu,img_car, description,validation, nom_voiture) );
+                results.add(new Annonce(idannonce,iduser, idCar, status,date_annonce,lieu,img_car,prix_vam, description,validation) );
             }
             return results;
         } catch (SQLException e) {

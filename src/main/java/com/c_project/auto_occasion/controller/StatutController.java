@@ -17,7 +17,7 @@ public class StatutController {
     @Autowired
     private StatutService statutService;
     @GetMapping("/all")
-    public ResponseEntity<List<Statut>> getAllMarques() {
+    public ResponseEntity<List<Statut>> getAllStatuts() {
         try {
             List<Statut> statuts = statutService.findAllState();
             if (statuts != null) {
@@ -32,7 +32,7 @@ public class StatutController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createMarque(@RequestBody Statut statut) {
+    public ResponseEntity<String> createStatut(@RequestBody Statut statut) {
         try {
             statutService.create(statut);
             return new ResponseEntity<>("Marque created successfully", HttpStatus.CREATED);
@@ -43,7 +43,7 @@ public class StatutController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateMarqueName(@PathVariable int id, @RequestBody Marque updateRequest) {
+    public ResponseEntity<String> updateStatutName(@PathVariable int id, @RequestBody Marque updateRequest) {
         try {
             Statut existingStatut = statutService.findOneState(id);
             if (existingStatut != null) {
@@ -59,7 +59,7 @@ public class StatutController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteMarque(@PathVariable int id) {
+    public ResponseEntity<Void> deleteStatut(@PathVariable int id) {
         try {
             statutService.delete(id);
             return new ResponseEntity<>(HttpStatus.OK);

@@ -64,6 +64,100 @@ public class AnnonceDAO {
         }
         return annonces;
     }
+    /// find all annonce where validation = true
+    public List<Annonce> findAllAnnonceValidee(Connection con) throws Exception {
+        Statement stmt = null;
+        List<Annonce> annonces = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM annonce WHERE validation_annonce = true";
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            System.out.println("Affichage de toutes les annonces...");
+            if(!rs.isBeforeFirst()){
+                return null;
+            } else {
+                while(rs.next()) {
+                    int id_annonce = rs.getInt("idannonce");
+                    int id_user = rs.getInt("iduser");
+                    int id_car = rs.getInt("idcar");
+                    int statut = rs.getInt("statut");
+                    Timestamp date_annonce = rs.getTimestamp("date_annonce");
+                    String toerana = rs.getString("lieu");
+                    String image = rs.getString("image_car");
+                    double prix = rs.getDouble("prix");
+                    String descri_annonce = rs.getString("description_annonce");
+                    boolean etat_validation_annonce = rs.getBoolean("validation_annonce");
+                    annonces.add( new Annonce( id_annonce, id_user, id_car, statut, date_annonce, toerana, image, prix,descri_annonce, etat_validation_annonce) );
+                }
+                return annonces;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error with getting all the admin...");
+            throw e;
+        } finally {
+            if(stmt != null) {
+                stmt.close();
+            }
+        }
+    }
+    public List<Annonce> findAllAnnonceValidee() throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        List<Annonce> annonces = new ArrayList<>();
+        try{
+            con = c.getConnection();
+            annonces = findAllAnnonceValidee(con);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+        return annonces;
+    }
+    /// one annonce validee = true
+    public Annonce findOneAnnonceValidee(Connection con, int id_annonce) throws Exception {
+        Annonce annonce = new Annonce();
+        Statement stmt = null;
+        ResultSet res=null;
+        try {
+            String query = "SELECT * FROM annonce WHERE idannonce= " + id_annonce + " AND validation_annonce = true";
+            stmt = con.createStatement();
+            res=stmt.executeQuery(query);
+            while (res.next()) {
+                annonce=new Annonce(res.getInt(1),res.getInt(2),res.getInt(3),res.getInt(4),res.getTimestamp(5),res.getString(6),res.getString(7),res.getDouble(8),res.getString(9),res.getBoolean(10));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while finding the user with the id " + id_annonce + " in annonce");
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+            if(res != null) {
+                res.close();
+            }
+        }
+        return annonce;
+    }
+    public Annonce findOneAnnonceValidee(int id_annonce) throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        Annonce annonce = new Annonce();
+        try{
+            con = c.getConnection();
+            annonce = findOneAnnonceValidee(con, id_annonce);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+        return annonce;
+    }
+
     /// Une annonce en particulier
     public Annonce findOneAnnonce(Connection con, int id_annonce) throws Exception {
         Annonce annonce = new Annonce();
@@ -392,6 +486,89 @@ public class AnnonceDAO {
         try {
             con = c.getConnection();
             annonces_validees = findAllAnnonceValidees(con);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+        return annonces_validees;
+    }
+
+    /// find all annonce non validees d'un utilisateur
+    public List<Annonce> findAllAnnonceNonValideeOfUser(Connection con, int id_user) throws Exception {
+        List<Annonce> annonces_nonvalidees = new ArrayList<>();
+        String query = "SELECT * FROM annonce WHERE validation_annonce = false AND idUser = ?";
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setInt(1, id_user);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Annonce annonce = new Annonce();
+                    annonce.setIdAnnonce(rs.getInt("idAnnonce"));
+                    annonce.setIdUser(rs.getInt("idUser"));
+                    annonce.setIdCar(rs.getInt("idCar"));
+                    annonce.setStatut(rs.getInt("statut"));
+                    annonce.setDate_annonce(rs.getTimestamp("date_annonce"));
+                    annonce.setLieu(rs.getString("lieu"));
+                    annonce.setImage_car(rs.getString("image_car"));
+                    annonce.setPrix(rs.getDouble("prix"));
+                    annonce.setDescription(rs.getString("description_annonce"));
+                    annonce.setValidation_annonce(rs.getBoolean("validation_annonce"));
+                    annonces_nonvalidees.add(annonce);
+                }
+            }
+        }
+        return annonces_nonvalidees;
+    }
+    public List<Annonce> findAllAnnonceNonValideeOfUser(int id_user) throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        List<Annonce> annonces_nonvalidees = new ArrayList<>();
+        try {
+            con = c.getConnection();
+            annonces_nonvalidees = findAllAnnonceNonValideeOfUser(con, id_user);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+        return annonces_nonvalidees;
+    }
+    /// find all annonce validees d'un utilisateur
+    public List<Annonce> findAllAnnonceValideeOfUser(Connection con, int id_user) throws Exception {
+        List<Annonce> annonces_nonvalidees = new ArrayList<>();
+        String query = "SELECT * FROM annonce WHERE validation_annonce = true AND idUser = ?";
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setInt(1, id_user);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Annonce annonce = new Annonce();
+                    annonce.setIdAnnonce(rs.getInt("idAnnonce"));
+                    annonce.setIdUser(rs.getInt("idUser"));
+                    annonce.setIdCar(rs.getInt("idCar"));
+                    annonce.setStatut(rs.getInt("statut"));
+                    annonce.setDate_annonce(rs.getTimestamp("date_annonce"));
+                    annonce.setLieu(rs.getString("lieu"));
+                    annonce.setImage_car(rs.getString("image_car"));
+                    annonce.setPrix(rs.getDouble("prix"));
+                    annonce.setDescription(rs.getString("description_annonce"));
+                    annonce.setValidation_annonce(rs.getBoolean("validation_annonce"));
+                    annonces_nonvalidees.add(annonce);
+                }
+            }
+        }
+        return annonces_nonvalidees;
+    }
+    public List<Annonce> findAllAnnonceValideeOfUser(int id_user) throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        List<Annonce> annonces_validees = new ArrayList<>();
+        try {
+            con = c.getConnection();
+            annonces_validees = findAllAnnonceValideeOfUser(con, id_user);
         } catch (SQLException e) {
             throw e;
         } finally {
