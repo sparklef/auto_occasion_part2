@@ -2,7 +2,9 @@ package com.c_project.auto_occasion.dao;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.c_project.auto_occasion.connexion.Connexion;
 import com.c_project.auto_occasion.model.Utilisateur_site;
@@ -437,5 +439,45 @@ public class UtilisateurSiteDAO {
         }
         return token_user;
     }
-     
+    // fonction pour avoir tous les utilisateurs
+    public List<Utilisateur_site> findAllUser(Connection con) throws Exception {
+        List<Utilisateur_site> users = new ArrayList<>();
+        Statement stmt = null;
+        ResultSet res=null;
+        try {
+            String query = "SELECT * FROM utilisateur_site";
+            stmt = con.createStatement();
+            res=stmt.executeQuery(query);
+            while (res.next()) {
+                users.add( new Utilisateur_site(res.getInt(1),res.getString(2),res.getString(3),res.getString(4),res.getString(5),res.getString(6)) );
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while finding all the users in utilisateur_site");
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+            if(res != null) {
+                res.close();
+            }
+        }
+        return users;
+    }
+    public List<Utilisateur_site> findAllUser() throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        List<Utilisateur_site> users = new ArrayList<>();
+        try{
+            con = c.getConnection();
+            users = findAllUser(con);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+        return users;
+    }
 }

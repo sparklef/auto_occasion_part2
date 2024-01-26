@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class Utilisateur_siteService {
@@ -50,6 +52,21 @@ public class Utilisateur_siteService {
             }
         }
         return token;
+     }
+     public List<Utilisateur_site> findAllUser() throws Exception {
+         Connection connection = null;
+         List<Utilisateur_site> users = new ArrayList<>();
+         try {
+             connection = con.getConnection();
+             users = utilisateurSiteDAO.findAllUser();
+         } catch (SQLException e) {
+             throw e;
+         } finally {
+             if(connection != null) {
+                 connection.close();
+             }
+         }
+         return users;
      }
      public Utilisateur_site findOne(int id_user) throws Exception {
          Connection connection = null;
