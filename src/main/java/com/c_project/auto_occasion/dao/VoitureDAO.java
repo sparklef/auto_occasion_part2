@@ -17,7 +17,7 @@ public class VoitureDAO {
 
     public VoitureDAO() {
     }
-       // crud
+    // crud  //
     // get all voiture
     public List<Voiture> findAll(Connection con) throws Exception {
         Statement stmt = null;
@@ -35,8 +35,8 @@ public class VoitureDAO {
             } else {
                 while(rs.next()) {
                     int idcar = rs.getInt("idcar");
-                    String nom_vam = rs.getString("nom_voiture");
                     String matricule = rs.getString("matricule");
+                    String nomvoiture=rs.getString("nom_voiture");
                     int idmarque = rs.getInt("idmarque");
                     int idcategorie = rs.getInt("idcategorie");
                     int iddetail = rs.getInt("iddetail");
@@ -45,7 +45,7 @@ public class VoitureDAO {
                     Marque marque = m_service.findOne(idmarque);
                     Categorie categorie = c_service.findOne(idcategorie);
                     Detail_voiture detail_car = dv_service.getOneDetail(iddetail);
-                   voitures.add(new Voiture(idcar, nom_vam,matricule, marque, categorie, detail_car));
+                    voitures.add(new Voiture(idcar, matricule, nomvoiture, marque, categorie, detail_car));
                 }
                 return voitures;
             }
@@ -83,7 +83,7 @@ public class VoitureDAO {
         CategorieService c_service = new CategorieService();
         Detail_voitureService dv_service = new Detail_voitureService();
         try {
-            String query = "SELECT * FROM voiture WHERE idcar="+idcar;
+            String query = "SELECT * FROM Voiture WHERE idcar="+idcar;
             stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             System.out.println("Afficher un Voiture avec idfavoris="+idcar);
@@ -91,9 +91,8 @@ public class VoitureDAO {
                 return null;
             } else {
                 while(rs.next()) {
-                    int id_car = rs.getInt("idcar");
-                    String nom_vam = rs.getString("nom_voiture");
                     String matricule = rs.getString("matricule");
+                    String nomvoiture=rs.getString("nom_voiture");
                     int idmarque = rs.getInt("idmarque");
                     int idcategorie = rs.getInt("idcategorie");
                     int iddetail = rs.getInt("iddetail");
@@ -104,12 +103,12 @@ public class VoitureDAO {
                     Categorie categorie = c_service.findOne(idcategorie);
                     Detail_voiture detail_car = dv_service.getOneDetail(iddetail);
 
-                   one_voiture= new Voiture(id_car,nom_vam, matricule, marque, categorie, detail_car);
+                    one_voiture= new Voiture(idcar, matricule, nomvoiture, marque, categorie, detail_car);
                 }
                 return one_voiture;
             }
         } catch (SQLException e) {
-            System.out.println("Error with getting one favoris...");
+            System.out.println("Error with getting one voiture...");
             throw e;
         } finally {
             if(stmt != null) {
@@ -135,33 +134,41 @@ public class VoitureDAO {
         return one_voiture;
     }
 
-    public void create(Connection con,String nom_vam, String matricule,int idmarque,int idcategorie,int iddetail) throws Exception {
-        Statement stmt = null;
-        try{
-            String query = "INSERT INTO voiture(nom_voiture,matricule,idmarque,idcategorie,iddetail) VALUES('"+matricule+"'',"+ prix +","+idmarque+","+idcategorie+","+iddetail+")";
-            stmt = con.createStatement();
-            System.out.println("Saving  in the table voiture");
+    // crud
+    public void create(Connection con, Voiture voiture) throws Exception {
+        PreparedStatement pstmt = null;
+        try {
+            String query = "INSERT INTO voiture(nom_voiture,matricule,idMarque,idCategorie,idDetail) VALUES(?,?,?,?,?)";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, voiture.getNom_voiture());
+            pstmt.setString(2, voiture.getMatricule());
+            pstmt.setInt(3, voiture.getMarque_voiture().getIdMarque()); // Assuming Marque has a getId() method
+            pstmt.setInt(4, voiture.getCategorie().getIdCategorie()); // Assuming Categorie has a getId() method
+            pstmt.setInt(5, voiture.getDetail().getIdDetail()); // Assuming Detail_voiture has a getId() method
+            System.out.println("Saving " + voiture.getNom_voiture() + " in the table voiture");
             System.out.println(query);
-            stmt.executeUpdate(query);
-        }catch (SQLException e) {
-            System.out.println("Error while saving  in voiture");
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error while saving " + voiture.getNom_voiture()+ " in voiture");
             throw e;
         } finally {
-            if(stmt != null) {
-                stmt.close();
+            if (pstmt != null) {
+                pstmt.close();
             }
         }
     }
-    public void create(String matricule,double prix,int idmarque,int idcategorie,int iddetail) throws Exception {
+
+    public void create(Voiture voiture) throws Exception {
         Connexion c = new Connexion();
         Connection con = null;
         try{
             con = c.getConnection();
             con.setAutoCommit(false);
-            create(con, matricule, prix, idmarque,idcategorie, iddetail);
+            create(con, voiture);
             con.commit();
         }catch (SQLException e) {
-            System.out.println("Error while inserting  in voiture");
+            System.out.println("Error persist with insertion in voiture");
             throw e;
         } finally {
             if(con != null) {
@@ -169,40 +176,48 @@ public class VoitureDAO {
             }
         }
     }
-  /*   public void update(Connection con, int id_annonce, int id_favoris) throws Exception {
-        Statement stmt = null;
-        try{
-            String query = "UPDATE voiture SET matricule="+ id_annonce +" WHERE idfavoris="+id_favoris+"";
-            stmt = con.createStatement();
-            System.out.println("Updating id :"+ id_favoris + " in the table favoris to "+id_annonce+" (idannonce)");
+
+    public void update(Connection con, Voiture voiture, int id_car) throws Exception {
+        PreparedStatement pstmt = null;
+        try {
+            String query = "UPDATE voiture SET nom_voiture=?,matricule=?,idMarque=?, idCategorie=?, idDetail=?  WHERE idcar=?";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, voiture.getNom_voiture());
+            pstmt.setString(2, voiture.getMatricule());
+            pstmt.setInt(3, voiture.getMarque_voiture().getIdMarque()); // Assuming Marque has a getId() method
+            pstmt.setInt(4, voiture.getCategorie().getIdCategorie()); // Assuming Categorie has a getId() method
+            pstmt.setInt(5, voiture.getDetail().getIdDetail()); // Assuming Detail_voiture has a getId() method
+            pstmt.setInt(6, id_car);
+            System.out.println("Updating id: " + id_car + " in the table voiture to " + voiture.getMarque_voiture().getIdMarque());
             System.out.println(query);
-            stmt.executeUpdate(query);
-        }catch (SQLException e) {
-            System.out.println("Error while updating idannonce of "+ id_favoris + " in favoris to "+id_annonce);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error while updating " + id_car + " in voiture to " +voiture.getMarque_voiture().getIdMarque());
             throw e;
         } finally {
-            if(stmt != null) {
-                stmt.close();
+            if (pstmt != null) {
+                pstmt.close();
             }
         }
     }
-    public void update(int id_annonce, int id_favoris) throws Exception {
+    public void update(Voiture voiture, int id_car) throws Exception {
         Connexion c = new Connexion();
         Connection con = null;
         try{
             con = c.getConnection();
             con.setAutoCommit(false);
-            update(con, id_annonce, id_favoris);
+            update(con, voiture, id_car);
             con.commit();
         }catch (SQLException e) {
-            System.out.println("Error while updating idannonce to "+ id_annonce + " in the table favoris for "+id_favoris);
+            System.out.println("Error while updating "+id_car+" to "+voiture+" in voiture");
             throw e;
         } finally {
             if(con != null) {
                 con.close();
             }
         }
-    }*/
+    }
+
     public void delete(Connection con,int id_car) throws Exception {
         Statement stmt = null;
         try{
@@ -238,5 +253,5 @@ public class VoitureDAO {
             }
         }
     }
-    
+
 }

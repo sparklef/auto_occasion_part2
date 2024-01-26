@@ -48,11 +48,12 @@ public class VoitureService {
         }
         return one_voiture;
     }
-    public void create(String nom_vam,String matricule,int idmarque,int idcategorie,int iddetail) throws Exception {
+    //new voiture
+    public void create(Voiture voiture) throws Exception {
         Connection connection = null;
         try {
             connection = connex.getConnection();
-            voitureDAO.create(nom_vam,matricule,prix,idmarque,idcategorie,iddetail);
+            voitureDAO.create(connection, voiture);
         } catch (SQLException e) {
             throw e;
         } finally {
@@ -61,11 +62,12 @@ public class VoitureService {
             }
         }
     }
-   /*  public void updateFav(int id_annonce, int id_favoris) throws Exception {
+
+    public void updateVoiture(Voiture voiture,int id_car) throws Exception {
         Connection connection = null;
         try {
-            connection = con.getConnection();
-            favorisDAO.update(id_annonce, id_favoris);
+            connection = connex.getConnection();
+            voitureDAO.update(voiture,id_car);
         } catch (SQLException e) {
             throw e;
         } finally {
@@ -73,7 +75,7 @@ public class VoitureService {
                 connection.close();
             }
         }
-    }*/
+    }
     public void delete(int idcar) throws Exception {
         Connection connection = null;
         try {
