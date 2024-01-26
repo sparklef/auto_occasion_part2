@@ -11,6 +11,7 @@ import java.util.List;
 public class FavorisDAO {
     public FavorisDAO() {
     }
+    //liste favoris
     public List<Annonce> getFavorisForUser(Connection conn, int idUser) throws SQLException {
         List<Annonce> results = new ArrayList<>();
         Statement stmt=null;
