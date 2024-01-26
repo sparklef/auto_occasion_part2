@@ -55,11 +55,13 @@ public class AnnonceController {
    
     @PostMapping("/create_annonce")
     public ResponseEntity<String> createAnnonce(@RequestHeader("Authorization") String authorizationHeader,@RequestBody Annonce newAnnonce) {
+        String [] tab=authorizationHeader.split(" ");
+        System.out.println(tab[1]);
           try {
               if (authorizationHeader == null || authorizationHeader.isEmpty()) {
                   return new ResponseEntity<>("Authorization header is missing", HttpStatus.UNAUTHORIZED);
               }
-              Utilisateur_site user=utilisateur_siteService.findToken(authorizationHeader);
+              Utilisateur_site user=utilisateur_siteService.findToken(tab[1]);
               newAnnonce.setIdUser(user.getIdUser());
               annonceService.create(newAnnonce);
               return new ResponseEntity<>("Annonce created successfully", HttpStatus.CREATED);
