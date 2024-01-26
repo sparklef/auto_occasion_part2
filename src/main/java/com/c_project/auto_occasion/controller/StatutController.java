@@ -16,6 +16,7 @@ import java.util.List;
 public class StatutController {
     @Autowired
     private StatutService statutService;
+    // pour avoir tout les status
     @GetMapping("/all")
     public ResponseEntity<List<Statut>> getAllStatuts() {
         try {
@@ -30,7 +31,7 @@ public class StatutController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    // creation d'un statut
     @PostMapping("/create")
     public ResponseEntity<String> createStatut(@RequestBody Statut statut) {
         try {
@@ -41,23 +42,23 @@ public class StatutController {
             return new ResponseEntity<>("Error creating marque", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    // update a statut
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateStatutName(@PathVariable int id, @RequestBody Marque updateRequest) {
+    public ResponseEntity<String> updateStatutName(@PathVariable int id, @RequestBody Statut updateStatut) {
         try {
             Statut existingStatut = statutService.findOneState(id);
             if (existingStatut != null) {
-                statutService.update(updateRequest.getMarque(), id);
-                return new ResponseEntity<>("Marque name updated successfully", HttpStatus.OK);
+                statutService.update(updateStatut.getStatut(), id);
+                return new ResponseEntity<>("Statut name updated successfully", HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("Marque not found", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("Statut not found", HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("Error updating marque name", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    // delete a statut
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteStatut(@PathVariable int id) {
         try {
@@ -68,7 +69,7 @@ public class StatutController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    // find one statut by his id
     @GetMapping("/findOne/{id}")
     public ResponseEntity<Statut> getStatutById(@PathVariable int id) {
         try {

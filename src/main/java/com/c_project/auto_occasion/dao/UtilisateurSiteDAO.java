@@ -20,7 +20,7 @@ public class UtilisateurSiteDAO {
     public UtilisateurSiteDAO() {
     }
        // crud
-
+        // creation d'utilisateur
        public void create(Connection con, Utilisateur_site newUser) throws Exception {
            PreparedStatement pstmt = null;
            ResultSet rs = null;

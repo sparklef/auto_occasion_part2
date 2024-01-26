@@ -19,6 +19,7 @@ import java.util.List;
 public class FavorisController {
     @Autowired
     private FavorisService favorisService;
+    // liste des favoris d'un utilisateur
     @GetMapping("/listefavoris/{idUser}")
     public ResponseEntity<List<Annonce>> getFavorisId(@PathVariable int idUser){
         try {
