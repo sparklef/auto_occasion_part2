@@ -22,6 +22,10 @@ public class AnnonceController {
     private AnnonceService annonceService;
     private Utilisateur_siteService utilisateur_siteService;
 
+    @Autowired
+    public AnnonceController(Utilisateur_siteService utilisateur_siteService) {
+        this.utilisateur_siteService = utilisateur_siteService;
+    }
       // Update status 
       @PutMapping("/update_statut_backoffice/{id}/{newState}")
       public ResponseEntity<String> updateStatut(@PathVariable int newState ,@PathVariable int id) {

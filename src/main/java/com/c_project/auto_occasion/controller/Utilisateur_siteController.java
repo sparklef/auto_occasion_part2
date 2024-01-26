@@ -79,7 +79,7 @@ public class Utilisateur_siteController {
 
     //find token
     
-    @GetMapping("/findToken/{token_user}")
+  /*   @GetMapping("/findToken/{token_user}")
     public ResponseEntity<Utilisateur_site> getTokenUser(@PathVariable String token_user){
         try {
             Utilisateur_site user=utilisateur_siteService.findToken(token_user);
@@ -93,5 +93,20 @@ public class Utilisateur_siteController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+*/
+        
+    @GetMapping("/findToken")
+    public ResponseEntity<Utilisateur_site> getTokenUser(@RequestHeader("Authorization")  String token_user){
+        try {
+            Utilisateur_site user=utilisateur_siteService.findToken(token_user);
+            if (user != null) {
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

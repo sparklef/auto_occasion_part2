@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.c_project.auto_occasion.connexion.Connexion;
 import com.c_project.auto_occasion.dao.DetailDAO;
+import com.c_project.auto_occasion.model.Detail;
 import com.c_project.auto_occasion.model.Detail_voiture;
 
 @Service
@@ -23,9 +24,9 @@ public class Detail_voitureService {
           detailDAO = new DetailDAO();
           con=new Connexion();
       }
-      public List<Detail_voiture> search(String keyword) throws Exception {
+      public List<Detail> search(String keyword) throws Exception {
         Connection connection = null;
-        List<Detail_voiture> detail_voitures = new ArrayList<>();
+        List<Detail> detail_voitures = new ArrayList<>();
         try {
             connection = con.getConnection();
             detail_voitures = detailDAO.search(keyword);
