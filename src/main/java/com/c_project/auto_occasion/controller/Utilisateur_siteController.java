@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Connection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -17,17 +18,21 @@ public class Utilisateur_siteController {
     @Autowired
     private Utilisateur_siteService utilisateur_siteService;
 
-      // Create
-      @PostMapping("/create_user")
-      public ResponseEntity<String> createUser(@RequestBody Utilisateur_site newUser) {
-          try {
-              utilisateur_siteService.create(newUser);
-              return new ResponseEntity<>("User created successfully", HttpStatus.CREATED);
-          } catch (Exception e) {
-              e.printStackTrace();
-              return new ResponseEntity<>("Error creating user", HttpStatus.INTERNAL_SERVER_ERROR);
-          }
-      }
+    // Create
+    @PostMapping("/create_user")
+    public ResponseEntity<String> createUser(@RequestBody Utilisateur_site newUser) {
+        try {
+            utilisateur_siteService.create(newUser);
+            int id_lastusercreated=utilisateur_siteService.getLastCreatedUser();
+            String token_creation = utilisateur_siteService.generateToken(newUser.getEmail(), newUser.getMdp());
+            utilisateur_siteService.saveToken(token_creation, id_lastusercreated);
+            String token = utilisateur_siteService.getTokenUser(id_lastusercreated);
+            return new ResponseEntity<>(token, HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error creating user", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @PostMapping("/verif")
     public ResponseEntity<String> verifUser(@RequestBody Utilisateur_site user) throws Exception {
@@ -40,6 +45,35 @@ public class Utilisateur_siteController {
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("Error verification user", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/allUser")
+    public ResponseEntity<List<Utilisateur_site>> getAllAdmin() {
+        try {
+            List<Utilisateur_site> users = utilisateur_siteService.findAllUser();
+            if (users != null) {
+                return new ResponseEntity<>(users, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/findOne/{id_admin}")
+    public ResponseEntity<Utilisateur_site> getAdminById(@PathVariable int id_user) {
+        try {
+            Utilisateur_site user = utilisateur_siteService.findOne(id_user);
+            if (user != null) {
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

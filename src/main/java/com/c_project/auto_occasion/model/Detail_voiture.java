@@ -11,8 +11,6 @@ public class Detail_voiture {
     int annee;
     String modele;
 
-
-
     public Detail_voiture() {
     }
 

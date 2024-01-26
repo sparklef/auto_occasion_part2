@@ -1,8 +1,11 @@
 package com.c_project.auto_occasion.dao;
 
 import com.c_project.auto_occasion.connexion.Connexion;
-import com.c_project.auto_occasion.model.Annonce;
-import com.c_project.auto_occasion.model.Detail_voiture;
+import com.c_project.auto_occasion.model.*;
+import com.c_project.auto_occasion.services.AnnonceService;
+import com.c_project.auto_occasion.services.CategorieService;
+import com.c_project.auto_occasion.services.Detail_voitureService;
+import com.c_project.auto_occasion.services.MarqueService;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,6 +24,7 @@ public class Detail_voitureDAO {
             pstmt.setString(4, detailVoiture.getSource_energie());
             pstmt.setInt(5, detailVoiture.getAnnee());
             pstmt.setString(6, detailVoiture.getModele());
+
             System.out.println("Saving the detail_voiture of the car " + detailVoiture.getIdDetail() + " in the table detail_voiture");
             System.out.println(query);
             pstmt.executeUpdate();
@@ -135,24 +139,38 @@ public class Detail_voitureDAO {
     /// CRUD
     /// get all detail_voiture
     public List<Detail_voiture> allDetail(Connection con) throws Exception {
+        Statement stmt = null;
         List<Detail_voiture> details = new ArrayList<>();
-        String query = "SELECT * FROM detail_voiture";
-        try (PreparedStatement pstmt = con.prepareStatement(query)) {
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    Detail_voiture detail = new Detail_voiture();
-                    detail.setIdDetail(rs.getInt("iddetail"));
-                    detail.setCouleur(rs.getString("couleur"));
-                    detail.setNbr_portes(rs.getInt("nbr_portes"));
-                    detail.setBoite_devitesse(rs.getString("boite_devitesse"));
-                    detail.setSource_energie(rs.getString("source_energie"));
-                    detail.setAnnee(rs.getInt("annee"));
-                    detail.setModele(rs.getString("modele"));
-                    details.add(detail);
+        AnnonceService annonceService = new AnnonceService();
+        try{
+            String query = "SELECT * FROM detail_voiture";
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            System.out.println("Affichage de tous les details des voitures...");
+            if(!rs.isBeforeFirst()){
+                return null;
+            } else {
+                while(rs.next()) {
+                    int iddetail = rs.getInt("iddetail");
+                    String couleur = rs.getString("couleur");
+                    int nbrPortes = rs.getInt("nbr_portes");
+                    String b_v = rs.getString("boite_devitesse");
+                    String s_c = rs.getString("source_energie");
+                    int year = rs.getInt("annee");
+                    String modele = rs.getString("modele");
+
+                    details.add(new Detail_voiture(iddetail, couleur, nbrPortes, b_v, s_c, year, modele));
                 }
+                return details;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error with getting all the cars details...");
+            throw e;
+        } finally {
+            if(stmt != null) {
+                stmt.close();
             }
         }
-        return details;
     }
     public List<Detail_voiture> allDetail() throws Exception {
         Connexion c = new Connexion();
@@ -173,32 +191,34 @@ public class Detail_voitureDAO {
     /// get one detail_voiture
     public Detail_voiture oneDetail(Connection con, int id_detail) throws Exception {
         Statement stmt = null;
-        Detail_voiture one_detail = new Detail_voiture();
+        Detail_voiture one_d_voiture = new Detail_voiture();
+        AnnonceService a_service = new AnnonceService();
         try {
-            String query = "SELECT * FROM detail_voiture WHERE iddetail=" + id_detail;
+            String query = "SELECT * FROM detail_voiture WHERE iddetail="+id_detail;
             stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
-            System.out.println("Afficher un detail avec iddetail=" + id_detail);
-            if (!rs.isBeforeFirst()) {
+            System.out.println("Afficher un detail avec iddetail="+id_detail);
+            if(!rs.isBeforeFirst()) {
                 return null;
             } else {
-                while (rs.next()) {
-                    int id = rs.getInt("iddetail");
+                while(rs.next()) {
+                    int iddetail = rs.getInt("iddetail");
                     String couleur = rs.getString("couleur");
-                    int nbr_p = rs.getInt("nbr_portes");
+                    int nbrPortes = rs.getInt("nbr_portes");
                     String b_v = rs.getString("boite_devitesse");
-                    String source_energy = rs.getString("source_energie");
+                    String s_c = rs.getString("source_energie");
                     int year = rs.getInt("annee");
-                    String model = rs.getString("modele");
-                    one_detail = new Detail_voiture(id, couleur, nbr_p, b_v, source_energy, year, model);
+                    String modele = rs.getString("modele");
+
+                    one_d_voiture= new Detail_voiture(iddetail, couleur, nbrPortes, b_v, s_c, year, modele);
                 }
-                return one_detail;
+                return one_d_voiture;
             }
-        } catch(SQLException e) {
-            System.out.println("Error while getting the detail_voiture : " + id_detail);
+        } catch (SQLException e) {
+            System.out.println("Error with getting one details about one car...");
             throw e;
         } finally {
-            if (stmt != null) {
+            if(stmt != null) {
                 stmt.close();
             }
         }

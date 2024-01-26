@@ -34,6 +34,20 @@ public class AnnonceService {
             }
         }
     }
+
+    public void updateStatutForUser(int newState, int id_annonce) throws Exception {
+        Connection connection = null;
+        try {
+            connection = con.getConnection();
+            annonceDAO.updateStatut(newState, id_annonce);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(connection != null) {
+                connection.close();
+            }
+        }
+    }
   
     public List<Annonce> findAllUser_s_Annonces(int id_user) throws Exception {
         Connection connection = null;
@@ -88,6 +102,7 @@ public class AnnonceService {
         }
         return annonces;
     }
+
     public Annonce oneAnnonce(int id_annonce) throws Exception {
         Annonce one_annonce = new Annonce();
         try {
@@ -96,5 +111,42 @@ public class AnnonceService {
             throw e;
         }
         return one_annonce;
+    }
+
+    public List<Annonce> findAllAnnonceNonValidee() throws Exception {
+        List<Annonce> annonces_nonvalidees = new ArrayList<>();
+        try {
+            annonces_nonvalidees = annonceDAO.findAllAnnonceNonValidee();
+        } catch (SQLException e) {
+            throw e;
+        }
+        return annonces_nonvalidees;
+    }
+    public List<Annonce> findAllAnnoncesValidee() throws Exception {
+        List<Annonce> annonces_validees = new ArrayList<>();
+        try {
+            annonces_validees = annonceDAO.findAllAnnonceValidees();
+        } catch (SQLException e) {
+            throw e;
+        }
+        return annonces_validees;
+    }
+    public List<Annonce> findAllAnnonceNonValideeOfUser(int id_user) throws Exception {
+        List<Annonce> annonces_nonvalideesOfAnUser = new ArrayList<>();
+        try {
+            annonces_nonvalideesOfAnUser = annonceDAO.findAllAnnonceNonValideeOfUser(id_user);
+        } catch (SQLException e) {
+            throw e;
+        }
+        return annonces_nonvalideesOfAnUser;
+    }
+    public List<Annonce> findAllAnnonceValideeOfUser(int id_user) throws Exception {
+        List<Annonce> annonces_valideesOfAnUser = new ArrayList<>();
+        try {
+            annonces_valideesOfAnUser = annonceDAO.findAllAnnonceValideeOfUser(id_user);
+        } catch (SQLException e) {
+            throw e;
+        }
+        return annonces_valideesOfAnUser;
     }
 }

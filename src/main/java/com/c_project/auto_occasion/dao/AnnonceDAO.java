@@ -31,10 +31,10 @@ public class AnnonceDAO {
                     Timestamp date_annonce = rs.getTimestamp("date_annonce");
                     String toerana = rs.getString("lieu");
                     String image = rs.getString("image_car");
+                    double prix = rs.getDouble("prix");
                     String descri_annonce = rs.getString("description_annonce");
                     boolean etat_validation_annonce = rs.getBoolean("validation_annonce");
-                    String nom_voiture = rs.getString("nom_voiture");
-                    annonces.add( new Annonce( id_annonce, id_user, id_car, statut, date_annonce, toerana, image, descri_annonce, etat_validation_annonce, nom_voiture ) );
+                    annonces.add( new Annonce( id_annonce, id_user, id_car, statut, date_annonce, toerana, image, prix,descri_annonce, etat_validation_annonce) );
                 }
                 return annonces;
             }
@@ -64,6 +64,100 @@ public class AnnonceDAO {
         }
         return annonces;
     }
+    /// find all annonce where validation = true
+    public List<Annonce> findAllAnnonceValidee(Connection con) throws Exception {
+        Statement stmt = null;
+        List<Annonce> annonces = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM annonce WHERE validation_annonce = true";
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            System.out.println("Affichage de toutes les annonces...");
+            if(!rs.isBeforeFirst()){
+                return null;
+            } else {
+                while(rs.next()) {
+                    int id_annonce = rs.getInt("idannonce");
+                    int id_user = rs.getInt("iduser");
+                    int id_car = rs.getInt("idcar");
+                    int statut = rs.getInt("statut");
+                    Timestamp date_annonce = rs.getTimestamp("date_annonce");
+                    String toerana = rs.getString("lieu");
+                    String image = rs.getString("image_car");
+                    double prix = rs.getDouble("prix");
+                    String descri_annonce = rs.getString("description_annonce");
+                    boolean etat_validation_annonce = rs.getBoolean("validation_annonce");
+                    annonces.add( new Annonce( id_annonce, id_user, id_car, statut, date_annonce, toerana, image, prix,descri_annonce, etat_validation_annonce) );
+                }
+                return annonces;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error with getting all the admin...");
+            throw e;
+        } finally {
+            if(stmt != null) {
+                stmt.close();
+            }
+        }
+    }
+    public List<Annonce> findAllAnnonceValidee() throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        List<Annonce> annonces = new ArrayList<>();
+        try{
+            con = c.getConnection();
+            annonces = findAllAnnonceValidee(con);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+        return annonces;
+    }
+    /// one annonce validee = true
+    public Annonce findOneAnnonceValidee(Connection con, int id_annonce) throws Exception {
+        Annonce annonce = new Annonce();
+        Statement stmt = null;
+        ResultSet res=null;
+        try {
+            String query = "SELECT * FROM annonce WHERE idannonce= " + id_annonce + " AND validation_annonce = true";
+            stmt = con.createStatement();
+            res=stmt.executeQuery(query);
+            while (res.next()) {
+                annonce=new Annonce(res.getInt(1),res.getInt(2),res.getInt(3),res.getInt(4),res.getTimestamp(5),res.getString(6),res.getString(7),res.getDouble(8),res.getString(9),res.getBoolean(10));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while finding the user with the id " + id_annonce + " in annonce");
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+            if(res != null) {
+                res.close();
+            }
+        }
+        return annonce;
+    }
+    public Annonce findOneAnnonceValidee(int id_annonce) throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        Annonce annonce = new Annonce();
+        try{
+            con = c.getConnection();
+            annonce = findOneAnnonceValidee(con, id_annonce);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+        return annonce;
+    }
+
     /// Une annonce en particulier
     public Annonce findOneAnnonce(Connection con, int id_annonce) throws Exception {
         Annonce annonce = new Annonce();
@@ -74,7 +168,7 @@ public class AnnonceDAO {
             stmt = con.createStatement();
             res=stmt.executeQuery(query);
             while (res.next()) {
-                annonce=new Annonce(res.getInt(1),res.getInt(2),res.getInt(3),res.getInt(4),res.getTimestamp(5),res.getString(6),res.getString(7),res.getString(8),res.getBoolean(9),res.getString(10));
+                annonce=new Annonce(res.getInt(1),res.getInt(2),res.getInt(3),res.getInt(4),res.getTimestamp(5),res.getString(6),res.getString(7),res.getDouble(8),res.getString(9),res.getBoolean(10));
             }
         } catch (SQLException e) {
             System.out.println("Error while finding the user with the id " + id_annonce + " in annonce");
@@ -110,14 +204,15 @@ public class AnnonceDAO {
     public void createAnnonce(Connection con, Annonce newAnnonce) throws Exception {
         PreparedStatement pstmt = null;
         try {
-            String query = "INSERT INTO annonce(iduser, idcar, statut, date_annonce, lieu, image_car, description_annonce, validation_annonce, nom_voiture) VALUES(?, ?, 1, CURRENT_TIMESTAMP, ?, ?, ?, false, ?)";
+            String query = "INSERT INTO annonce(iduser, idcar, statut, date_annonce, lieu, image_car, prix, description_annonce, validation_annonce) VALUES(?, ?, 1, CURRENT_TIMESTAMP, ?, ?, ?, ?, false)";
             pstmt = con.prepareStatement(query);
             pstmt.setInt(1, newAnnonce.getIdUser());
             pstmt.setInt(2, newAnnonce.getIdCar());
             pstmt.setString(3, newAnnonce.getLieu());
             pstmt.setString(4, newAnnonce.getImage_car());
-            pstmt.setString(5, newAnnonce.getDescription());
-            pstmt.setString(6, newAnnonce.getNom_voiture());
+            pstmt.setDouble(5, newAnnonce.getPrix());
+            pstmt.setString(6, newAnnonce.getDescription());
+
 
             System.out.println("Saving the annonce of the user " + newAnnonce.getIdUser() + " in the table annonce");
             System.out.println(query);
@@ -222,62 +317,7 @@ public class AnnonceDAO {
         }
     }
     
-    /*public List<Annonce> advancedSearch(Connection connection, String keyword, Date date, Integer categoryId, BigDecimal price, Integer brandId, String model) throws SQLException {
-        List<Annonce> results = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT * FROM annonce JOIN voiture ON annonce.idCar = voiture.idCar JOIN marque ON voiture.idMarque = marque.idMarque WHERE ");
-        boolean firstCondition = true;
-        if (keyword != null) {
-            sql.append("(voiture.matricule LIKE '%").append(keyword).append("%' OR marque.marque LIKE '%").append(keyword).append("%')");
-            firstCondition = false;
-        }
-        if (date != null) {
-            if (!firstCondition) sql.append(" OR ");
-            sql.append("annonce.date_annonce = '").append(date).append("'");
-            firstCondition = false;
-        }
-        if (categoryId != null) {
-            if (!firstCondition) sql.append(" OR ");
-            sql.append("voiture.idCategorie = ").append(categoryId);
-            firstCondition = false;
-        }
-        if (price != null) {
-            if (!firstCondition) sql.append(" OR ");
-            sql.append("voiture.prix <= ").append(price);
-            firstCondition = false;
-        }
-        if (brandId != null) {
-            if (!firstCondition) sql.append(" OR ");
-            sql.append("voiture.idMarque = ").append(brandId);
-            firstCondition = false;
-        }
-        if (model != null) {
-            if (!firstCondition) sql.append(" OR ");
-            sql.append("detail_voiture.modele LIKE '%").append(model).append("%'");
-        }
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(sql.toString());
-        while (resultSet.next()) {
-            Annonce annonce = new Annonce(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(3), resultSet.getInt(4), resultSet.getDate(5), resultSet.getString(6), resultSet.getString(7), resultSet.getString(8), resultSet.getBoolean(9));
-            results.add(annonce);
-        }
-        return results;
-    }
-    public List<Annonce> search(String keyword, Date date, Integer categoryId, BigDecimal price, Integer brandId, String model) throws Exception {
-        Connexion c = new Connexion();
-        Connection con = null;
-        List<Annonce> sList = new ArrayList<>();
-        try{
-            con = c.getConnection();
-            sList = advancedSearch(con, keyword, date, categoryId, price, brandId, model);
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            if(con != null) {
-                con.close();
-            }
-        }
-        return sList;
-    }*/
+
     /// maka annonces nataon'ny utilisateur ray
     public List<Annonce> findAllUserSAnnonce(Connection con, int id_user) throws SQLException {
         List<Annonce> annonces = new ArrayList<>();
@@ -294,9 +334,9 @@ public class AnnonceDAO {
                     annonce.setDate_annonce(rs.getTimestamp("date_annonce"));
                     annonce.setLieu(rs.getString("lieu"));
                     annonce.setImage_car(rs.getString("image_car"));
+                    annonce.setPrix(rs.getDouble("prix"));
                     annonce.setDescription(rs.getString("description_annonce"));
                     annonce.setValidation_annonce(rs.getBoolean("validation_annonce"));
-                    annonce.setNom_voiture(rs.getString("nom_voiture"));
                     annonces.add(annonce);
                 }
             }
@@ -342,10 +382,11 @@ public class AnnonceDAO {
                 Timestamp date_annonce = rs.getTimestamp("date_annonce");
                 String lieu = rs.getString("lieu");
                 String imagevoiture = rs.getString("image_car");
+                double prix_vam = rs.getDouble("prix");
                 String description = rs.getString("description_annonce");
                 boolean validation = rs.getBoolean("validation_annonce");
                 String nom_voiture = rs.getString("nom_voiture");
-                one_annonceOfanUser = new Annonce(id, iduser, id_car, statut, date_annonce, lieu, imagevoiture, description, validation, nom_voiture) ;
+                one_annonceOfanUser = new Annonce(id, iduser, id_car, statut, date_annonce, lieu, imagevoiture, prix_vam,description, validation) ;
             }
         } catch (SQLException e) {
             System.out.println("Error while getting the annonce " + id_annonce + " of the user : "+id_user);
@@ -373,5 +414,168 @@ public class AnnonceDAO {
             }
         }
         return oneAnnonceOfAnUser;
+    }
+    // annonces non validées
+    public List<Annonce> findAllAnnonceNonValidee(Connection con) throws Exception {
+        List<Annonce> annonces_nonvalidees = new ArrayList<>();
+        String query = "SELECT * FROM annonce WHERE validation_annonce = false";
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Annonce annonce = new Annonce();
+                    annonce.setIdAnnonce(rs.getInt("idAnnonce"));
+                    annonce.setIdUser(rs.getInt("idUser"));
+                    annonce.setIdCar(rs.getInt("idCar"));
+                    annonce.setStatut(rs.getInt("statut"));
+                    annonce.setDate_annonce(rs.getTimestamp("date_annonce"));
+                    annonce.setLieu(rs.getString("lieu"));
+                    annonce.setImage_car(rs.getString("image_car"));
+                    annonce.setPrix(rs.getDouble("prix"));
+                    annonce.setDescription(rs.getString("description_annonce"));
+                    annonce.setValidation_annonce(rs.getBoolean("validation_annonce"));
+                    annonces_nonvalidees.add(annonce);
+                }
+            }
+        }
+        return annonces_nonvalidees;
+    }
+    public List<Annonce> findAllAnnonceNonValidee() throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        List<Annonce> annonces_nonvalidees = new ArrayList<>();
+        try {
+            con = c.getConnection();
+            annonces_nonvalidees = findAllAnnonceNonValidee(con);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+        return annonces_nonvalidees;
+    }
+    // Annonce validée
+    public List<Annonce> findAllAnnonceValidees(Connection con) throws Exception {
+        List<Annonce> annonces_validees = new ArrayList<>();
+        String query = "SELECT * FROM annonce WHERE validation_annonce = true";
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Annonce annonce = new Annonce();
+                    annonce.setIdAnnonce(rs.getInt("idAnnonce"));
+                    annonce.setIdUser(rs.getInt("idUser"));
+                    annonce.setIdCar(rs.getInt("idCar"));
+                    annonce.setStatut(rs.getInt("statut"));
+                    annonce.setDate_annonce(rs.getTimestamp("date_annonce"));
+                    annonce.setLieu(rs.getString("lieu"));
+                    annonce.setImage_car(rs.getString("image_car"));
+                    annonce.setPrix(rs.getDouble("prix"));
+                    annonce.setDescription(rs.getString("description_annonce"));
+                    annonce.setValidation_annonce(rs.getBoolean("validation_annonce"));
+                    annonces_validees.add(annonce);
+                }
+            }
+        }
+        return annonces_validees;
+    }
+    public List<Annonce> findAllAnnonceValidees() throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        List<Annonce> annonces_validees = new ArrayList<>();
+        try {
+            con = c.getConnection();
+            annonces_validees = findAllAnnonceValidees(con);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+        return annonces_validees;
+    }
+
+    /// find all annonce non validees d'un utilisateur
+    public List<Annonce> findAllAnnonceNonValideeOfUser(Connection con, int id_user) throws Exception {
+        List<Annonce> annonces_nonvalidees = new ArrayList<>();
+        String query = "SELECT * FROM annonce WHERE validation_annonce = false AND idUser = ?";
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setInt(1, id_user);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Annonce annonce = new Annonce();
+                    annonce.setIdAnnonce(rs.getInt("idAnnonce"));
+                    annonce.setIdUser(rs.getInt("idUser"));
+                    annonce.setIdCar(rs.getInt("idCar"));
+                    annonce.setStatut(rs.getInt("statut"));
+                    annonce.setDate_annonce(rs.getTimestamp("date_annonce"));
+                    annonce.setLieu(rs.getString("lieu"));
+                    annonce.setImage_car(rs.getString("image_car"));
+                    annonce.setPrix(rs.getDouble("prix"));
+                    annonce.setDescription(rs.getString("description_annonce"));
+                    annonce.setValidation_annonce(rs.getBoolean("validation_annonce"));
+                    annonces_nonvalidees.add(annonce);
+                }
+            }
+        }
+        return annonces_nonvalidees;
+    }
+    public List<Annonce> findAllAnnonceNonValideeOfUser(int id_user) throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        List<Annonce> annonces_nonvalidees = new ArrayList<>();
+        try {
+            con = c.getConnection();
+            annonces_nonvalidees = findAllAnnonceNonValideeOfUser(con, id_user);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+        return annonces_nonvalidees;
+    }
+    /// find all annonce validees d'un utilisateur
+    public List<Annonce> findAllAnnonceValideeOfUser(Connection con, int id_user) throws Exception {
+        List<Annonce> annonces_nonvalidees = new ArrayList<>();
+        String query = "SELECT * FROM annonce WHERE validation_annonce = true AND idUser = ?";
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setInt(1, id_user);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Annonce annonce = new Annonce();
+                    annonce.setIdAnnonce(rs.getInt("idAnnonce"));
+                    annonce.setIdUser(rs.getInt("idUser"));
+                    annonce.setIdCar(rs.getInt("idCar"));
+                    annonce.setStatut(rs.getInt("statut"));
+                    annonce.setDate_annonce(rs.getTimestamp("date_annonce"));
+                    annonce.setLieu(rs.getString("lieu"));
+                    annonce.setImage_car(rs.getString("image_car"));
+                    annonce.setPrix(rs.getDouble("prix"));
+                    annonce.setDescription(rs.getString("description_annonce"));
+                    annonce.setValidation_annonce(rs.getBoolean("validation_annonce"));
+                    annonces_nonvalidees.add(annonce);
+                }
+            }
+        }
+        return annonces_nonvalidees;
+    }
+    public List<Annonce> findAllAnnonceValideeOfUser(int id_user) throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        List<Annonce> annonces_validees = new ArrayList<>();
+        try {
+            con = c.getConnection();
+            annonces_validees = findAllAnnonceValideeOfUser(con, id_user);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+        return annonces_validees;
     }
 }

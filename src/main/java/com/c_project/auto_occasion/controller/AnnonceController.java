@@ -27,8 +27,8 @@ public class AnnonceController {
         this.utilisateur_siteService = utilisateur_siteService;
     }
       // Update status 
-      @PutMapping("/update/{id}")
-      public ResponseEntity<String> updateStatut(@RequestBody int newState ,@PathVariable int id) {
+      @PutMapping("/update_statut_backoffice/{id}/{newState}")
+      public ResponseEntity<String> updateStatut(@PathVariable int newState ,@PathVariable int id) {
           try {
              annonceService.updateStatut(newState, id);
              return new ResponseEntity<>("Annonce's state updated successfully", HttpStatus.OK);
@@ -38,18 +38,35 @@ public class AnnonceController {
           }
       }
 
+    @PutMapping("/update_statut/{id}/{newState}")
+    public ResponseEntity<String> updateStatutOfUserToken(@RequestHeader("Authorization") String authorizationHeader,@PathVariable int newState ,@PathVariable int id) {
+        try {
+            if (authorizationHeader == null || authorizationHeader.isEmpty()) {
+                return new ResponseEntity<>("Authorization header is missing", HttpStatus.UNAUTHORIZED);
+            }
+            annonceService.updateStatut(newState, id);
+            return new ResponseEntity<>("Annonce's state updated successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error updating Annonce's state", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
    
     @PostMapping("/create_annonce")
     public ResponseEntity<String> createAnnonce(@RequestHeader("Authorization") String authorizationHeader,@RequestBody Annonce newAnnonce) {
-        try {
-            Utilisateur_site user=utilisateur_siteService.findToken(authorizationHeader);
-           newAnnonce.setIdUser(user.getIdUser());
-            annonceService.create(newAnnonce);
-            return new ResponseEntity<>("Annonce created successfully", HttpStatus.CREATED);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("Error creating annonce", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+          try {
+              if (authorizationHeader == null || authorizationHeader.isEmpty()) {
+                  return new ResponseEntity<>("Authorization header is missing", HttpStatus.UNAUTHORIZED);
+              }
+              Utilisateur_site user=utilisateur_siteService.findToken(authorizationHeader);
+              newAnnonce.setIdUser(user.getIdUser());
+              annonceService.create(newAnnonce);
+              return new ResponseEntity<>("Annonce created successfully", HttpStatus.CREATED);
+          } catch (Exception e) {
+              e.printStackTrace();
+              return new ResponseEntity<>("Error creating annonce", HttpStatus.INTERNAL_SERVER_ERROR);
+          }
     }
     @DeleteMapping("/delete_annonce/{id_annonce}")
     public ResponseEntity<Void> deleteAnnonce(@PathVariable int id_annonce) {
@@ -90,10 +107,13 @@ public class AnnonceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @GetMapping("/annonces_of_user")
     public ResponseEntity<List<Annonce>> allAnnoncesOfAnUser(@RequestHeader("Authorization") String authorizationHeader) {
         try {
-
+            if (authorizationHeader == null || authorizationHeader.isEmpty()) {
+                return new ResponseEntity<>( HttpStatus.UNAUTHORIZED );
+            }
             Utilisateur_site user=utilisateur_siteService.findToken(authorizationHeader);
             int id_user = user.getIdUser();
             List<Annonce> annonces = annonceService.findAllUser_s_Annonces(id_user);
@@ -108,9 +128,12 @@ public class AnnonceController {
         }
     }
 
-     @GetMapping("one_annonce_user/{id_annonce}")
+    @GetMapping("/one_annonce_user/{id_annonce}")
     public ResponseEntity<Annonce> oneUserAnnonce(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int id_annonce) {
         try {
+            if (authorizationHeader == null || authorizationHeader.isEmpty()) {
+                return new ResponseEntity<>( HttpStatus.UNAUTHORIZED );
+            }
             Utilisateur_site user=utilisateur_siteService.findToken(authorizationHeader);
             int id_user = user.getIdUser();
             Annonce annonce = annonceService.findOneAnnonceOfAnUser(id_user, id_annonce);
@@ -124,5 +147,62 @@ public class AnnonceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
+
+    @GetMapping("/annonces_non_validees")
+    public ResponseEntity<List<Annonce>> annoncesNonValidees() {
+        try {
+            List<Annonce> annonces = annonceService.findAllAnnonceNonValidee();
+            if (annonces != null) {
+                return new ResponseEntity<>(annonces, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/annonces_validees")
+    public ResponseEntity<List<Annonce>> annoncesValidees() {
+        try {
+            List<Annonce> annonces = annonceService.findAllAnnoncesValidee();
+            if (annonces != null) {
+                return new ResponseEntity<>(annonces, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/annonces_validees/{id_user}")
+    public ResponseEntity<List<Annonce>> annoncesValideesOfUser(@PathVariable int id_user) {
+        try {
+            List<Annonce> annonces = annonceService.findAllAnnonceValideeOfUser(id_user);
+            if (annonces != null) {
+                return new ResponseEntity<>(annonces, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/annonces_non_validees/{id_user}")
+    public ResponseEntity<List<Annonce>> annoncesNonValideesOfUser(@PathVariable int id_user) {
+        try {
+            List<Annonce> annonces = annonceService.findAllAnnonceNonValideeOfUser(id_user);
+            if (annonces != null) {
+                return new ResponseEntity<>(annonces, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

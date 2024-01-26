@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class Utilisateur_siteService {
@@ -51,6 +53,21 @@ public class Utilisateur_siteService {
         }
         return token;
      }
+     public List<Utilisateur_site> findAllUser() throws Exception {
+         Connection connection = null;
+         List<Utilisateur_site> users = new ArrayList<>();
+         try {
+             connection = con.getConnection();
+             users = utilisateurSiteDAO.findAllUser();
+         } catch (SQLException e) {
+             throw e;
+         } finally {
+             if(connection != null) {
+                 connection.close();
+             }
+         }
+         return users;
+     }
      public Utilisateur_site findOne(int id_user) throws Exception {
          Connection connection = null;
          Utilisateur_site user = new Utilisateur_site();
@@ -66,7 +83,7 @@ public class Utilisateur_siteService {
          }
          return user;
      }
-
+    
      public Utilisateur_site findToken(String token) throws Exception {
         Connection connection = null;
         Utilisateur_site one_fav = new Utilisateur_site();
@@ -81,5 +98,53 @@ public class Utilisateur_siteService {
             }
         }
         return one_fav;
+    }
+    public int getLastCreatedUser() throws Exception {
+        Connection connection = null;
+        int iduser = 0;
+        try {
+            connection = con.getConnection();
+            iduser = utilisateurSiteDAO.getLastCreatedUser();
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(connection != null) {
+                connection.close();
+            }
+        }
+        return iduser;
+    }
+    public String getTokenUser(int id_user) throws Exception {
+        Connection connection = null;
+        String token = null;
+        try {
+            connection = con.getConnection();
+            token = utilisateurSiteDAO.getTokenUser(id_user);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(connection != null) {
+                connection.close();
+            }
+        }
+        return token;
+    }
+    public String generateToken(String email, String password) throws Exception {
+        String token = null;
+        try {
+            token = utilisateurSiteDAO.generateToken(email, password);
+        } catch (Exception e) {
+            throw e;
+        }
+        return token;
+    }
+    public void saveToken(String token, int userId) throws Exception {
+        Connection connection = null;
+        try {
+            connection = con.getConnection();
+            utilisateurSiteDAO.saveTokenToDatabase(connection, token, userId);
+        } catch (SQLException e) {
+            throw e;
+        }
     }
 }
