@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,33 +57,34 @@ public class VoitureController {
         }
     }
 
-  /*  @PostMapping("/insert")
-    public ResponseEntity<String> insertion(@Requ) {
+    @PostMapping("/insert")
+    public ResponseEntity<String> insertion(@RequestBody Voiture voiture) {
         try {
             voitureService.create(voiture);
-            return new ResponseEntity<>("Categorie created successfully", HttpStatus.CREATED);
+            return new ResponseEntity<>("Voiture created successfully", HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }*/
+    }
 
-    /*@PutMapping("/update/{idcategorie}")
-    public ResponseEntity<String> update(@PathVariable int idcategorie, @RequestBody Categorie updated_categorie) {
+
+    @PutMapping("/update/{idcar}")
+    public ResponseEntity<String> update(@PathVariable int idcar, @RequestBody Voiture updated_voiture) {
         try {
-            Categorie existingMarque = categorieService.findOne(idcategorie);
+            Voiture existingMarque = voitureService.findone(idcar);
             if (existingMarque != null) {
-                categorieService.update(idcategorie, updated_categorie.getCategorie());
-                return new ResponseEntity<>("Categorie name updated successfully", HttpStatus.OK);
+                voitureService.updateVoiture(updated_voiture, idcar);
+                return new ResponseEntity<>("Voiture name updated successfully", HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("Categorie not found", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("Voiture not found", HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>("Error updating Categorie name", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error updating Voiture name", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-*/
+
     @DeleteMapping("/delete/{idcar}")
     public ResponseEntity<String> delete(@PathVariable int idcar) {
         try {
@@ -94,3 +96,4 @@ public class VoitureController {
         }
     }
 }
+    
