@@ -39,7 +39,7 @@ public class Utilisateur_siteController {
             String token_creation = utilisateur_siteService.generateToken(newUser.getEmail(), newUser.getMdp());
             utilisateur_siteService.saveToken(token_creation, id_lastusercreated);
             String token = utilisateur_siteService.getTokenUser(id_lastusercreated);
-            return new ResponseEntity<>("User created successfully, token : "+ token, HttpStatus.CREATED);
+            return new ResponseEntity<>(token, HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("Error creating user", HttpStatus.INTERNAL_SERVER_ERROR);
