@@ -69,12 +69,11 @@ public class Admin_siteService {
         }
         return one_admin;
     }
-    public boolean verif_Admin(String email, String password) throws Exception {
+    public void verif_Admin(String email, String password) throws Exception {
         Connection connection = null;
-        boolean return_value = false;
         try {
             connection = con.getConnection();
-            return_value = adminSiteDAO.verificationAdmin(email, password);
+            adminSiteDAO.verificationAdmin(email, password);
         } catch (SQLException e) {
             throw e;
         } finally {
@@ -82,7 +81,6 @@ public class Admin_siteService {
                 connection.close();
             }
         }
-        return return_value;
     }
     public void validerAnnonce(int id_annonce) throws Exception {
         Connection connection = null;
