@@ -11,13 +11,14 @@ import java.util.List;
 public class FavorisDAO {
     public FavorisDAO() {
     }
+    //liste favoris
     public List<Annonce> getFavorisForUser(Connection conn, int idUser) throws SQLException {
         List<Annonce> results = new ArrayList<>();
         Statement stmt=null;
         //  Annonce a=new Annonce();
         try {
             // Créer la requête
-            String sql = "SELECT * FROM utilisateur_site us JOIN annonce a ON us.idUser = a.idUser JOIN voiture v ON a.idCar = v.idCar JOIN favoris f ON a.idAnnonce = f.idAnnonce JOIN detail_voiture dv ON v.idDetail = dv.idDetail JOIN categorie c ON v.idCategorie = c.idCategorie JOIN marque m ON v.idMarque = m.idMarque WHERE us.idUser=" + idUser;
+            String sql = "SELECT * FROM utilisateur_site us JOIN favoris f ON us.idUser = f.user_id JOIN annonce a ON f.idAnnonce = a.idAnnonce JOIN voiture v ON a.idCar = v.idCar JOIN detail_voiture dv ON v.idDetail = dv.idDetail  JOIN categorie c ON v.idCategorie = c.idCategorie JOIN marque m ON v.idMarque = m.idMarque   WHERE us.idUser = " + idUser;
             // Exécuter la requête
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);

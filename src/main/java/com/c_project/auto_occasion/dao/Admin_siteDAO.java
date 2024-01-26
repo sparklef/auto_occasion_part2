@@ -127,44 +127,41 @@ public class Admin_siteDAO {
         }
     }
     /// CRUD
-    public boolean verificationAdmin(Connection con, String email, String password) throws SQLException, Exception {
-        PreparedStatement pstmt = null;
-        boolean verif_admin = false;
+    public void verificationAdmin(Connection con, String email, String password) throws SQLException, Exception {
+        Statement stmt = null;
         try {
-            String sql = "SELECT * FROM admin_site WHERE email = ?";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, email);
-            ResultSet rs = pstmt.executeQuery();
+            String sql = "SELECT * FROM admin_site WHERE email = '" + email + "' AND mdp = '" + password +"'";
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
             System.out.println(sql);
             if (!rs.next()) {
-                System.out.println("Vide");
-                return verif_admin;
+                throw new Exception("Admin does not exist" + email + password);
             } else {
-                String storedPassword = rs.getString("mdp");
-                if (storedPassword != null && storedPassword.equals(password)) {
-                    System.out.println("Email and password are correct");
-                    verif_admin = true;
-                } else {
-                    System.out.println("Wrong password");
+                if (email.equals(rs.getString("email")) && password.equals(rs.getString("mdp"))) {
+                    System.out.println("Email and password are correct" + email + "password" + password);
+                }
+                else {
+                    System.out.println("Email ou mot de passe incorrect");
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error while verifying the admin");
+            System.out.println("Error while verifying " + email + ", " + password + " in utilisateur_site");
             throw e;
         } finally {
-            if (pstmt != null) {
-                pstmt.close();
+            if(stmt != null) {
+                stmt.close();
+            }
+            if(con != null) {
+                con.close();
             }
         }
-        return verif_admin;
     }
-    public boolean verificationAdmin(String email, String password) throws SQLException, Exception {
+    public void verificationAdmin(String email, String password) throws SQLException, Exception {
         Connexion c = new Connexion();
         Connection con = null;
-        boolean verif_admin = false;
         try{
             con = c.getConnection();
-            verif_admin = verificationAdmin(con, email, password);
+            verificationAdmin(con, email, password);
         } catch (SQLException e) {
             throw e;
         } finally {
@@ -172,7 +169,6 @@ public class Admin_siteDAO {
                 con.close();
             }
         }
-        return verif_admin;
     }
     /// trouver un admin par son identifiant
     public Admin_site findById(Connection con, int id_admin) throws Exception {

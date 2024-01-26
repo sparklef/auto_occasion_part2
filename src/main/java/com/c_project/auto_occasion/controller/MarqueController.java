@@ -15,7 +15,7 @@ import java.util.List;
 public class MarqueController {
     @Autowired
     private MarqueService marqueService;
-
+    // all marque
     @GetMapping("/all")
     public ResponseEntity<List<Marque>> getAllMarques() {
         try {
@@ -30,7 +30,7 @@ public class MarqueController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    // creation marque
     @PostMapping("/create")
     public ResponseEntity<String> createMarque(@RequestBody Marque marque) {
         try {
@@ -41,7 +41,7 @@ public class MarqueController {
             return new ResponseEntity<>("Error creating marque", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    // update a car brand
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateMarqueName(@PathVariable int id, @RequestBody Marque updateRequest) {
         try {
@@ -57,7 +57,7 @@ public class MarqueController {
             return new ResponseEntity<>("Error updating marque name", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    // delete a brand of car
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteMarque(@PathVariable int id) {
         try {
@@ -68,7 +68,7 @@ public class MarqueController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    // find one brand by his id
     @GetMapping("/findOne/{id}")
     public ResponseEntity<Marque> getMarqueById(@PathVariable int id) {
         try {

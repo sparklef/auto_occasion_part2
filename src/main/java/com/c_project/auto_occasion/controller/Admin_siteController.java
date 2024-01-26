@@ -15,6 +15,7 @@ import java.util.List;
 public class Admin_siteController {
     @Autowired
     private Admin_siteService adminSiteService;
+    // all the admin
     @GetMapping("/allAdmin")
     public ResponseEntity<List<Admin_site>> getAllAdmin() {
         try {
@@ -29,6 +30,7 @@ public class Admin_siteController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    // one admin with his id
     @GetMapping("/findOne/{id_admin}")
     public ResponseEntity<Admin_site> getAdminById(@PathVariable int id_admin) {
         try {
@@ -43,6 +45,7 @@ public class Admin_siteController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    // create a new admin
     @PostMapping("/create")
     public ResponseEntity<String> createAdmin(@RequestBody Admin_site newAdmin) {
         try {
@@ -53,6 +56,7 @@ public class Admin_siteController {
             return new ResponseEntity<>("Error creating admin", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    // updating an admin
     @PutMapping("/update_admin/{id_admin}")
     public ResponseEntity<String> updateAdmin(@RequestBody Admin_site update, @PathVariable int id_admin) {
         try {
@@ -68,6 +72,7 @@ public class Admin_siteController {
             return new ResponseEntity<>("Error updating admin", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    // deleting an admin
     @DeleteMapping("/delete/{id_admin}")
     public ResponseEntity<Void> deleteAdmin(@PathVariable int id_admin) {
         try {
@@ -78,6 +83,7 @@ public class Admin_siteController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    // verification admin
     @PostMapping("/verif")
     public ResponseEntity<String> verifAdmin(@RequestBody Admin_site admin) {
         try {
@@ -88,6 +94,7 @@ public class Admin_siteController {
             return new ResponseEntity<>("Error verification user", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    /// validate one annonce
     @PutMapping("/validate_annonce/{id_annonce}")
     public ResponseEntity<String> validerAnnonce(@PathVariable int id_annonce) {
         try {
