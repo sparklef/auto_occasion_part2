@@ -336,14 +336,10 @@ public class UtilisateurSiteDAO {
         Connexion c = new Connexion();
         con = c.getConnection();
         // Insert the token information into the utilisateur_token table
-        String insertQuery = "INSERT INTO utilisateur_token (token_user, idUser, date_exp) VALUES (?, ?, ?)";
+        String insertQuery = "INSERT INTO utilisateur_token (token_user, idUser) VALUES (?, ?)";
         try (PreparedStatement preparedStatement = con.prepareStatement(insertQuery)) {
             preparedStatement.setString(1, token);
             preparedStatement.setInt(2, userId);
-
-            // Set expiration date
-            long expirationTimestamp = System.currentTimeMillis() + TOKEN_EXPIRATION_TIME;
-            preparedStatement.setDate(3, new java.sql.Date(expirationTimestamp));
 
             preparedStatement.executeUpdate();
         }

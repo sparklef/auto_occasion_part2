@@ -12,9 +12,9 @@ public class Annonce {
     Timestamp date_annonce;
     String lieu;
     String image_car;
+    double prix;
     String description;
     boolean validation_annonce;
-    String nom_voiture;
     
     public Annonce() {
     }
@@ -75,6 +75,14 @@ public class Annonce {
         this.image_car = image_car;
     }
 
+    public double getPrix() {
+        return prix;
+    }
+
+    public void setPrix(double prix) {
+        this.prix = prix;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -91,15 +99,7 @@ public class Annonce {
         this.validation_annonce = validation_annonce;
     }
 
-    public String getNom_voiture() {
-        return nom_voiture;
-    }
-
-    public void setNom_voiture(String nom_voiture) {
-        this.nom_voiture = nom_voiture;
-    }
-
-    public Annonce(int idAnnonce, int idUser, int idCar, int statut, Timestamp date_annonce, String lieu, String image_car, String description, boolean validation_annonce, String nom_voiture) {
+    public Annonce(int idAnnonce, int idUser, int idCar, int statut, Timestamp date_annonce, String lieu, String image_car, double prix, String description, boolean validation_annonce) {
         this.idAnnonce = idAnnonce;
         this.idUser = idUser;
         this.idCar = idCar;
@@ -107,8 +107,8 @@ public class Annonce {
         this.date_annonce = date_annonce;
         this.lieu = lieu;
         this.image_car = image_car;
+        this.prix = prix;
         this.description = description;
         this.validation_annonce = validation_annonce;
-        this.nom_voiture = nom_voiture;
     }
 }
