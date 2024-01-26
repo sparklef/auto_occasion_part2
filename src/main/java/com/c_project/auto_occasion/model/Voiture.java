@@ -2,8 +2,8 @@ package com.c_project.auto_occasion.model;
 
 public class Voiture {
     int idCar;
+    String nom_voiture;
     String matricule;
-    double prix;
     Marque marque_voiture;
     Categorie categorie;
     Detail_voiture detail;
@@ -27,12 +27,12 @@ public class Voiture {
         this.matricule = matricule;
     }
 
-    public double getPrix() {
-        return prix;
+    public String getNom_voiture() {
+        return nom_voiture;
     }
 
-    public void setPrix(double prix) {
-        this.prix = prix;
+    public void setNom_voiture(String nom_voiture) {
+        this.nom_voiture = nom_voiture;
     }
 
     public Marque getMarque_voiture() {
@@ -59,10 +59,10 @@ public class Voiture {
         this.detail = detail;
     }
 
-    public Voiture(int idCar, String matricule, double prix, Marque marque_voiture, Categorie categorie, Detail_voiture detail) {
+    public Voiture(int idCar, String nom_voiture, String matricule, Marque marque_voiture, Categorie categorie, Detail_voiture detail) {
         this.idCar = idCar;
+        this.nom_voiture = nom_voiture;
         this.matricule = matricule;
-        this.prix = prix;
         this.marque_voiture = marque_voiture;
         this.categorie = categorie;
         this.detail = detail;
