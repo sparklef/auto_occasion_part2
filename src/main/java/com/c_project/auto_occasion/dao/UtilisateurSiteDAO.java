@@ -360,6 +360,7 @@ public class UtilisateurSiteDAO {
         Utilisateur_site one_user = new Utilisateur_site();
         try {
             String query = "SELECT * FROM utilisateur_site us JOIN utilisateur_token ut ON us.idUser = ut.idUser WHERE token_user=?";
+            // String query = "SELECT iduser AS id_user FROM utilisateur_token WHERE token_user = ?";
             pstmt = con.prepareStatement(query);
             pstmt.setString(1, token_user);
             ResultSet rs = pstmt.executeQuery();
@@ -403,6 +404,48 @@ public class UtilisateurSiteDAO {
             }
         }
         return one_favorite;
+    }
+
+    // Fonction pour avoir le token d'un utilisateur
+    public String getTokenUser(Connection con, int id_user) throws Exception {
+        Statement stmt = null;
+        ResultSet res=null;
+        String token_user = null;
+        try {
+            String query = "SELECT token_user FROM utilisateur_token WHERE iduser = "+id_user;
+            stmt = con.createStatement();
+            res=stmt.executeQuery(query);
+            while (res.next()) {
+                token_user = res.getString("token_user");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while finding the token of the user " + id_user + " in utilisateur_token");
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+            if(res != null) {
+                res.close();
+            }
+        }
+        return token_user;
+    }
+    public String getTokenUser(int id_user) throws Exception {
+        Connexion c = new Connexion();
+        Connection con = null;
+        String token_user = null;
+        try{
+            con = c.getConnection();
+            token_user = getTokenUser(con, id_user);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(con != null) {
+                con.close();
+            }
+        }
+        return token_user;
     }
      
 }

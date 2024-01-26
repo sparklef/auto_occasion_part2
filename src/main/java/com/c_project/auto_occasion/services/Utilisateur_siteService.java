@@ -82,5 +82,34 @@ public class Utilisateur_siteService {
         }
         return one_fav;
     }
-    
+    public int getLastCreatedUser() throws Exception {
+        Connection connection = null;
+        int iduser = 0;
+        try {
+            connection = con.getConnection();
+            iduser = utilisateurSiteDAO.getLastCreatedUser();
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(connection != null) {
+                connection.close();
+            }
+        }
+        return iduser;
+    }
+    public String getTokenUser(int id_user) throws Exception {
+        Connection connection = null;
+        String token = null;
+        try {
+            connection = con.getConnection();
+            token = utilisateurSiteDAO.getTokenUser(id_user);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if(connection != null) {
+                connection.close();
+            }
+        }
+        return token;
+    }
 }
