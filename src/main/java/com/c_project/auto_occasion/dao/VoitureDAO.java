@@ -17,7 +17,7 @@ public class VoitureDAO {
 
     public VoitureDAO() {
     }
-       // crud
+       // crud  //
     // get all voiture
     public List<Voiture> findAll(Connection con) throws Exception {
         Statement stmt = null;
