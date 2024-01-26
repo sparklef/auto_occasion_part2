@@ -18,7 +18,7 @@ public class UtilisateurSiteDAO {
     public UtilisateurSiteDAO() {
     }
        // crud
-    /*
+
        public void create(Connection con, Utilisateur_site newUser) throws Exception {
            PreparedStatement pstmt = null;
            ResultSet rs = null;
@@ -43,16 +43,6 @@ public class UtilisateurSiteDAO {
                pstmt.setString(1, newUser.getEmail());
                pstmt.setString(2, newUser.getMdp());
                rs = pstmt.executeQuery();
-
-               if (rs.next()) {
-                   int userId = rs.getInt(1);
-                   System.out.println("Generated user ID: " + userId);
-                   token = generateToken(newUser.getEmail(), newUser.getMdp());
-                   saveTokenToDatabase(con, token, userId);
-                   System.out.println("Generated token: " + token);
-               } else {
-                   System.out.println("Error: user not found in utilisateur_site table");
-               }
            } catch (SQLException e) {
                System.out.println("Error while saving " + newUser.getEmail() + " in utilisateur_site");
                throw e;
@@ -74,7 +64,9 @@ public class UtilisateurSiteDAO {
                }
            }
        }
-     */
+
+    /*
+    // 2 eme version
        public void create(Connection con, Utilisateur_site newUser) throws Exception {
            try (
                    PreparedStatement pstmtInsert = con.prepareStatement("INSERT INTO utilisateur_site(email, nom, prenom, mdp, contact) VALUES(?, ?, ?, ?, ?)");
@@ -96,6 +88,7 @@ public class UtilisateurSiteDAO {
                Statement pstmtSelect = con.createStatement();
 
                        int userId = getLastCreatedUser();
+
                        System.out.println("Generated user ID: " + userId);
                        String token = generateToken(newUser.getEmail(), newUser.getMdp());
                        saveTokenToDatabase(con, token, userId);
@@ -107,6 +100,7 @@ public class UtilisateurSiteDAO {
                throw e;
            }
        }
+    */
 
     public void create(Utilisateur_site newUser) throws Exception {
         Connexion c = new Connexion();
@@ -219,7 +213,7 @@ public class UtilisateurSiteDAO {
                 .compact();
         return token;
     }
-    private String generateToken(String email, String password) {
+    public String generateToken(String email, String password) {
         // Combine email, password, current timestamp, expiration time, and some additional information before hashing
         long currentTimestamp = System.currentTimeMillis();
         long expirationTimestamp = currentTimestamp + TOKEN_EXPIRATION_TIME;
@@ -338,7 +332,7 @@ public class UtilisateurSiteDAO {
         }
         return userId;
     }
-    private void saveTokenToDatabase(Connection con, String token, int userId) throws SQLException, Exception {
+    public void saveTokenToDatabase(Connection con, String token, int userId) throws SQLException, Exception {
         Connexion c = new Connexion();
         con = c.getConnection();
         // Insert the token information into the utilisateur_token table

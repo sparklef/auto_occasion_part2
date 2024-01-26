@@ -18,7 +18,7 @@ public class Utilisateur_siteController {
     private Utilisateur_siteService utilisateur_siteService;
 
       // Create
-
+/*
     @PostMapping("/create_user")
       public ResponseEntity<String> createUser(@RequestBody Utilisateur_site newUser) {
           try {
@@ -29,13 +29,15 @@ public class Utilisateur_siteController {
               return new ResponseEntity<>("Error creating user", HttpStatus.INTERNAL_SERVER_ERROR);
           }
       }
+*/
 
-    /*
     @PostMapping("/create_user")
-    public ResponseEntity<String> createUser(@RequestHeader("Authorization") String authorizationHeader, @RequestBody Utilisateur_site newUser) {
+    public ResponseEntity<String> createUser(@RequestBody Utilisateur_site newUser) {
         try {
             utilisateur_siteService.create(newUser);
             int id_lastusercreated=utilisateur_siteService.getLastCreatedUser();
+            String token_creation = utilisateur_siteService.generateToken(newUser.getEmail(), newUser.getMdp());
+            utilisateur_siteService.saveToken(token_creation, id_lastusercreated);
             String token = utilisateur_siteService.getTokenUser(id_lastusercreated);
             return new ResponseEntity<>("User created successfully, token : "+ token, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -43,7 +45,7 @@ public class Utilisateur_siteController {
             return new ResponseEntity<>("Error creating user", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-     */
+
     @PostMapping("/verif")
     public ResponseEntity<String> verifUser(@RequestBody Utilisateur_site user) throws Exception {
         Connexion con = new Connexion();

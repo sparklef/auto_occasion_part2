@@ -112,4 +112,22 @@ public class Utilisateur_siteService {
         }
         return token;
     }
+    public String generateToken(String email, String password) throws Exception {
+        String token = null;
+        try {
+            token = utilisateurSiteDAO.generateToken(email, password);
+        } catch (Exception e) {
+            throw e;
+        }
+        return token;
+    }
+    public void saveToken(String token, int userId) throws Exception {
+        Connection connection = null;
+        try {
+            connection = con.getConnection();
+            utilisateurSiteDAO.saveTokenToDatabase(connection, token, userId);
+        } catch (SQLException e) {
+            throw e;
+        }
+    }
 }
