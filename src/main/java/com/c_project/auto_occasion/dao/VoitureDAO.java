@@ -17,7 +17,7 @@ public class VoitureDAO {
 
     public VoitureDAO() {
     }
-       // crud
+       // crud  //
     // get all voiture
     public List<Voiture> findAll(Connection con) throws Exception {
         Statement stmt = null;
@@ -40,12 +40,12 @@ public class VoitureDAO {
                     int idmarque = rs.getInt("idmarque");
                     int idcategorie = rs.getInt("idcategorie");
                     int iddetail = rs.getInt("iddetail");
-    
+
                     // Assuming you have methods to fetch Marque, Categorie, and Detail_voiture objects using their IDs
                     Marque marque = m_service.findOne(idmarque);
                     Categorie categorie = c_service.findOne(idcategorie);
                     Detail_voiture detail_car = dv_service.getOneDetail(iddetail);
-                   voitures.add(new Voiture(idcar, matricule, nomvoiture, marque, categorie, detail_car));
+                    voitures.add(new Voiture(idcar, matricule, nomvoiture, marque, categorie, detail_car));
                 }
                 return voitures;
             }
@@ -58,7 +58,7 @@ public class VoitureDAO {
             }
         }
     }
-    
+
     public List<Voiture> findAll() throws Exception {
         Connexion c = new Connexion();
         Connection con = null;
@@ -96,14 +96,14 @@ public class VoitureDAO {
                     int idmarque = rs.getInt("idmarque");
                     int idcategorie = rs.getInt("idcategorie");
                     int iddetail = rs.getInt("iddetail");
-    
+
                     // Assuming you have methods to fetch Marque, Categorie, and Detail_voiture objects using their IDs
 
                     Marque marque = m_service.findOne(idmarque);
                     Categorie categorie = c_service.findOne(idcategorie);
                     Detail_voiture detail_car = dv_service.getOneDetail(iddetail);
 
-                   one_voiture= new Voiture(idcar, matricule, nomvoiture, marque, categorie, detail_car);
+                    one_voiture= new Voiture(idcar, matricule, nomvoiture, marque, categorie, detail_car);
                 }
                 return one_voiture;
             }
@@ -147,7 +147,7 @@ public class VoitureDAO {
             pstmt.setInt(5, voiture.getDetail().getIdDetail()); // Assuming Detail_voiture has a getId() method
             System.out.println("Saving " + voiture.getNom_voiture() + " in the table voiture");
             System.out.println(query);
-    
+
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error while saving " + voiture.getNom_voiture()+ " in voiture");
@@ -158,7 +158,7 @@ public class VoitureDAO {
             }
         }
     }
-    
+
     public void create(Voiture voiture) throws Exception {
         Connexion c = new Connexion();
         Connection con = null;
@@ -217,7 +217,7 @@ public class VoitureDAO {
             }
         }
     }
-  
+
     public void delete(Connection con,int id_car) throws Exception {
         Statement stmt = null;
         try{
@@ -253,5 +253,5 @@ public class VoitureDAO {
             }
         }
     }
-    
+
 }

@@ -51,10 +51,10 @@ public class Voiture {
     public void setDetail(Detail_voiture detail) {
         this.detail = detail;
     }
-    
+
 
     public Voiture(int idCar, String matricule, String nom_voiture, Marque marque_voiture, Categorie categorie,
-            Detail_voiture detail) {
+                   Detail_voiture detail) {
         this.idCar = idCar;
         this.matricule = matricule;
         this.nom_voiture = nom_voiture;
@@ -70,7 +70,4 @@ public class Voiture {
     public void setNom_voiture(String nom_voiture) {
         this.nom_voiture = nom_voiture;
     }
-
-
-  
 }
