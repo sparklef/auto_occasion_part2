@@ -4,6 +4,8 @@ import com.c_project.auto_occasion.model.Annonce;
 import com.c_project.auto_occasion.model.Categorie;
 import com.c_project.auto_occasion.model.Favoris;
 import com.c_project.auto_occasion.services.FavorisService;
+import com.c_project.auto_occasion.services.Utilisateur_siteService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

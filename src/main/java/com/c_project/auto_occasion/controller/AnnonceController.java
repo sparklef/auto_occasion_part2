@@ -125,11 +125,13 @@ public class AnnonceController {
 
     @GetMapping("/annonces_of_user")
     public ResponseEntity<List<Annonce>> allAnnoncesOfAnUser(@RequestHeader("Authorization") String authorizationHeader) {
+        String[]tab=authorizationHeader.split(" ");
+        System.out.println(tab[1]);
         try {
             if (authorizationHeader == null || authorizationHeader.isEmpty()) {
                 return new ResponseEntity<>( HttpStatus.UNAUTHORIZED );
             }
-            Utilisateur_site user=utilisateur_siteService.findToken(authorizationHeader);
+            Utilisateur_site user=utilisateur_siteService.findToken(tab[1]);
             int id_user = user.getIdUser();
             List<Annonce> annonces = annonceService.findAllUser_s_Annonces(id_user);
             if (annonces != null) {
