@@ -20,6 +20,7 @@ public class FavorisService {
         favorisDAO = new FavorisDAO();
         con = new Connexion();
     }
+    // all user's fav by his id
     public List<Annonce> allUserSFavoris(int id_user) throws Exception {
         Connection connection = null;
         List<Annonce> annoncesFav = new ArrayList<>();
@@ -35,11 +36,11 @@ public class FavorisService {
         }
         return annoncesFav;
     }
-    public void createFav(int id_annonce) throws Exception {
+    public void createFav(int id_annonce, int id_user) throws Exception {
         Connection connection = null;
         try {
             connection = con.getConnection();
-            favorisDAO.create(id_annonce);
+            favorisDAO.create(id_annonce, id_user);
         } catch (SQLException e) {
             throw e;
         } finally {

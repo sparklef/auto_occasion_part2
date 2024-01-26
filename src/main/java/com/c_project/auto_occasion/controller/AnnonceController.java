@@ -4,14 +4,11 @@ import com.c_project.auto_occasion.model.Annonce;
 import com.c_project.auto_occasion.model.Utilisateur_site;
 import com.c_project.auto_occasion.services.AnnonceService;
 import com.c_project.auto_occasion.services.Utilisateur_siteService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.sql.Date;
 import java.util.List;
 
 @RestController
@@ -51,8 +48,7 @@ public class AnnonceController {
             return new ResponseEntity<>("Error updating Annonce's state", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-   
+   /*
     @PostMapping("/create_annonce")
     public ResponseEntity<String> createAnnonce(@RequestHeader("Authorization") String authorizationHeader,@RequestBody Annonce newAnnonce) {
         String [] tab=authorizationHeader.split(" ");
@@ -70,6 +66,23 @@ public class AnnonceController {
               return new ResponseEntity<>("Error creating annonce", HttpStatus.INTERNAL_SERVER_ERROR);
           }
     }
+    */
+    @PostMapping("/create_annonce")
+    public ResponseEntity<String> createAnnonce(@RequestHeader("Authorization") String authorizationHeader,@RequestBody Annonce newAnnonce) {
+        try {
+            if (authorizationHeader == null || authorizationHeader.isEmpty()) {
+                return new ResponseEntity<>("Authorization header is missing", HttpStatus.UNAUTHORIZED);
+            }
+            Utilisateur_site user=utilisateur_siteService.findToken(authorizationHeader);
+            newAnnonce.setIdUser(user.getIdUser());
+            annonceService.create(newAnnonce);
+            return new ResponseEntity<>("Annonce created successfully", HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error creating annonce", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @DeleteMapping("/delete_annonce/{id_annonce}")
     public ResponseEntity<Void> deleteAnnonce(@PathVariable int id_annonce) {
         try {

@@ -135,6 +135,7 @@ public class VoitureDAO {
     }
 
     // crud
+
     public void create(Connection con, Voiture voiture) throws Exception {
         PreparedStatement pstmt = null;
         try {
@@ -145,6 +146,7 @@ public class VoitureDAO {
             pstmt.setInt(3, voiture.getMarque_voiture().getIdMarque()); // Assuming Marque has a getId() method
             pstmt.setInt(4, voiture.getCategorie().getIdCategorie()); // Assuming Categorie has a getId() method
             pstmt.setInt(5, voiture.getDetail().getIdDetail()); // Assuming Detail_voiture has a getId() method
+
             System.out.println("Saving " + voiture.getNom_voiture() + " in the table voiture");
             System.out.println(query);
 
@@ -158,6 +160,7 @@ public class VoitureDAO {
             }
         }
     }
+
 
     public void create(Voiture voiture) throws Exception {
         Connexion c = new Connexion();

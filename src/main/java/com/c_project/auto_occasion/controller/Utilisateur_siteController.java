@@ -18,7 +18,7 @@ public class Utilisateur_siteController {
     @Autowired
     private Utilisateur_siteService utilisateur_siteService;
 
-    // Create
+    // Create user
     @PostMapping("/create_user")
     public ResponseEntity<String> createUser(@RequestBody Utilisateur_site newUser) {
         try {
@@ -33,7 +33,7 @@ public class Utilisateur_siteController {
             return new ResponseEntity<>("Error creating user", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    // verification connexion user
     @PostMapping("/verif")
     public ResponseEntity<String> verifUser(@RequestBody Utilisateur_site user) throws Exception {
         Connexion con = new Connexion();
@@ -47,9 +47,9 @@ public class Utilisateur_siteController {
             return new ResponseEntity<>("Error verification user", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    // avoir tous les utilisateurs
     @GetMapping("/allUser")
-    public ResponseEntity<List<Utilisateur_site>> getAllAdmin() {
+    public ResponseEntity<List<Utilisateur_site>> getAllUser() {
         try {
             List<Utilisateur_site> users = utilisateur_siteService.findAllUser();
             if (users != null) {
@@ -62,7 +62,8 @@ public class Utilisateur_siteController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/findOne/{id_admin}")
+    // find one user by id
+    @GetMapping("/findOne/{id_user}")
     public ResponseEntity<Utilisateur_site> getAdminById(@PathVariable int id_user) {
         try {
             Utilisateur_site user = utilisateur_siteService.findOne(id_user);

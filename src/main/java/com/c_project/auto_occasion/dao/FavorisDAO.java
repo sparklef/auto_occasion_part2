@@ -63,12 +63,12 @@ public class FavorisDAO {
         return results;
     }
     // crud
-    public void create(Connection con, int id_annonce) throws Exception {
+    public void create(Connection con, int id_annonce, int id_user) throws Exception {
         Statement stmt = null;
         try{
-            String query = "INSERT INTO favoris(idannonce) VALUES("+ id_annonce +")";
+            String query = "INSERT INTO favoris(idannonce,user_id) VALUES("+ id_annonce +","+id_user+")";
             stmt = con.createStatement();
-            System.out.println("Saving "+ id_annonce +" in the table favoris");
+            System.out.println("Saving "+ id_annonce +" in the table favoris for the user "+id_user);
             System.out.println(query);
             stmt.executeUpdate(query);
         }catch (SQLException e) {
@@ -80,13 +80,13 @@ public class FavorisDAO {
             }
         }
     }
-    public void create(int id_annonce) throws Exception {
+    public void create(int id_annonce, int id_user) throws Exception {
         Connexion c = new Connexion();
         Connection con = null;
         try{
             con = c.getConnection();
             con.setAutoCommit(false);
-            create(con, id_annonce);
+            create(con, id_annonce, id_user);
             con.commit();
         }catch (SQLException e) {
             System.out.println("Error while inserting "+id_annonce+" in favoris");
@@ -182,7 +182,8 @@ public class FavorisDAO {
                 while(rs.next()) {
                     int id = rs.getInt("idfavoris");
                     int id_annonce = rs.getInt("idannonce");
-                    favoris.add( new Favoris( id, id_annonce ) );
+                    int id_user = rs.getInt("user_id");
+                    favoris.add( new Favoris( id, id_annonce, id_user ) );
                 }
                 return favoris;
             }
@@ -226,7 +227,8 @@ public class FavorisDAO {
                 while(rs.next()) {
                     int id = rs.getInt("idfavoris");
                     int id_annonce = rs.getInt("idannonce");
-                    one_favorite = new Favoris( id, id_annonce );
+                    int id_user = rs.getInt("user_id");
+                    one_favorite = new Favoris( id, id_annonce, id_user );
                 }
                 return one_favorite;
             }

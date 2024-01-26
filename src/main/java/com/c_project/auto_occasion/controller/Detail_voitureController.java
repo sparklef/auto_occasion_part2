@@ -28,6 +28,7 @@ import com.c_project.auto_occasion.services.Detail_voitureService;
 public class Detail_voitureController {
     @Autowired
     private Detail_voitureService detail_voitureService;
+    // recherche avancée
       @GetMapping("/search/{keyword}")
       public ResponseEntity<List<Detail>> search(@PathVariable String keyword) {
           try {
@@ -59,6 +60,7 @@ public class Detail_voitureController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    // one detail
     @GetMapping("/one_detail/{id_detail}")
     public ResponseEntity<Detail_voiture> oneDetail(@PathVariable int id_detail) {
         try {

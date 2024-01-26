@@ -63,6 +63,14 @@ public class Voiture {
         this.detail = detail;
     }
 
+    public Voiture(String matricule, String nom_voiture, Marque marque_voiture, Categorie categorie, Detail_voiture detail) {
+        this.matricule = matricule;
+        this.nom_voiture = nom_voiture;
+        this.marque_voiture = marque_voiture;
+        this.categorie = categorie;
+        this.detail = detail;
+    }
+
     public String getNom_voiture() {
         return nom_voiture;
     }

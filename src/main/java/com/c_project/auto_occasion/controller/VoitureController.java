@@ -5,15 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.c_project.auto_occasion.model.Voiture;
 import com.c_project.auto_occasion.services.VoitureService;
@@ -25,7 +17,7 @@ public class VoitureController {
     @Autowired
     private VoitureService voitureService;
 
-    //find all
+    //find all voiture
     @GetMapping("/all")
     public ResponseEntity<List<Voiture>> getAllVoitures() {
         try {
@@ -41,7 +33,7 @@ public class VoitureController {
         }
     }
 
-    //find one
+    //find one voiture
     @GetMapping("/findOne/{id}")
     public ResponseEntity<Voiture> getVoitureById(@PathVariable int id) {
         try {
@@ -56,10 +48,13 @@ public class VoitureController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    // insert a new car
     @PostMapping("/insert")
-    public ResponseEntity<String> insertion(@RequestBody Voiture voiture) {
+    public ResponseEntity<String> insertion(@RequestHeader("Authorization") String authorizationHeader, @RequestBody Voiture voiture) {
         try {
+            if (authorizationHeader == null || authorizationHeader.isEmpty()) {
+                return new ResponseEntity<>( HttpStatus.UNAUTHORIZED );
+            }
             voitureService.create(voiture);
             return new ResponseEntity<>("Voiture created successfully", HttpStatus.CREATED);
         } catch (Exception e) {
@@ -68,7 +63,7 @@ public class VoitureController {
         }
     }
 
-
+    // updating a car
     @PutMapping("/update/{idcar}")
     public ResponseEntity<String> update(@PathVariable int idcar, @RequestBody Voiture updated_voiture) {
         try {

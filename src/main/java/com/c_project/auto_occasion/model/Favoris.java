@@ -4,6 +4,8 @@ public class Favoris {
     int idFavoris;
     int idAnnonce;
 
+    int id_user;
+
     public Favoris() {
     }
 
@@ -23,8 +25,17 @@ public class Favoris {
         this.idAnnonce = idAnnonce;
     }
 
-    public Favoris(int idFavoris, int idAnnonce) {
+    public int getId_user() {
+        return id_user;
+    }
+
+    public void setId_user(int id_user) {
+        this.id_user = id_user;
+    }
+
+    public Favoris(int idFavoris, int idAnnonce, int id_user) {
         this.idFavoris = idFavoris;
         this.idAnnonce = idAnnonce;
+        this.id_user = id_user;
     }
 }

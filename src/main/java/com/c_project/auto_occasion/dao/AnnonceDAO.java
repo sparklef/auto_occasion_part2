@@ -213,7 +213,6 @@ public class AnnonceDAO {
             pstmt.setDouble(5, newAnnonce.getPrix());
             pstmt.setString(6, newAnnonce.getDescription());
 
-
             System.out.println("Saving the annonce of the user " + newAnnonce.getIdUser() + " in the table annonce");
             System.out.println(query);
             pstmt.executeUpdate();
