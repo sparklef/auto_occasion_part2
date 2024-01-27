@@ -202,19 +202,6 @@ public class UtilisateurSiteDAO {
         }
         return token;
     }
-    /// generation token
-    public String generateBearerToken(String email, String password) {
-        Utilisateur_site user = new Utilisateur_site();
-        SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-        Date expirationDate = new Date(System.currentTimeMillis() + 1800000);
-        String token = Jwts.builder()
-                .setSubject(user.getNom())
-                .claim("iduser", user.getIdUser())
-                .setExpiration(expirationDate)
-                .signWith(SignatureAlgorithm.HS256, secretKey)
-                .compact();
-        return token;
-    }
     public String generateToken(String email, String password) {
         // Combine email, password, current timestamp, expiration time, and some additional information before hashing
         long currentTimestamp = System.currentTimeMillis();
