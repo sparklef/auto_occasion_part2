@@ -16,7 +16,7 @@ public class StatistiqueDAO {
           "(SELECT COUNT(*) FROM utilisateur_site) AS totalUtilisateur,"+
            "(SELECT COUNT(*) FROM annonce WHERE validation_annonce=true) AS nombreAnnonceConfirmer,"+
            "(SELECT COUNT(*) FROM voiture) AS totalVoiture,"+ 
-           "(SELECT SUM(prix * 0.2) FROM voiture) AS chiffreAffaire";
+           "(SELECT SUM(prix * 0.2) FROM annonce) AS chiffreAffaire";
             stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             System.out.println("Afficher un statistique");
@@ -28,7 +28,7 @@ public class StatistiqueDAO {
                     int nombreAnnonceConfirmer=rs.getInt("nombreannonceconfirmer");
                     int totalVoiture=rs.getInt("totalvoiture");
                     double chiffreAffaire=rs.getDouble("chiffreAffaire");
-    
+
                     statistique= new Statistique(nombreutilisateur,nombreAnnonceConfirmer,totalVoiture,chiffreAffaire);
                 }
                 return statistique;
@@ -65,11 +65,11 @@ public class StatistiqueDAO {
         List<Stat> statistiques = new ArrayList<>();
         try{
             String query = "select c.categorie, count(c.categorie) as nbcategorie, m.marque, count(m.marque) as nbMarque, d.couleur, count(d.couleur) as nbCouleur "+
-            "from voiture v "+
-            "join categorie c on v.idCategorie=c.idCategorie "+
-            "join marque m on v.idMarque=m.idMarque "+
-            "join detail_voiture d on v.idDetail=d.idDetail "+
-            "group by c.categorie, m.marque, d.modele, d.couleur";
+                    "from voiture v "+
+                    "join categorie c on v.idCategorie=c.idCategorie "+
+                    "join marque m on v.idMarque=m.idMarque "+
+                    "join detail_voiture d on v.idDetail=d.idDetail "+
+                    "group by c.categorie, m.marque, d.modele, d.couleur";
             stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             System.out.println("Affichage de tous les statistiques ...");
@@ -77,14 +77,14 @@ public class StatistiqueDAO {
                 return null;
             } else {
                 while(rs.next()) {
-                   String categorie=rs.getString("categorie");
-                   int nbcategorie=rs.getInt("nbcategorie");
-                   String marque=rs.getString("marque");
-                   int nbmarque=rs.getInt("nbmarque");
-                   String couleur=rs.getString("couleur");
-                   int nbcouleur=rs.getInt("nbcouleur");
+                    String categorie=rs.getString("categorie");
+                    int nbcategorie=rs.getInt("nbcategorie");
+                    String marque=rs.getString("marque");
+                    int nbmarque=rs.getInt("nbmarque");
+                    String couleur=rs.getString("couleur");
+                    int nbcouleur=rs.getInt("nbcouleur");
 
-                   statistiques.add(new Stat(categorie,nbcategorie,marque,nbmarque,couleur,nbcouleur));
+                    statistiques.add(new Stat(categorie,nbcategorie,marque,nbmarque,couleur,nbcouleur));
                 }
                 return statistiques;
             }
@@ -97,7 +97,7 @@ public class StatistiqueDAO {
             }
         }
     }
-    
+
     public List<Stat> FindStat() throws Exception {
         Connexion c = new Connexion();
         Connection con = null;

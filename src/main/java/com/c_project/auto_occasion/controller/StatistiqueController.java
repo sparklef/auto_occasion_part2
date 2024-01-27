@@ -20,7 +20,7 @@ import com.c_project.auto_occasion.services.StatistiqueService;
 public class StatistiqueController {
     @Autowired
     private StatistiqueService statistiqueService;
-
+    // statistique : total utilisateur, nombre annonce confirmée, total voiture, chiffre d'affaire
     @GetMapping("/stat")
     public ResponseEntity<Statistique> getStatistique() {
         try {
@@ -35,7 +35,7 @@ public class StatistiqueController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    // toutes les statistiques
     @GetMapping("/statistiques")
     public ResponseEntity<List<Stat>> getAllStat(){
         try {
