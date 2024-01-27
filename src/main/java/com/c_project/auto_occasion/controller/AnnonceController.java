@@ -34,7 +34,7 @@ public class AnnonceController {
               return new ResponseEntity<>("Error updating Annonce's state", HttpStatus.INTERNAL_SERVER_ERROR);
           }
       }
-
+    //update statut with token
     @PutMapping("/update_statut/{id}/{newState}")
     public ResponseEntity<String> updateStatutOfUserToken(@RequestHeader("Authorization") String authorizationHeader,@PathVariable int newState ,@PathVariable int id) {
         try {
@@ -48,7 +48,7 @@ public class AnnonceController {
             return new ResponseEntity<>("Error updating Annonce's state", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-   /*
+    // mandeha io create annonce io
     @PostMapping("/create_annonce")
     public ResponseEntity<String> createAnnonce(@RequestHeader("Authorization") String authorizationHeader,@RequestBody Annonce newAnnonce) {
         String [] tab=authorizationHeader.split(" ");
@@ -66,23 +66,7 @@ public class AnnonceController {
               return new ResponseEntity<>("Error creating annonce", HttpStatus.INTERNAL_SERVER_ERROR);
           }
     }
-    */
-    @PostMapping("/create_annonce")
-    public ResponseEntity<String> createAnnonce(@RequestHeader("Authorization") String authorizationHeader,@RequestBody Annonce newAnnonce) {
-        try {
-            if (authorizationHeader == null || authorizationHeader.isEmpty()) {
-                return new ResponseEntity<>("Authorization header is missing", HttpStatus.UNAUTHORIZED);
-            }
-            Utilisateur_site user=utilisateur_siteService.findToken(authorizationHeader);
-            newAnnonce.setIdUser(user.getIdUser());
-            annonceService.create(newAnnonce);
-            return new ResponseEntity<>("Annonce created successfully", HttpStatus.CREATED);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("Error creating annonce", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
+    // delete annonce
     @DeleteMapping("/delete_annonce/{id_annonce}")
     public ResponseEntity<Void> deleteAnnonce(@PathVariable int id_annonce) {
         try {
@@ -93,7 +77,7 @@ public class AnnonceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    // toutes les annonces
     @GetMapping("/all_annonce")
     public ResponseEntity<List<Annonce>> allAnnonce() {
         try {
@@ -122,7 +106,7 @@ public class AnnonceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    // les annonces d'un utilisateur
     @GetMapping("/annonces_of_user")
     public ResponseEntity<List<Annonce>> allAnnoncesOfAnUser(@RequestHeader("Authorization") String authorizationHeader) {
         String[]tab=authorizationHeader.split(" ");
@@ -144,7 +128,7 @@ public class AnnonceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    // une annonce d'un utilisateur
     @GetMapping("/one_annonce_user/{id_annonce}")
     public ResponseEntity<Annonce> oneUserAnnonce(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int id_annonce) {
         try {
@@ -165,7 +149,7 @@ public class AnnonceController {
         }
     }
 
-
+    // les annonces non validees
     @GetMapping("/annonces_non_validees")
     public ResponseEntity<List<Annonce>> annoncesNonValidees() {
         try {
@@ -194,6 +178,7 @@ public class AnnonceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    // annonces validees d'un user
     @GetMapping("/annonces_validees/{id_user}")
     public ResponseEntity<List<Annonce>> annoncesValideesOfUser(@PathVariable int id_user) {
         try {
@@ -208,6 +193,7 @@ public class AnnonceController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    // annonces non validees d'un user
     @GetMapping("/annonces_non_validees/{id_user}")
     public ResponseEntity<List<Annonce>> annoncesNonValideesOfUser(@PathVariable int id_user) {
         try {

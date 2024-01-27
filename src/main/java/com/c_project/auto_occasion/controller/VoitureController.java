@@ -79,7 +79,7 @@ public class VoitureController {
             return new ResponseEntity<>("Error updating Voiture name", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    // deleting a car
     @DeleteMapping("/delete/{idcar}")
     public ResponseEntity<String> delete(@PathVariable int idcar) {
         try {
