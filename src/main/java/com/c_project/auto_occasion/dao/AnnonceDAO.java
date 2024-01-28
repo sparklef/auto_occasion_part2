@@ -384,7 +384,6 @@ public class AnnonceDAO {
                 double prix_vam = rs.getDouble("prix");
                 String description = rs.getString("description_annonce");
                 boolean validation = rs.getBoolean("validation_annonce");
-                String nom_voiture = rs.getString("nom_voiture");
                 one_annonceOfanUser = new Annonce(id, iduser, id_car, statut, date_annonce, lieu, imagevoiture, prix_vam,description, validation) ;
             }
         } catch (SQLException e) {
