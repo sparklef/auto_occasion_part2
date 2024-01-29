@@ -36,17 +36,6 @@ public class UtilisateurSiteDAO {
                System.out.println("Saving " + newUser.getEmail() + " in the table utilisateur_site");
                System.out.println(query);
                pstmt.executeQuery();
-
-               // Close the PreparedStatement before using it to get generated keys
-               /*
-               pstmt.close();
-
-               query = "SELECT iduser FROM utilisateur_site WHERE email = ? AND mdp = ?";
-               pstmt = con.prepareStatement(query);
-               pstmt.setString(1, newUser.getEmail());
-               pstmt.setString(2, newUser.getMdp());
-               rs = pstmt.executeQuery();
-               */
            } catch (SQLException e) {
                System.out.println("Error while saving " + newUser.getEmail() + " in utilisateur_site");
                throw e;
