@@ -24,7 +24,6 @@ public class UtilisateurSiteDAO {
        public void create(Connection con, Utilisateur_site newUser) throws Exception {
            PreparedStatement pstmt = null;
            ResultSet rs = null;
-           String token = null;
            try {
                String query = "INSERT INTO utilisateur_site(email, nom, prenom, mdp, contact) VALUES(?, ?, ?, ?, ?)";
                pstmt = con.prepareStatement(query);
@@ -35,7 +34,7 @@ public class UtilisateurSiteDAO {
                pstmt.setString(5, newUser.getContact());
                System.out.println("Saving " + newUser.getEmail() + " in the table utilisateur_site");
                System.out.println(query);
-               pstmt.executeQuery();
+               pstmt.executeUpdate(); // Changed from executeQuery() to executeUpdate()
            } catch (SQLException e) {
                System.out.println("Error while saving " + newUser.getEmail() + " in utilisateur_site");
                throw e;
