@@ -22,19 +22,14 @@ public class UtilisateurSiteDAO {
        // crud
         // creation d'utilisateur
        public void create(Connection con, Utilisateur_site newUser) throws Exception {
-           PreparedStatement pstmt = null;
+           Statement stmt = null;
            ResultSet rs = null;
            try {
-               String query = "INSERT INTO utilisateur_site(email, nom, prenom, mdp, contact) VALUES(?, ?, ?, ?, ?)";
-               pstmt = con.prepareStatement(query);
-               pstmt.setString(1, newUser.getEmail());
-               pstmt.setString(2, newUser.getNom());
-               pstmt.setString(3, newUser.getPrenom());
-               pstmt.setString(4, newUser.getMdp());
-               pstmt.setString(5, newUser.getContact());
+               String query = "INSERT INTO utilisateur_site(email, nom, prenom, mdp, contact) VALUES('" + newUser.getEmail() + "', '" + newUser.getNom() + "', '" + newUser.getPrenom() + "', '" + newUser.getMdp() + "', '" + newUser.getContact() + "')";
+               stmt = con.createStatement();
+               stmt.executeUpdate(query);
                System.out.println("Saving " + newUser.getEmail() + " in the table utilisateur_site");
                System.out.println(query);
-               pstmt.executeQuery(query);
            } catch (SQLException e) {
                System.out.println("Error while saving " + newUser.getEmail() + " in utilisateur_site");
                throw e;
@@ -48,11 +43,11 @@ public class UtilisateurSiteDAO {
                }
 
                try {
-                   if (pstmt != null) {
-                       pstmt.close();
+                   if (stmt != null) {
+                       stmt.close();
                    }
                } catch (SQLException e) {
-                   System.out.println("Error closing PreparedStatement: " + e.getMessage());
+                   System.out.println("Error closing Statement: " + e.getMessage());
                }
            }
        }
