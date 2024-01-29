@@ -201,6 +201,7 @@ public class AnnonceDAO {
         return annonce;
     }
     /// creation d'une nouvelle annonce
+    /*
     public void createAnnonce(Connection con, Annonce newAnnonce) throws Exception {
         PreparedStatement pstmt = null;
         try {
@@ -222,6 +223,26 @@ public class AnnonceDAO {
         } finally {
             if (pstmt != null) {
                 pstmt.close();
+            }
+        }
+    }
+    */
+    public void createAnnonce(Connection con, Annonce newAnnonce) throws Exception {
+        Statement stmt = null;
+        try {
+            String query = "INSERT INTO annonce(iduser, idcar, statut, date_annonce, lieu, image_car, prix, description_annonce, validation_annonce) VALUES(" + newAnnonce.getIdUser() + ", " + newAnnonce.getIdCar() + ", 1, CURRENT_TIMESTAMP, '" + newAnnonce.getLieu() + "', '" + newAnnonce.getImage_car() + "', " + newAnnonce.getPrix() + ", '" + newAnnonce.getDescription() + "', false)";
+            System.out.println(query);
+            stmt = con.createStatement();
+            stmt.executeUpdate(query);
+
+            System.out.println("Saving the annonce of the user " + newAnnonce.getIdUser() + " in the table annonce");
+            //System.out.println(query);
+        } catch (SQLException e) {
+            System.out.println("Error while saving " + newAnnonce.getIdUser() + " in annonce");
+            throw e;
+        } finally {
+            if (stmt != null) {
+                stmt.close();
             }
         }
     }
