@@ -36,9 +36,10 @@ public class FavorisController {
     }
     // liste des favoris de l'utilisateur pour l'utilisateur
     @GetMapping("/liste_favoris_user/{idUser}")
-    public ResponseEntity<List<Annonce>> getFavorisSUserUsingToken(@RequestHeader("Authorization") String authorizationHeader,@PathVariable int idUser){
+    public ResponseEntity<List<Annonce>> getFavorisSUserUsingToken(@RequestHeader("Authorization") String token_user,@PathVariable int idUser){
+        String [] tab=token_user.split(" ");
         try {
-            if (authorizationHeader == null || authorizationHeader.isEmpty()) {
+            if (token_user == null || token_user.isEmpty()) {
                 return new ResponseEntity<>( HttpStatus.UNAUTHORIZED );
             }
             List<Annonce> liste = favorisService.allUserSFavoris(idUser);
