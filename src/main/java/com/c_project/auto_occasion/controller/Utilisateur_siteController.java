@@ -23,11 +23,11 @@ public class Utilisateur_siteController {
     public ResponseEntity<String> createUser(@RequestBody Utilisateur_site newUser) {
         try {
             utilisateur_siteService.create(newUser);
-            int id_lastusercreated=utilisateur_siteService.getLastCreatedUser();
-            String token_creation = utilisateur_siteService.generateToken(newUser.getEmail(), newUser.getMdp());
-            utilisateur_siteService.saveToken(token_creation, id_lastusercreated);
-            String token = utilisateur_siteService.getTokenUser(id_lastusercreated);
-            return new ResponseEntity<>(token, HttpStatus.CREATED);
+            //int id_lastusercreated=utilisateur_siteService.getLastCreatedUser();
+            //String token_creation = utilisateur_siteService.generateToken(newUser.getEmail(), newUser.getMdp());
+            //utilisateur_siteService.saveToken(token_creation, id_lastusercreated);
+            //String token = utilisateur_siteService.getTokenUser(id_lastusercreated);
+            return new ResponseEntity<>("Utilisateur créé", HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("Error creating user", HttpStatus.INTERNAL_SERVER_ERROR);
