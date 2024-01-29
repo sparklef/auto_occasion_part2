@@ -3,6 +3,7 @@ package com.c_project.auto_occasion.controller;
 import com.c_project.auto_occasion.model.Annonce;
 import com.c_project.auto_occasion.model.Categorie;
 import com.c_project.auto_occasion.model.Favoris;
+import com.c_project.auto_occasion.model.Utilisateur_site;
 import com.c_project.auto_occasion.services.FavorisService;
 import com.c_project.auto_occasion.services.Utilisateur_siteService;
 
@@ -14,11 +15,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin("*")
 @RequestMapping("/api/favoris")
 public class FavorisController {
     @Autowired
     private FavorisService favorisService;
+    private Utilisateur_siteService utilisateur_siteService;
+
+    @Autowired
+    public FavorisController(Utilisateur_siteService utilisateur_siteService) {
+        this.utilisateur_siteService = utilisateur_siteService;
+    }
+   
     // liste des favoris d'un utilisateur pour l'admin
     @GetMapping("/listefavoris/{idUser}")
     public ResponseEntity<List<Annonce>> getFavorisId(@PathVariable int idUser){
@@ -34,18 +42,29 @@ public class FavorisController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    // liste des favoris de l'utilisateur pour l'utilisateur
-    @GetMapping("/liste_favoris_user/{idUser}")
-    public ResponseEntity<List<Annonce>> getFavorisSUserUsingToken(@RequestHeader("Authorization") String token_user,@PathVariable int idUser){
-        String [] tab=token_user.split(" ");
+
+    @GetMapping("/liste_favoris_user")
+    public ResponseEntity<List<Annonce>> getFavorisSUserUsingToken(@RequestHeader("Authorization") String authorizationHeader){
+        String[] tab = authorizationHeader.split(" ");
+        System.out.println(tab[1]);
         try {
-            if (token_user == null || token_user.isEmpty()) {
-                return new ResponseEntity<>( HttpStatus.UNAUTHORIZED );
+            if (authorizationHeader == null || authorizationHeader.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
-            List<Annonce> liste = favorisService.allUserSFavoris(idUser);
-            if (liste.size() != 0) {
-                return new ResponseEntity<>(liste, HttpStatus.OK);
+            Utilisateur_site user = utilisateur_siteService.findToken(tab[1]);
+            if (user != null) {
+                 System.out.println("User found: " + user.getIdUser());
+                 int id_user = user.getIdUser();
+                 List<Annonce> liste = favorisService.allUserSFavoris(id_user);
+                 if (liste != null && !liste.isEmpty()) {
+                     System.out.println("Found " + liste.size() + " favorites.");
+                     return new ResponseEntity<>(liste, HttpStatus.OK);
+                 } else {
+                     System.out.println("No favorites found for user.");
+                     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                 }
             } else {
+                System.out.println("No user found with that token.");
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
@@ -53,7 +72,7 @@ public class FavorisController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    
     // liste de tous les favoris
     @GetMapping("/listefavoris")
     public ResponseEntity<List<Favoris>> allFavoris(){
