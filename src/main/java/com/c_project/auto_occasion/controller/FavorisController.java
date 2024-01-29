@@ -89,13 +89,17 @@ public class FavorisController {
         }
     }
     // creation d'un favoris
-    @PostMapping("/create_favoris/{id_user}/{id_annonce}")
-    public ResponseEntity<String> creation_favoris(@RequestHeader("Authorization") String authorizationHeader,@PathVariable int id_annonce, @PathVariable int id_user) {
+    @PostMapping("/create_favoris/{id_annonce}")
+    public ResponseEntity<String> creation_favoris(@RequestHeader("Authorization") String authorizationHeader,@PathVariable int id_annonce) {
+        String[] tab = authorizationHeader.split(" ");
+        System.out.println(tab[1]);
         try {
             if (authorizationHeader == null || authorizationHeader.isEmpty()) {
                 return new ResponseEntity<>("Authorization header is missing", HttpStatus.UNAUTHORIZED);
             }
-            favorisService.createFav(id_annonce, id_user);
+            Utilisateur_site user = utilisateur_siteService.findToken(tab[1]);
+            int iduser=user.getIdUser();
+            favorisService.createFav(id_annonce, iduser);
             return new ResponseEntity<>("Favoris created successfully", HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
