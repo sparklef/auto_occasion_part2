@@ -16,7 +16,7 @@ import com.c_project.auto_occasion.services.StatistiqueService;
 
 @RestController
 @RequestMapping("/api/statistique")
-//@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*")
 public class StatistiqueController {
     @Autowired
     private StatistiqueService statistiqueService;

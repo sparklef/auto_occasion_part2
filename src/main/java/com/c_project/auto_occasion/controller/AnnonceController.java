@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/annonce")
-//@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*")
 public class AnnonceController {
     @Autowired
     private AnnonceService annonceService;

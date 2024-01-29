@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
-//@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*")
 public class Utilisateur_siteController {
     @Autowired
     private Utilisateur_siteService utilisateur_siteService;
