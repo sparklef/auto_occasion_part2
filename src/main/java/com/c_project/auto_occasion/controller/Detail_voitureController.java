@@ -23,7 +23,7 @@ import com.c_project.auto_occasion.model.Detail_voiture;
 import com.c_project.auto_occasion.services.Detail_voitureService;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin
 @RequestMapping("/api/detail")
 public class Detail_voitureController {
     @Autowired
