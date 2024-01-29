@@ -19,6 +19,7 @@ public class VoitureDAO {
     }
        // crud  //
     // get all voiture
+    /*
     public List<Voiture> findAll(Connection con) throws Exception {
         Statement stmt = null;
         List<Voiture> voitures = new ArrayList<>();
@@ -58,6 +59,46 @@ public class VoitureDAO {
             }
         }
     }
+     */
+       public List<Voiture> findAll(Connection con) throws Exception {
+           PreparedStatement pstmt = null;
+           List<Voiture> voitures = new ArrayList<>();
+           MarqueService m_service = new MarqueService();
+           CategorieService c_service = new CategorieService();
+           Detail_voitureService dv_service = new Detail_voitureService();
+           try {
+               String query = "SELECT * FROM voiture";
+               pstmt = con.prepareStatement(query);
+               ResultSet rs = pstmt.executeQuery();
+               System.out.println("Affichage de tous les voitures...");
+               if (!rs.isBeforeFirst()) {
+                   return null;
+               } else {
+                   while (rs.next()) {
+                       int idcar = rs.getInt("idcar");
+                       String matricule = rs.getString("matricule");
+                       String nomvoiture = rs.getString("nom_voiture");
+                       int idmarque = rs.getInt("idmarque");
+                       int idcategorie = rs.getInt("idcategorie");
+                       int iddetail = rs.getInt("iddetail");
+
+                       // Assuming you have methods to fetch Marque, Categorie, and Detail_voiture objects using their IDs
+                       Marque marque = m_service.findOne(idmarque);
+                       Categorie categorie = c_service.findOne(idcategorie);
+                       Detail_voiture detail_car = dv_service.getOneDetail(iddetail);
+                       voitures.add(new Voiture(idcar, matricule, nomvoiture, marque, categorie, detail_car));
+                   }
+                   return voitures;
+               }
+           } catch (SQLException e) {
+               System.out.println("Error with getting all the cars...");
+               throw e;
+           } finally {
+               if (pstmt != null) {
+                   pstmt.close();
+               }
+           }
+       }
 
     public List<Voiture> findAll() throws Exception {
         Connexion c = new Connexion();
