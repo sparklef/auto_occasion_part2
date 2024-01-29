@@ -24,6 +24,7 @@ public class FavorisDAO {
             ResultSet rs = stmt.executeQuery(sql);
             // Afficher les résultats
             while (rs.next()) {
+                int idfavoris=rs.getInt("idfavoris");
                 int idannonce=rs.getInt("idAnnonce");
                 int iduser = rs.getInt("idUser");
                 int idCar = rs.getInt("idCar");
