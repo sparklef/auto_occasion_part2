@@ -12,7 +12,7 @@ import com.c_project.auto_occasion.services.VoitureService;
 
 @RestController
 @RequestMapping("/api/voiture")
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class VoitureController {
     @Autowired
     private VoitureService voitureService;
