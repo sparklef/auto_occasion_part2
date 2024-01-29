@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class AnnonceDAO {
     public AnnonceDAO() {
@@ -230,8 +231,10 @@ public class AnnonceDAO {
     public void createAnnonce(Connection con, Annonce newAnnonce) throws Exception {
         Statement stmt = null;
         try {
-            String query = "INSERT INTO annonce(iduser, idcar, statut, date_annonce, lieu, image_car, prix, description_annonce, validation_annonce) VALUES(" + newAnnonce.getIdUser() + ", " + newAnnonce.getIdCar() + ", 1, CURRENT_TIMESTAMP, '" + newAnnonce.getLieu() + "', '" + newAnnonce.getImage_car() + "', " + newAnnonce.getPrix() + ", '" + newAnnonce.getDescription() + "', false)";
+            //String query = "INSERT INTO annonce(iduser, idcar, statut, date_annonce, lieu, image_car, prix, description_annonce, validation_annonce) VALUES(" + newAnnonce.getIdUser() + ", " + newAnnonce.getIdCar() + ", 1, CURRENT_TIMESTAMP, '" + newAnnonce.getLieu() + "', '" + newAnnonce.getImage_car() + "', " + newAnnonce.getPrix() + ", '" + newAnnonce.getDescription() + "', false)";
+            String query = String.format(Locale.US,"INSERT INTO annonce (iduser, idcar, statut, date_annonce, lieu, image_car, prix, description_annonce, validation_annonce) VALUES (%d, %d, 1, CURRENT_TIMESTAMP, '%s', '%s', %.2f, '%s', false)",newAnnonce.getIdUser(),newAnnonce.getIdCar(),newAnnonce.getLieu(),newAnnonce.getImage_car(),newAnnonce.getPrix(),newAnnonce.getDescription());
             System.out.println(query);
+            System.out.println(newAnnonce.getImage_car());
             stmt = con.createStatement();
             stmt.executeUpdate(query);
 
