@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/statut")
-@CrossOrigin(origins = "*")
+@CrossOrigin
 public class StatutController {
     @Autowired
     private StatutService statutService;
