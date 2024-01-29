@@ -26,7 +26,7 @@ public class UtilisateurSiteDAO {
            ResultSet rs = null;
            String token = null;
            try {
-               String query = "INSERT INTO utilisateur_site(email, nom, prenom, mdp, contact) VALUES(?, ?, ?, ?, ?) RETURNING iduser";
+               String query = "INSERT INTO utilisateur_site(email, nom, prenom, mdp, contact) VALUES(?, ?, ?, ?, ?)";
                pstmt = con.prepareStatement(query);
                pstmt.setString(1, newUser.getEmail());
                pstmt.setString(2, newUser.getNom());
