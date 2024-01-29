@@ -62,7 +62,7 @@ public class DetailDAO {
         Statement stmt = null;
         List<Detail> annonces = new ArrayList<>();
         try {
-            StringBuilder sql = new StringBuilder("select a.date_annonce,a.lieu,a.image_car,a.description_annonce,c.categorie,v.prix,v.matricule,m.marque,d.modele,d.couleur,d.nbr_portes,d.boite_devitesse,d.source_energie,d.annee"+
+            StringBuilder sql = new StringBuilder("select a.date_annonce,a.lieu,a.image_car,a.description_annonce,c.categorie,a.prix,v.matricule,m.marque,d.modele,d.couleur,d.nbr_portes,d.boite_devitesse,d.source_energie,d.annee"+
             " from annonce a "+
             " join voiture v "+
             " on a.idCar=v.idCar "+
@@ -73,7 +73,7 @@ public class DetailDAO {
             " join detail_voiture d "+
             " on v.idDetail=d.idDetail "+
             " WHERE ");
-            sql.append("(a.date_annonce::VARCHAR LIKE '%").append(keyword).append("%' OR a.lieu LIKE '%").append(keyword).append("%' OR a.image_car LIKE '%").append(keyword).append("%' OR a.description_annonce LIKE '%").append(keyword).append("%' OR c.categorie LIKE '%").append(keyword).append("%' OR CAST(v.prix AS VARCHAR) LIKE '%").append(keyword).append("%' OR v.matricule LIKE '%").append(keyword).append("%' OR m.marque LIKE '%").append(keyword).append("%' OR d.modele LIKE '%").append(keyword).append("%' OR d.couleur LIKE '%").append(keyword).append("%' OR CAST(d.nbr_portes AS VARCHAR) LIKE '%").append(keyword).append("%' OR d.boite_devitesse LIKE '%").append(keyword).append("%' OR d.source_energie LIKE '%").append(keyword).append("%' OR d.annee::VARCHAR LIKE '%").append(keyword).append("%')");
+            sql.append("(a.date_annonce::VARCHAR LIKE '%").append(keyword).append("%' OR a.lieu LIKE '%").append(keyword).append("%' OR a.image_car LIKE '%").append(keyword).append("%' OR a.description_annonce LIKE '%").append(keyword).append("%' OR c.categorie LIKE '%").append(keyword).append("%' OR CAST(a.prix AS VARCHAR) LIKE '%").append(keyword).append("%' OR v.matricule LIKE '%").append(keyword).append("%' OR m.marque LIKE '%").append(keyword).append("%' OR d.modele LIKE '%").append(keyword).append("%' OR d.couleur LIKE '%").append(keyword).append("%' OR CAST(d.nbr_portes AS VARCHAR) LIKE '%").append(keyword).append("%' OR d.boite_devitesse LIKE '%").append(keyword).append("%' OR d.source_energie LIKE '%").append(keyword).append("%' OR d.annee::VARCHAR LIKE '%").append(keyword).append("%')");
             stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(sql.toString());
             System.out.println("Affichage de toutes les details...");
