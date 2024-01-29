@@ -34,7 +34,7 @@ public class UtilisateurSiteDAO {
                pstmt.setString(5, newUser.getContact());
                System.out.println("Saving " + newUser.getEmail() + " in the table utilisateur_site");
                System.out.println(query);
-               pstmt.executeUpdate(); // Changed from executeQuery() to executeUpdate()
+               pstmt.executeQuery(query);
            } catch (SQLException e) {
                System.out.println("Error while saving " + newUser.getEmail() + " in utilisateur_site");
                throw e;
