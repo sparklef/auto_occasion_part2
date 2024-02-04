@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/chats")
+@RequestMapping("/api/chats")
 public class ChatController {
     @Autowired
     private ChatService chatService;
