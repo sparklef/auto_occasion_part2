@@ -35,7 +35,7 @@ public class FavorisDAO {
                 double prix_vam = rs.getDouble("prix");
                 String description=rs.getString("description_annonce");
                 boolean validation=rs.getBoolean("validation_annonce");
-                results.add(new Annonce(idannonce,iduser, idCar, status,date_annonce,lieu,img_car,prix_vam, description,validation) );
+                results.add(new Annonce(idfavoris ,idannonce,iduser, idCar, status,date_annonce,lieu,img_car,prix_vam, description,validation) );
             }
             return results;
         } catch (SQLException e) {
@@ -166,6 +166,10 @@ public class FavorisDAO {
                 con.close();
             }
         }
+    }
+
+    public void deleteFavorisOfUser() throws Exception {
+
     }
     // crud
     // get all favorites
