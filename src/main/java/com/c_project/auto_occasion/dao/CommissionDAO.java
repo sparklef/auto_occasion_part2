@@ -15,133 +15,104 @@ public class CommissionDAO {
     public CommissionDAO() {
     }
 
-    public void createPercentage(Connection con, Commission commission) throws Exception {
+   
+    public double calculateChiffreAffaire(Connection con) throws SQLException {
+        double chiffreAffaire =  0.0;
+        double commission =  0.0;
+    
+        // Récupérer la dernière commission de la base de données
+        String sqlGetLastCommission = "SELECT  commission_pourcent FROM commission ORDER BY idcommission DESC LIMIT  1";
+        try (PreparedStatement pstmt = con.prepareStatement(sqlGetLastCommission)) {
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    commission = rs.getDouble("commission_pourcent");
+                }
+            }
+        }
+    
+        // Si aucune commission n'a été trouvée, utiliser une valeur par défaut ou lever une exception
+        if (commission ==  0.0) {
+            // Vous pouvez choisir de lever une exception ou d'utiliser une valeur par défaut
+            throw new SQLException("No commission  found in the database.");
+        }
+    
+        // Utiliser la commission récupérée pour calculer le chiffre d'affaires
+        String sqlCalculateChiffreAffaire = "SELECT SUM(prix * ?) AS chiffreAffaire FROM annonce";
+        try (PreparedStatement pstmt = con.prepareStatement(sqlCalculateChiffreAffaire)) {
+            pstmt.setDouble(1, commission /  100.0); // Convertir le pourcentage en décimal
+    
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    chiffreAffaire = rs.getDouble("chiffreAffaire");
+                }
+            }
+        }
+    
+        return chiffreAffaire;
+    }
+     
+    public double createPercentage(Connection con, Commission commission) throws Exception {
+        double chiffreAffaire =   0.0;
+    
         try {
+            // Log the commission value before attempting to save it
+            System.out.println("Attempting to save commission value: " +  commission.getCommission_pourcent());
     
+            // Insérer la nouvelle commission dans la base de données
             try (PreparedStatement pstmt = con.prepareStatement(
-                    "INSERT INTO commission(idAnnonce, commission_percentage, commission_amount, commission_status) VALUES (?, ?, ?, 'payé')")) {
+                    "INSERT INTO commission(commission_pourcent) VALUES (?)")) {
     
-                pstmt.setInt(1, commission.getIdAnnonce().getIdAnnonce());
-                pstmt.setDouble(2, commission.getCommission_percentage());
-                pstmt.setDouble(3,0.0);  // Use the calculated commission amount
+                pstmt.setDouble(1,  commission.getCommission_pourcent() );  // Utiliser le montant de commission calculé
     
-                System.out.println("Saving " + commission.getIdAnnonce() + " in the table commission");
+                System.out.println("Saving " + commission.getCommission_pourcent()  + " in the table commission");
     
-                pstmt.executeUpdate();
-                System.out.println("Successfully saved.");
+                int affectedRows = pstmt.executeUpdate();
+                if (affectedRows >  0) {
+                    System.out.println("Successfully saved.");
+                } else {
+                    System.out.println("No rows were affected during the save operation.");
+                }
             } catch (SQLException e) {
-                System.out.println("Error while saving " + commission.getIdAnnonce() + " in commission");
+                System.out.println("Error while saving " + commission.getCommission_pourcent() + " in commission");
                 throw e;
             }
+    
+            // Appeler la fonction calculateChiffreAffaire pour calculer le chiffre d'affaires
+            chiffreAffaire = calculateChiffreAffaire(con);
+            System.out.println("Chiffre d'affaires calculé : " + chiffreAffaire);
+    
         } catch (SQLException e) {
             System.out.println("Error while getting last commission percentage");
             throw e;
-        } 
-    }
-    
-
-    public void create(Connection con, Commission commission) throws Exception {
-        try {
-            // Retrieve the last commission percentage from the database
-           // int lastAnnonceId = commission.getIdAnnonce().getIdAnnonce();
-            double lastCommissionPercentage = getLastCommissionPercentage(con);
-            double prixAnnonce = getPrixByIdAnnonce(con, commission);
-    
-            // Calculate commission amount based on the given price and commission percentage
-            double commissionAmount = (lastCommissionPercentage * prixAnnonce) / 100.0;
-    
-            try (PreparedStatement pstmt = con.prepareStatement(
-                    "INSERT INTO commission(idAnnonce, commission_percentage, commission_amount, commission_status) VALUES (?, ?, ?, 'payé')")) {
-    
-                pstmt.setInt(1, commission.getIdAnnonce().getIdAnnonce());
-                pstmt.setDouble(2, lastCommissionPercentage);
-                pstmt.setDouble(3, commissionAmount);  // Use the calculated commission amount
-    
-                System.out.println("Saving " + lastCommissionPercentage + " in the table commission");
-    
-                pstmt.executeUpdate();
-                System.out.println("Successfully saved.");
-            } catch (SQLException e) {
-                System.out.println("Error while saving " + lastCommissionPercentage+ " in commission");
-                throw e;
-            }
-        } catch (SQLException e) {
-            System.out.println("Error while getting last commission percentage");
-            throw e;
         }
+    
+        // Retourner la valeur du chiffre d'affaires
+        return chiffreAffaire;
     }
     
     
-    private double getLastCommissionPercentage(Connection con) throws SQLException {
-        try (Statement stmt = con.createStatement()) {
-            ResultSet rs = stmt.executeQuery("SELECT commission_percentage FROM commission ORDER BY idAnnonce DESC LIMIT 1");
     
-            if (rs.next()) {
-                return rs.getDouble("commission_percentage");
-            } else {
-                // Return a default value if no records are found
-                return 0.0;
-            }
-        }
-    }
-  
-    private double getPrixByIdAnnonce(Connection con,Commission commission) throws SQLException {
-        int annonce=commission.getIdAnnonce().getIdAnnonce(); 
-        try (PreparedStatement pstmt = con.prepareStatement("SELECT prix FROM annonce WHERE idAnnonce = ?")) {
-            pstmt.setInt(1, annonce);
-            ResultSet rs = pstmt.executeQuery();
-    
-            if (rs.next()) {
-                return rs.getDouble("prix");
-            } else {
-                // Retourner une valeur par défaut si aucun enregistrement n'est trouvé
-                return 0.0;
-            }
-        }
-    }
-    
-    public void create(Commission commission) throws Exception {
+    public double create(Commission voiture) throws Exception {
+        double chiffreAffaire =  0.0;
         Connexion c = new Connexion();
         Connection con = null;
         try {
             con = c.getConnection();
             con.setAutoCommit(false);
-    
-            // Vérifier s'il existe des valeurs dans la table commission
-            if (hasValuesInCommission(con)) {
-                System.out.println("tato izy");
-                create(con, commission);
-            } else {
-                System.out.println(" tsy tato izy");
-                createPercentage(con, commission);
-                create(con, commission);
-            }
-    
+            // Appeler la méthode createPercentage qui retourne maintenant un double
+            chiffreAffaire = createPercentage(con, voiture);
             con.commit();
         } catch (SQLException e) {
             System.out.println("Error persist with insertion in commission");
-            con.rollback(); // En cas d'erreur, annuler la transaction
             throw e;
         } finally {
             if (con != null) {
                 con.close();
             }
         }
+        // Retourner la valeur du chiffre d'affaires
+        return chiffreAffaire;
     }
     
-    private boolean hasValuesInCommission(Connection con) throws SQLException {
-        try (Statement stmt = con.createStatement()) {
-            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) as count FROM commission");
     
-            if (rs.next()) {
-                int count = rs.getInt("count");
-                return count > 0;
-            }
-    
-            return false;
-        }
-    }
-    
-  
-
 }

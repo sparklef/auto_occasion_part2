@@ -18,18 +18,19 @@ public class CommissionService {
         this.commissionDao = new CommissionDAO();
     }
 
-    public void create(Commission voiture) throws Exception {
-        Connection connection = null;
+    public double create(Commission voiture) throws Exception {
+        double chiffreAffaire =   0.0;
         try {
-            connection = connex.getConnection();
-            commissionDao.create(voiture);
+            Connection connection = connex.getConnection();
+            // Appeler la méthode create de commissionDao qui retourne maintenant un double
+            chiffreAffaire = commissionDao.create(voiture);
         } catch (SQLException e) {
             throw e;
-        } finally {
-            if(connection != null) {
-                connection.close();
-            }
         }
+        // Retourner la valeur du chiffre d'affaires
+        return chiffreAffaire;
     }
-
+        
+   
+    
 }
