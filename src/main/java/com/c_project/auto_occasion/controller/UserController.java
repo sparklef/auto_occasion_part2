@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin
 @RequestMapping("/api/user_chat")
 public class UserController {
     @Autowired
