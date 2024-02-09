@@ -25,6 +25,7 @@ public class ChatController {
     @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
 
+    /*Création d'un chat*/
     @PostMapping("/add")
     public ResponseEntity<Chat> createChat(@RequestBody Chat chat) throws IOException {
 
@@ -35,6 +36,7 @@ public class ChatController {
         }
     }
 
+    /*List*/
     @GetMapping("/all")
     public ResponseEntity<List<Chat>> getAllChats() {
         try {
