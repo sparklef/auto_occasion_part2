@@ -21,7 +21,7 @@ public class CommissionDAO {
         double commission =  0.0;
     
         // Récupérer la dernière commission de la base de données
-        String sqlGetLastCommission = "SELECT  commission_pourcent FROM commission ORDER BY idcommission DESC LIMIT  1";
+        String sqlGetLastCommission = "SELECT commission_pourcent FROM commission ORDER BY idcommission DESC LIMIT  1";
         try (PreparedStatement pstmt = con.prepareStatement(sqlGetLastCommission)) {
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
